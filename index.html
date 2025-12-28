@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#FFFBF0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>福岡五感療癒避年之旅</title>
+    <title>福岡之旅</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -21,17 +21,12 @@
                     colors: {
                         'jp-bg': '#FFFBF0', 
                         'jp-card': '#FFFFFF',
-                        'jp-yellow': '#F3E4B2', 
                         'jp-text': '#4A4238', 
                         'jp-accent': '#C58945', 
-                        'jp-red': '#D65A5A',
                         'jp-blue-light': '#E0F2FE',
                     },
                     fontFamily: {
                         sans: ['Zen Maru Gothic', 'Noto Sans JP', 'sans-serif'],
-                    },
-                    fontSize: {
-                        'xxs': '0.65rem',
                     }
                 }
             }
@@ -48,12 +43,13 @@
         .glass { background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid rgba(0,0,0,0.05); }
         .siren-active { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both infinite; background-color: #EF4444 !important; color: white !important; border-color: #EF4444 !important; }
         @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
-        
-        /* Compact Timeline Styles */
         .timeline-line { position: absolute; left: 1.65rem; top: 2rem; bottom: -1rem; width: 2px; background: #E5E7EB; z-index: 0; }
         .last-item .timeline-line { display: none; }
         .nav-btn.active { color: #C58945; transform: translateY(-2px); }
         .nav-btn.active::after { content: ''; position: absolute; bottom: -4px; width: 4px; height: 4px; background: #C58945; border-radius: 50%; }
+        
+        /* Weather Icon Animation */
+        .weather-fade-in { animation: fadeIn 0.5s ease-in forwards; }
     </style>
 </head>
 <body class="bg-jp-bg text-jp-text h-[100dvh] w-full flex flex-col overflow-hidden font-sans select-none">
@@ -63,7 +59,7 @@
             <h1 class="text-xl font-bold tracking-widest text-jp-text flex items-center gap-2">
                 FUKUOKA <i class="fa-solid fa-taxi text-[10px] text-white bg-jp-accent p-1.5 rounded-full shadow-sm group-active:scale-110 transition"></i>
             </h1>
-            <p class="text-[10px] text-gray-400 -mt-0.5 tracking-wider">五感療癒避年之旅</p>
+            <p class="text-[10px] text-gray-400 -mt-0.5 tracking-wider">五感療癒之旅</p>
         </div>
         
         <div class="flex gap-3">
@@ -107,14 +103,9 @@
     <main id="main-container" class="flex-1 overflow-y-auto bg-jp-bg relative scroll-smooth no-scrollbar">
         
         <div id="view-itinerary" class="page-enter pb-24 px-5 pt-4">
-            <div id="weather-widget" class="mb-4 flex items-center justify-between bg-white px-4 py-2 rounded-xl shadow-sm border border-blue-50 hidden">
-                <div class="flex items-center gap-2 text-xs text-gray-500 font-bold">
-                    <span id="weather-icon" class="text-orange-400 text-base"></span>
-                    <span id="weather-desc">--</span>
-                </div>
-                <div class="text-sm font-bold text-jp-text font-mono" id="weather-temp">--°C</div>
+            <div id="weather-info-bar" class="text-[10px] text-gray-400 text-center mb-2 hidden bg-white/50 py-1 rounded-lg">
+                <i class="fa-solid fa-clock-rotate-left"></i> 顯示 2024年同期歷史天氣供參考
             </div>
-
             <div id="itinerary-list" class="space-y-0 relative"></div>
             
             <button onclick="openAddModal('itinerary')" class="mt-6 w-full py-3 rounded-xl border border-dashed border-jp-accent/40 text-jp-accent text-sm font-bold hover:bg-white transition flex justify-center items-center gap-2 group">
@@ -305,11 +296,10 @@
     <script>
         // CONFIG
         const CONFIG = {
-            key: "fukuoka_trip_2026_compact_v2",
+            key: "fukuoka_trip_2026_final_v5_humidity",
             dates: ["2026-02-14", "2026-02-15", "2026-02-16", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20"],
             rate: 0.052,
             hotel: { name: "Hotel Wing International", coords: [33.5910, 130.4225] },
-            // Keeping original data but ensuring types match new logic
             defaultItinerary: [
                 { id: 101, date: "2026-02-14", time: "17:10", type: "flight", title: "抵達福岡機場 (UO638)", loc: "Fukuoka Airport", lat: 33.5859, lng: 130.4446, note: "2號巴士站搭西鐵巴士至博多駅筑紫口。", bookingRef: "UO638" },
                 { id: 102, date: "2026-02-14", time: "18:20", type: "other", title: "Check-in", loc: "Hotel Wing International Hakata", lat: 33.5910, lng: 130.4225, link: "https://www.hotelwing.co.jp/hakata-shinkansen/" },
@@ -341,17 +331,18 @@
         };
 
         const CATS = {
-            sightseeing: { label: "景點", icon: "fa-camera", color: "text-green-600", bg: "bg-green-100", border: "border-green-200" },
-            transport: { label: "交通", icon: "fa-train-subway", color: "text-blue-600", bg: "bg-blue-100", border: "border-blue-200" },
-            flight: { label: "航班", icon: "fa-plane-up", color: "text-sky-600", bg: "bg-sky-100", border: "border-sky-200" },
-            food: { label: "美食", icon: "fa-utensils", color: "text-orange-600", bg: "bg-orange-100", border: "border-orange-200" },
-            shopping: { label: "購物", icon: "fa-bag-shopping", color: "text-pink-600", bg: "bg-pink-100", border: "border-pink-200" },
-            other: { label: "其他", icon: "fa-star", color: "text-purple-600", bg: "bg-purple-100", border: "border-purple-200" }
+            sightseeing: { label: "景點", icon: "fa-camera", color: "text-green-600", bg: "bg-green-100" },
+            transport: { label: "交通", icon: "fa-train-subway", color: "text-blue-600", bg: "bg-blue-100" },
+            flight: { label: "航班", icon: "fa-plane-up", color: "text-sky-600", bg: "bg-sky-100" },
+            food: { label: "美食", icon: "fa-utensils", color: "text-orange-600", bg: "bg-orange-100" },
+            shopping: { label: "購物", icon: "fa-bag-shopping", color: "text-pink-600", bg: "bg-pink-100" },
+            other: { label: "其他", icon: "fa-star", color: "text-purple-600", bg: "bg-purple-100" }
         };
 
         let db = { itinerary: [], expenses: [], shopping: [], todo: [], luggage: [], info: [], settings: { safetyContact: "" } };
         let state = { date: CONFIG.dates[0], tab: 'itinerary', currentList: null, currentItem: null };
         let map = null, markers = [];
+        let weatherCache = {}; 
 
         // --- INIT ---
         function init() {
@@ -367,13 +358,13 @@
             renderDateSlider();
             renderAll();
             document.getElementById('rate-display').innerText = CONFIG.rate;
-            fetchWeather();
+            fetchDailyWeather(state.date);
         }
 
         function save() { localStorage.setItem(CONFIG.key, JSON.stringify(db)); renderAll(); }
         function renderAll() { renderItinerary(); renderExpenses(); renderInfo(); updateBadges(); }
 
-        // --- RENDER ITINERARY (COMPACT TIMELINE) ---
+        // --- RENDER ITINERARY ---
         function renderDateSlider() {
             const el = document.getElementById('date-slider');
             el.innerHTML = CONFIG.dates.map(d => {
@@ -386,7 +377,14 @@
                 </button>`;
             }).join('');
         }
-        function setDate(d) { state.date = d; renderDateSlider(); renderItinerary(); renderExpenses(); updateMap(); }
+        function setDate(d) { 
+            state.date = d; 
+            renderDateSlider(); 
+            renderItinerary(); 
+            renderExpenses(); 
+            updateMap();
+            fetchDailyWeather(d);
+        }
 
         function renderItinerary() {
             const list = document.getElementById('itinerary-list');
@@ -409,7 +407,7 @@
                         <div class="w-1.5 h-1.5 rounded-full ${cat.color.replace('text-', 'bg-')}"></div>
                     </div>
 
-                    <div class="bg-white rounded-xl p-3 shadow-[0_2px_8px_rgba(0,0,0,0.03)] border border-transparent hover:border-gray-200 transition active:scale-[0.99] flex justify-between items-start gap-2">
+                    <div class="bg-white rounded-xl p-3 shadow-[0_2px_8px_rgba(0,0,0,0.03)] border border-transparent hover:border-gray-200 transition active:scale-[0.99] flex justify-between items-center gap-2">
                         <div class="flex-1 min-w-0">
                             <h3 class="font-bold text-jp-text text-sm truncate leading-tight mb-0.5">${i.title}</h3>
                             <div class="flex items-center gap-2 text-[10px] text-gray-400">
@@ -417,20 +415,99 @@
                                 ${i.bookingRef ? `<span class="bg-blue-50 text-blue-500 px-1.5 py-0.5 rounded flex-shrink-0 font-mono">${i.bookingRef}</span>` : ''}
                             </div>
                         </div>
-                        <div class="text-gray-300 text-xs pt-1"><i class="fa-solid fa-chevron-right opacity-30"></i></div>
+                        
+                        <div id="weather-${i.id}" class="flex flex-col items-end justify-center w-14 border-l border-gray-100 pl-2 min-h-[40px] text-gray-300">
+                             <div class="w-2 h-2 bg-gray-100 rounded-full animate-pulse"></div>
+                        </div>
                     </div>
                 </div>`;
             }).join('');
+            
+            if(weatherCache[state.date]) updateWeatherUI(state.date);
         }
 
-        // --- DETAILED MODAL WITH DEEP LINKS ---
+        // --- WEATHER SYSTEM ---
+        async function fetchDailyWeather(dateStr) {
+            if(weatherCache[dateStr]) { updateWeatherUI(dateStr); return; }
+
+            const targetDate = new Date(dateStr);
+            const now = new Date();
+            const diffDays = Math.ceil((targetDate - now) / (1000 * 60 * 60 * 24));
+            
+            const lat = 33.59, lng = 130.42;
+            let url = "", isHistorical = false;
+
+            // Include relative_humidity_2m in API call
+            const params = "&hourly=temperature_2m,weathercode,relative_humidity_2m&timezone=Asia%2FTokyo";
+
+            if (diffDays > 10) {
+                isHistorical = true;
+                const refDate = dateStr.replace('2026', '2024'); 
+                url = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lng}&start_date=${refDate}&end_date=${refDate}${params}`;
+            } else {
+                url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&start_date=${dateStr}&end_date=${dateStr}${params}`;
+            }
+
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                
+                if(data.hourly) {
+                    weatherCache[dateStr] = {
+                        isHistorical: isHistorical,
+                        hourly: data.hourly
+                    };
+                    updateWeatherUI(dateStr);
+                }
+            } catch(e) { console.error("Weather fetch failed", e); }
+        }
+
+        function updateWeatherUI(dateStr) {
+            if (dateStr !== state.date) return;
+            const data = weatherCache[dateStr];
+            if (!data) return;
+
+            const notice = document.getElementById('weather-info-bar');
+            if(data.isHistorical) notice.classList.remove('hidden'); else notice.classList.add('hidden');
+
+            const items = db.itinerary.filter(i => i.date === state.date);
+            items.forEach(i => {
+                const el = document.getElementById(`weather-${i.id}`);
+                if (!el) return;
+
+                const hour = parseInt(i.time.split(':')[0]);
+                if (isNaN(hour)) return;
+
+                const temp = Math.round(data.hourly.temperature_2m[hour]);
+                const code = data.hourly.weathercode[hour];
+                // Get Humidity, default to 0 if missing
+                const humid = data.hourly.relative_humidity_2m ? Math.round(data.hourly.relative_humidity_2m[hour]) : '--';
+                
+                let icon = "fa-cloud", color = "text-gray-400";
+                
+                if (code === 0) { icon = "fa-sun"; color = "text-orange-400"; }
+                else if (code <= 3) { icon = "fa-cloud-sun"; color = "text-orange-300"; }
+                else if (code >= 45 && code <= 48) { icon = "fa-smog"; color = "text-gray-400"; }
+                else if (code >= 51 && code <= 67) { icon = "fa-cloud-rain"; color = "text-blue-400"; }
+                else if (code >= 71 && code <= 77) { icon = "fa-snowflake"; color = "text-sky-300"; }
+                else if (code >= 80) { icon = "fa-cloud-bolt"; color = "text-purple-400"; }
+
+                // New Stacked UI
+                el.innerHTML = `
+                    <i class="fa-solid ${icon} ${color} text-lg mb-0.5 weather-fade-in"></i>
+                    <span class="text-xs font-bold text-jp-text leading-none mb-0.5">${temp}°C</span>
+                    <span class="text-[9px] text-gray-400 font-mono leading-none"><i class="fa-solid fa-droplet text-[8px] mr-0.5 opacity-70"></i>${humid}%</span>
+                `;
+            });
+        }
+
+        // --- MODAL FUNCTIONS (Keep existing) ---
         function openDetail(id) {
             const item = db.itinerary.find(i => i.id === id);
             if(!item) return;
             state.currentItem = item;
             const cat = CATS[item.type] || CATS.other;
 
-            // UI Populating
             document.getElementById('detail-title').innerText = item.title;
             document.getElementById('detail-time').innerText = `${item.date} · ${item.time}`;
             document.getElementById('detail-icon').className = `fa-solid ${cat.icon}`;
@@ -438,41 +515,30 @@
             document.getElementById('detail-loc').innerText = item.loc || "未設定地點";
             document.getElementById('detail-note').innerText = item.note || "（無備註）";
 
-            // 1. Google Maps Button (Universal Link)
             const mapBtn = document.getElementById('btn-map');
             const query = item.loc || item.title;
             const latLng = item.lat ? `${item.lat},${item.lng}` : null;
-            // Use standard web intent which triggers app on mobile
-            mapBtn.href = latLng 
-                ? `https://www.google.com/maps/search/?api=1&query=${latLng}` 
-                : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query + " Fukuoka")}`;
+            mapBtn.href = latLng ? `https://www.google.com/maps/search/?api=1&query=${latLng}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query + " Fukuoka")}`;
 
-            // 2. App Action Button (Tabelog / KKday)
             const appBtn = document.getElementById('btn-app-action');
             if (item.type === 'food') {
                 appBtn.classList.remove('hidden');
                 appBtn.innerHTML = '<i class="fa-solid fa-utensils"></i> Tabelog';
                 appBtn.className = "col-span-1 py-3 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center gap-2 text-xs font-bold active:scale-95 transition border border-orange-100";
-                // Priority: Manual Link -> Tabelog Search
-                appBtn.href = item.link && item.link.includes('tabelog') 
-                    ? item.link 
-                    : `https://tabelog.com/rstLst/?vs=1&sa=&sk=${encodeURIComponent(item.title)}`;
+                appBtn.href = item.link && item.link.includes('tabelog') ? item.link : `https://tabelog.com/rstLst/?vs=1&sa=&sk=${encodeURIComponent(item.title)}`;
             } else if (item.type === 'sightseeing' || item.type === 'other') {
                 appBtn.classList.remove('hidden');
-                appBtn.innerHTML = '<i class="fa-solid fa-ticket"></i> KKday / Klook';
+                appBtn.innerHTML = '<i class="fa-solid fa-ticket"></i> KKday';
                 appBtn.className = "col-span-1 py-3 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center gap-2 text-xs font-bold active:scale-95 transition border border-teal-100";
                 appBtn.href = `https://www.kkday.com/zh-hk/product/product_list?keyword=${encodeURIComponent(item.title)}`;
             } else {
                 appBtn.classList.add('hidden');
             }
 
-            // 3. Booking Ref / Link
             const bkBtn = document.getElementById('btn-booking');
             if (item.bookingRef || (item.link && !item.link.includes('tabelog'))) {
                 bkBtn.classList.remove('hidden');
-                // Adjust grid based on visibility of App button
                 bkBtn.className = appBtn.classList.contains('hidden') ? "col-span-2 py-3 bg-gray-800 text-white rounded-xl flex items-center justify-center gap-2 text-xs font-bold shadow-md active:scale-95 transition" : "col-span-2 py-3 bg-gray-800 text-white rounded-xl flex items-center justify-center gap-2 text-xs font-bold shadow-md active:scale-95 transition mt-0";
-                
                 document.getElementById('booking-ref-display').innerText = item.bookingRef || "";
                 bkBtn.href = item.link || "#";
             } else {
@@ -497,10 +563,8 @@
             markers.forEach(m => map.removeLayer(m)); markers = [];
             const items = db.itinerary.filter(i => i.date === state.date && i.lat);
             
-            // Hotel Marker
             L.marker(CONFIG.hotel.coords, {icon: L.divIcon({ html: '<div class="w-8 h-8 bg-gray-800 text-white rounded-full flex items-center justify-center shadow-lg border-2 border-white text-xs"><i class="fa-solid fa-bed"></i></div>', className: '' })}).addTo(map).bindPopup("Hotel");
             
-            // Items Markers
             items.forEach(i => { 
                 const cat = CATS[i.type] || CATS.other; 
                 const bg = cat.color.replace('text-', 'bg-');
@@ -541,7 +605,6 @@
         }
         function deleteInfo(id) { if(confirm("刪除筆記？")) { db.info = db.info.filter(x=>x.id!==id); save(); } }
         
-        // Generic List Logic
         function openModal(type) {
             if(type === 'converter') { document.getElementById('modal-converter').classList.remove('hidden'); return; }
             if(type === 'safety') { document.getElementById('modal-safety').classList.remove('hidden'); return; }
@@ -603,9 +666,8 @@
         function updateBadges() { const c = (db.shopping||[]).filter(i=>!i.done).length + (db.luggage||[]).filter(i=>!i.done).length; const el = document.getElementById('global-badge'); if(c>0) el.classList.remove('hidden'); else el.classList.add('hidden'); document.getElementById('menu-badge-shop').innerText = (db.shopping||[]).filter(i=>!i.done).length; document.getElementById('menu-badge-luggage').innerText = (db.luggage||[]).filter(i=>!i.done).length; }
         function exportData() { const s = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db)); const n = document.createElement('a'); n.href = s; n.download = `trip_${new Date().toISOString().slice(0,10)}.json`; document.body.appendChild(n); n.click(); n.remove(); }
         function importData(i) { const f = i.files[0]; if(!f) return; const r = new FileReader(); r.onload = function(e) { try { db = JSON.parse(e.target.result); save(); alert("已還原！"); location.reload(); } catch(e) { alert("格式錯誤"); } }; r.readAsText(f); }
-        async function fetchWeather() { try { const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=33.59&longitude=130.42&current_weather=true&timezone=Asia%2FTokyo"); const d = await r.json(); if(d.current_weather) { document.getElementById('weather-widget').classList.remove('hidden'); document.getElementById('weather-temp').innerText = `${Math.round(d.current_weather.temperature)}°C`; const c = d.current_weather.weathercode; let i = "fa-cloud", t = "陰"; if(c <= 3) { i="fa-sun"; t="晴"; } else if(c >= 50) { i="fa-umbrella"; t="雨"; } document.getElementById('weather-icon').innerHTML = `<i class="fa-solid ${i}"></i>`; document.getElementById('weather-desc').innerText = t; } } catch(e){} }
         
-        // Safety & Audio (Keep existing)
+        // Safety
         let audioCtx, osc, isSiren=false;
         function toggleSiren() { const b=document.getElementById('siren-btn'), t=document.getElementById('siren-text'); if(isSiren){ if(osc){osc.stop();osc.disconnect();osc=null;} isSiren=false; b.classList.remove('siren-active'); t.innerText="啟動防狼警報"; } else { if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)(); osc=audioCtx.createOscillator(); const g=audioCtx.createGain(); osc.type='sawtooth'; osc.frequency.setValueAtTime(800,audioCtx.currentTime); osc.frequency.linearRampToValueAtTime(1200,audioCtx.currentTime+0.3); osc.connect(g); g.connect(audioCtx.destination); const l=audioCtx.createOscillator(); l.type='square'; l.frequency.value=4; const lg=audioCtx.createGain(); lg.gain.value=400; l.connect(lg); lg.connect(osc.frequency); l.start(); osc.start(); isSiren=true; b.classList.add('siren-active'); t.innerText="警報中 點擊關閉"; } }
         function saveContact() { db.settings.safetyContact = document.getElementById('safety-contact').value; save(); }
