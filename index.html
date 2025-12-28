@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#FFFBF0">
-    <title>我的福岡癒旅 (Safety+)</title>
+    <title>福岡癒旅 (2/14-2/20)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -43,14 +43,14 @@
         .modal-enter { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(100%); } to { opacity: 1; transform: translateY(0); } }
-        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(255, 255, 255, 0.8); }
+        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(255, 255, 255, 0.8); }
         .siren-active { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both infinite; background-color: #EF4444 !important; color: white !important; border-color: #EF4444 !important; }
         @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
         
-        /* Nav Button Active State Indicator */
         .nav-btn.active::after {
-            content: ''; position: absolute; bottom: -8px; width: 4px; h: 4px; background: #D4A373; border-radius: 50%;
+            content: ''; position: absolute; bottom: -6px; width: 4px; h: 4px; background: #D4A373; border-radius: 50%;
         }
+        .flight-card { background-image: radial-gradient(circle at 0 50%, transparent 8px, white 9px), radial-gradient(circle at 100% 50%, transparent 8px, white 9px); background-color: white; background-position: 0px 50%, 100% 50%; background-size: 10px 20px, 10px 20px; background-repeat: no-repeat; }
     </style>
 </head>
 <body class="bg-jp-bg text-jp-text h-[100dvh] w-full flex flex-col overflow-hidden font-sans select-none">
@@ -64,6 +64,10 @@
         </div>
         
         <div class="flex gap-3">
+            <button onclick="openModal('trip-info')" class="relative p-3 rounded-full bg-blue-50 text-blue-500 shadow-sm border border-blue-100 active:scale-95 transition">
+                <i class="fa-solid fa-circle-info text-lg"></i>
+            </button>
+            
             <button onclick="openModal('safety')" class="relative p-3 rounded-full bg-red-50 text-red-500 shadow-sm border border-red-100 active:scale-95 transition">
                 <i class="fa-solid fa-shield-halved text-lg"></i>
             </button>
@@ -101,8 +105,7 @@
         <div id="date-slider" class="flex gap-4 overflow-x-auto no-scrollbar pr-6 pb-4"></div>
     </div>
 
-    <main id="main-container" class="flex-1 overflow-y-auto px-6 pb-28 relative scroll-smooth no-scrollbar">
-        
+    <main id="main-container" class="flex-1 overflow-y-auto px-6 pb-20 relative scroll-smooth no-scrollbar">
         <div id="view-itinerary" class="page-enter space-y-5">
             <div id="weather-widget" class="bg-white/60 border border-white backdrop-blur-sm p-4 rounded-3xl shadow-sm flex items-center justify-between hidden">
                 <div class="flex items-center gap-4">
@@ -165,24 +168,88 @@
         </div>
     </main>
 
-    <nav class="fixed bottom-0 left-0 right-0 w-full glass z-40 flex justify-between items-start px-8 pt-4 pb-8 rounded-t-[2.5rem] shadow-[0_-5px_20px_rgba(0,0,0,0.03)]">
-        <button onclick="switchTab('itinerary')" class="nav-btn active relative flex flex-col items-center gap-1 text-jp-accent w-12 transition-all duration-300">
-            <i class="fa-solid fa-calendar-day text-2xl"></i>
+    <nav class="fixed bottom-0 left-0 right-0 w-full glass z-40 flex justify-between items-end px-8 pt-2 pb-6 rounded-t-[2rem] shadow-[0_-5px_20px_rgba(0,0,0,0.03)]">
+        <button onclick="switchTab('itinerary')" class="nav-btn active relative flex flex-col items-center gap-0.5 text-jp-accent w-12 transition-all duration-300">
+            <i class="fa-solid fa-calendar-day text-xl"></i>
             <span class="text-[10px] font-bold">行程</span>
         </button>
-        <button onclick="switchTab('map')" class="nav-btn relative flex flex-col items-center gap-1 text-gray-300 hover:text-jp-text w-12 transition-all duration-300">
-            <i class="fa-solid fa-map text-2xl"></i>
+        <button onclick="switchTab('map')" class="nav-btn relative flex flex-col items-center gap-0.5 text-gray-300 hover:text-jp-text w-12 transition-all duration-300">
+            <i class="fa-solid fa-map text-xl"></i>
             <span class="text-[10px] font-bold">地圖</span>
         </button>
-        <button onclick="switchTab('finance')" class="nav-btn relative flex flex-col items-center gap-1 text-gray-300 hover:text-jp-text w-12 transition-all duration-300">
-            <i class="fa-solid fa-wallet text-2xl"></i>
+        <button onclick="switchTab('finance')" class="nav-btn relative flex flex-col items-center gap-0.5 text-gray-300 hover:text-jp-text w-12 transition-all duration-300">
+            <i class="fa-solid fa-wallet text-xl"></i>
             <span class="text-[10px] font-bold">記帳</span>
         </button>
-        <button onclick="openModal('converter')" class="nav-btn relative flex flex-col items-center gap-1 text-gray-300 hover:text-jp-text w-12 transition-all duration-300">
-            <i class="fa-solid fa-calculator text-2xl"></i>
+        <button onclick="openModal('converter')" class="nav-btn relative flex flex-col items-center gap-0.5 text-gray-300 hover:text-jp-text w-12 transition-all duration-300">
+            <i class="fa-solid fa-calculator text-xl"></i>
             <span class="text-[10px] font-bold">換算</span>
         </button>
     </nav>
+
+    <div id="modal-trip-info" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[80] hidden flex items-center justify-center p-6" onclick="if(event.target===this)closeModal('trip-info')">
+        <div class="bg-gray-50 w-full max-w-sm rounded-[2rem] p-6 shadow-2xl page-enter max-h-[85vh] overflow-y-auto no-scrollbar relative">
+            
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-jp-text flex items-center gap-2">
+                    <i class="fa-solid fa-passport text-jp-accent"></i> 旅程資訊
+                </h3>
+                <button onclick="closeModal('trip-info')" class="w-8 h-8 bg-white rounded-full text-gray-300 shadow-sm flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-sm mb-4 border border-gray-100">
+                <div class="flex items-center gap-3 mb-3 border-b border-gray-50 pb-3">
+                    <div class="w-8 h-8 bg-jp-yellow rounded-full flex items-center justify-center text-jp-text text-sm"><i class="fa-solid fa-bed"></i></div>
+                    <span class="text-sm font-bold text-jp-text">住宿飯店</span>
+                </div>
+                <h4 class="font-bold text-jp-text text-lg leading-tight mb-2">Hotel Wing International<br><span class="text-sm text-gray-400 font-normal">Hakata Shinkansen</span></h4>
+                <p class="text-xs text-gray-500 bg-gray-50 p-2 rounded-lg mb-2"><i class="fa-solid fa-location-dot mr-1"></i>福岡市博多区博多駅東1-17-17</p>
+                
+                <div class="flex gap-2 text-xs text-gray-500 mb-3">
+                    <span class="bg-gray-50 px-2 py-1 rounded border border-gray-100">IN 15:00</span>
+                    <span class="bg-gray-50 px-2 py-1 rounded border border-gray-100">OUT 11:00</span>
+                </div>
+                
+                <p class="text-[10px] text-jp-accent font-bold bg-orange-50 p-2 rounded border border-orange-100">
+                    <i class="fa-solid fa-person-walking-luggage mr-1"></i>指引：筑紫口步行4分鐘，沿博多駅東街直走，過一個小路口後右手邊。
+                </p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden">
+                <div class="flex items-center gap-3 mb-3 border-b border-gray-50 pb-3 relative z-10">
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 text-sm"><i class="fa-solid fa-plane"></i></div>
+                    <span class="text-sm font-bold text-jp-text">航班資訊 (HK Express)</span>
+                </div>
+
+                <div class="flex justify-between items-center mb-4 relative z-10">
+                    <div>
+                        <div class="text-[10px] text-gray-400 font-bold mb-1">2/14 (六) 去程</div>
+                        <div class="text-2xl font-bold text-jp-text font-mono">UO638</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xl font-bold text-jp-text">17:10 <span class="text-xs text-gray-400 font-normal">抵達</span></div>
+                        <div class="text-[10px] text-gray-400">FUK 福岡機場</div>
+                    </div>
+                </div>
+
+                <div class="border-t border-dashed border-gray-200 my-3"></div>
+
+                <div class="flex justify-between items-center relative z-10">
+                    <div>
+                        <div class="text-[10px] text-gray-400 font-bold mb-1">2/20 (五) 回程</div>
+                        <div class="text-2xl font-bold text-jp-text font-mono">UO669</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xl font-bold text-jp-text">16:05 <span class="text-xs text-gray-400 font-normal">起飛</span></div>
+                        <div class="text-[10px] text-gray-400">FUK 福岡機場</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
     <div id="modal-safety" class="fixed inset-0 bg-red-50/90 backdrop-blur-md z-[60] hidden flex flex-col justify-end">
         <div class="bg-white w-full rounded-t-[2.5rem] p-6 pb-10 modal-enter shadow-[0_-10px_60px_rgba(239,68,68,0.2)]">
@@ -232,6 +299,10 @@
             <p class="text-2xl font-bold mb-4 leading-tight">Hotel Wing International<br>Hakata Shinkansenguchi</p>
             <p class="text-lg font-bold text-gray-500 mb-1">住所：</p>
             <p class="text-xl font-bold bg-yellow-100 p-3 rounded leading-relaxed">福岡市博多区博多駅東<br>1-17-17</p>
+             <div class="mt-4 text-left bg-gray-50 p-3 rounded-lg border border-gray-200">
+                <p class="text-xs text-gray-400 font-bold mb-1">路痴救星指引：</p>
+                <p class="text-sm text-gray-600 leading-relaxed">從博多站筑紫口步行4分鐘。入口在筑紫口東側，沿著博多駅東街直走，過一個小路口後右手邊即見飯店招牌。</p>
+            </div>
         </div>
         <div class="mt-8 text-white/50 text-xs"><i class="fa-solid fa-hand-point-up mr-2"></i>點擊任意處關閉</div>
     </div>
@@ -269,13 +340,15 @@
     </div>
 
     <div id="detail-modal" class="fixed inset-0 bg-black/40 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center">
-        <div class="bg-white w-full sm:w-96 rounded-t-[2.5rem] sm:rounded-[2.5rem] p-8 pb-10 page-enter relative max-h-[85vh] overflow-y-auto no-scrollbar shadow-[0_-10px_40px_rgba(0,0,0,0.2)]">
+        <div class="bg-white w-full sm:w-96 rounded-t-[2.5rem] sm:rounded-[2.5rem] p-8 pb-10 page-enter relative max-h-[90vh] overflow-y-auto no-scrollbar shadow-[0_-10px_40px_rgba(0,0,0,0.2)]">
             <div class="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-gray-200 rounded-full sm:hidden"></div>
+            
             <div class="flex flex-col items-center mb-6">
                 <div id="detail-icon-bg" class="w-20 h-20 rounded-full flex items-center justify-center text-3xl mb-4 shadow-lg ring-4 ring-white"><i id="detail-icon" class="fa-solid"></i></div>
                 <h2 id="detail-title" class="text-2xl font-bold text-jp-text text-center leading-tight">標題</h2>
                 <div id="detail-time" class="text-jp-accent font-bold mt-2 bg-orange-50 px-3 py-1 rounded-full text-sm font-mono"></div>
             </div>
+            
             <div class="space-y-4">
                 <div id="detail-booking-container" class="hidden">
                     <div class="bg-jp-blue-light p-5 rounded-2xl border border-blue-100 relative overflow-hidden group">
@@ -287,6 +360,11 @@
                         </div>
                     </div>
                 </div>
+
+                <a id="detail-link" href="#" target="_blank" class="hidden w-full py-4 bg-jp-text text-white font-bold rounded-xl text-center shadow-lg active:scale-95 transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-link"></i> 開啟預約 / 官網
+                </a>
+
                 <button onclick="openExternalMap()" class="w-full flex items-center justify-between bg-gray-50 text-gray-600 p-4 rounded-2xl border border-gray-100 active:bg-gray-100 transition">
                     <div class="flex items-center gap-3 overflow-hidden">
                         <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-red-500 shadow-sm flex-shrink-0"><i class="fa-solid fa-location-dot"></i></div>
@@ -294,11 +372,13 @@
                     </div>
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400"></i>
                 </button>
+                
                 <div class="bg-jp-bg p-5 rounded-2xl border border-orange-50">
                     <div class="text-[10px] text-gray-400 mb-2 font-bold uppercase tracking-wider">Note</div>
                     <div id="detail-note" class="text-sm text-gray-600 leading-relaxed whitespace-pre-line"></div>
                 </div>
             </div>
+
             <div class="flex gap-3 mt-8">
                 <button onclick="closeDetailModal()" class="flex-1 py-3 text-gray-400 font-bold rounded-xl hover:bg-gray-50 transition">關閉</button>
                 <button onclick="deleteFromDetail()" class="flex-1 py-3 bg-red-50 text-red-400 font-bold rounded-xl hover:bg-red-100 transition"><i class="fa-solid fa-trash-can mr-2"></i>刪除</button>
@@ -321,12 +401,134 @@
 
     <script>
         const CONFIG = {
-            key: "fukuoka_safety_v4",
+            key: "fukuoka_trip_2026_full_detail_v2",
             dates: ["2026-02-14", "2026-02-15", "2026-02-16", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20"],
             rate: 0.052,
             hotel: { jp: "福岡市博多区博多駅東1-17-17", name: "Hotel Wing International", coords: [33.5910, 130.4225] },
             defaultItinerary: [
-                 { id: 1, date: "2026-02-14", time: "18:45", type: "shopping", title: "住吉酒販 (角打)", loc: "Hakata Deitos Annex", lat: 33.5905, lng: 130.4195, note: "體驗日式角打", bookingRef: "" }
+                // Day 1: Feb 14 (Sat) - Arrival
+                { id: 101, date: "2026-02-14", time: "17:10", type: "flight", title: "抵達福岡機場 (UO638)", loc: "Fukuoka Airport", lat: 33.5859, lng: 130.4446, 
+                  note: "【交通指示】\n1. 入境後直走約50米，前往「2號巴士乘車處」。\n2. 搭乘「西鐵巴士 (往博多駅・天神方向)」。\n3. 在「博多駅筑紫口」下車 (約第3站)。\n費用：¥310 (IC卡/現金)。時間：約20分鐘。", bookingRef: "UO638" },
+                
+                { id: 102, date: "2026-02-14", time: "18:20", type: "other", title: "飯店 Check-in", loc: "Hotel Wing International", lat: 33.5910, lng: 130.4225, 
+                  note: "【步行指引】\n下車後，入口在筑紫口東側，沿著博多駅東街直走，過一個小路口後右手邊即見飯店招牌 (約4分鐘)。\nCheck-in後記得拿大堂地圖。", bookingRef: "", link: "https://www.hotelwing.co.jp/hakata-shinkansen/" },
+                
+                { id: 103, date: "2026-02-14", time: "18:45", type: "shopping", title: "住吉酒販 (角打體驗)", loc: "Hakata Deitos Annex 1F", lat: 33.5905, lng: 130.4195, 
+                  note: "【交通】從飯店走回博多站筑紫口，進站後跟隨 'Deitos Annex' 標誌，直走100米左手邊。\n\n【體驗】換購「花札」代幣 (¥500起) 兌換酒與小菜。\n💡紀念品：九州限定清酒瓶。", bookingRef: "" },
+                
+                { id: 104, date: "2026-02-14", time: "19:30", type: "food", title: "博多牛腸鍋 飯山", loc: "Hakata Deitos 1F", lat: 33.5905, lng: 130.4195, 
+                  note: "【交通】從住吉酒販出來，沿商場走50米，右手邊「博多麵街道」下樓梯。\n\n🍽️ 必點：味噌牛腸鍋、生啤酒。\n💰 預算：¥2,500。", bookingRef: "", link: "https://resy.com/cities/fukuoka-japan/venues/hakata-motsunabe-ooyama-deitos-hakata" },
+                
+                { id: 105, date: "2026-02-14", time: "21:00", type: "food", title: "茶酒沙龍 Yorozu", loc: "赤坂2-3-32", lat: 33.5865, lng: 130.3940, 
+                  note: "【交通】地鐵空港線「赤坂站」2號出口，出站左轉直走300米。\n\n🍽️ 必點：茶酒套餐 (Tea Cocktail Course)。\n💰 預算：¥5,000。\n💡紀念品：茶葉包/小酒瓶。", bookingRef: "需預約", link: "https://autoreserve.com/zh-tw/restaurants/QrFYAjJWeRj4e6cev4nr" },
+
+                // Day 2: Feb 15 (Sun) - Sake Festival
+                { id: 201, date: "2026-02-15", time: "08:30", type: "food", title: "博多牛舌早餐 Tandoya", loc: "博多一番街 B1", lat: 33.5898, lng: 130.4200, 
+                  note: "【交通】博多站筑紫口進站，跟隨「博多一番街」標誌下樓到B1。\n\n🍽️ 必點：牛舌早餐定食 (¥800)。", bookingRef: "" },
+                
+                { id: 202, date: "2026-02-15", time: "09:30", type: "transport", title: "前往城島酒藏開倉", loc: "JR博多站 -> 荒木站", lat: 33.2925, lng: 130.4900, 
+                  note: "路線：JR鹿兒島本線 (快速) -> 「荒木站」 (約30分, ¥1,130)。\n轉乘：出站右手邊搭免費接駁巴士。", bookingRef: "" },
+                
+                { id: 203, date: "2026-02-15", time: "11:00", type: "sightseeing", title: "第32回 城島酒藏開倉", loc: "久留米市城島町", lat: 33.2750, lng: 130.4700, 
+                  note: "【攻略】主會場買試飲券，搭巡迴巴士至酒造 (推薦: 比翼鶴酒造)。\n🍽️ 必吃：鰻魚蒸籠飯。\n💡紀念品：限量新酒瓶。", bookingRef: "", link: "https://welcome-kurume.com/tw/events/detail/aafc88d1-e520-4a74-849f-a2f54b58a68f" },
+                
+                { id: 204, date: "2026-02-15", time: "16:30", type: "shopping", title: "LOPIA 超市 博多店", loc: "Yodobashi Camera 4F", lat: 33.5885, lng: 130.4220, 
+                  note: "【交通】博多站筑紫口右轉走100米至Yodobashi，電梯上4F。\n⚠️ 注意：只收現金！請準備足夠現金。", bookingRef: "" },
+                
+                { id: 205, date: "2026-02-15", time: "18:30", type: "food", title: "博多雞皮大臣", loc: "KITTE 博多 B1", lat: 33.5890, lng: 130.4185, 
+                  note: "【交通】博多站博多口左側 KITTE 大樓 B1。\n🍽️ 必點：醬汁雞皮、Highball。", bookingRef: "" },
+
+                // Day 3: Feb 16 (Mon) - Dazaifu
+                { id: 301, date: "2026-02-16", time: "08:45", type: "food", title: "il FORNO del MIGNON", loc: "博多站中央改札口", lat: 33.5900, lng: 130.4205, 
+                  note: "【交通】博多站中央改札口內 (Central Gate)。\n必買：現烤迷你可頌。", bookingRef: "" },
+                
+                { id: 302, date: "2026-02-16", time: "09:30", type: "transport", title: "巴士前往太宰府", loc: "博多巴士總站 11號月台", lat: 33.5915, lng: 130.4190, 
+                  note: "路線：搭乘「旅人號 (Tabito)」 巴士 (¥610，IC卡可)。", bookingRef: "" },
+                
+                { id: 303, date: "2026-02-16", time: "10:30", type: "sightseeing", title: "太宰府天滿宮 & 竈門神社", loc: "太宰府市", lat: 33.5215, lng: 130.5349, 
+                  note: "【竈門神社交通】西鐵太宰府站前搭社區巴士「Mahoroba」(內山線) (¥100)。\n💡紀念品：天滿宮御守、緣結び守。", bookingRef: "" },
+                
+                { id: 304, date: "2026-02-16", time: "12:30", type: "food", title: "茶和々 (Sawawa)", loc: "太宰府參道", lat: 33.5200, lng: 130.5335, 
+                  note: "🍽️ 必吃：極濃抹茶雪糕 (¥800)。", bookingRef: "" },
+                
+                { id: 305, date: "2026-02-16", time: "14:30", type: "other", title: "二日市溫泉「博多湯」", loc: "二日市", lat: 33.4930, lng: 130.5250, 
+                  note: "【交通】西鐵二日市站西口出，右轉沿湯町街走12分。\n費用：入浴料¥350，毛巾¥200。\n古湯放鬆體驗。", bookingRef: "" },
+                
+                { id: 306, date: "2026-02-16", time: "19:00", type: "food", title: "旭軒 駅前本店", loc: "博多駅前2-15-22", lat: 33.5905, lng: 130.4170, 
+                  note: "🍽️ 必點：一口煎餃、炸雞翅。\n💰 預算：¥1,500。", bookingRef: "" },
+
+                // Day 4: Feb 17 (Tue) - Beer & Buddha
+                { id: 401, date: "2026-02-17", time: "08:15", type: "food", title: "因幡烏龍麵", loc: "博多 Deitos 1F 麵街道", lat: 33.5905, lng: 130.4195, 
+                  note: "🍽️ 必點：牛蒡天婦羅烏龍麵。", bookingRef: "" },
+                
+                { id: 402, date: "2026-02-17", time: "09:00", type: "transport", title: "前往麒麟啤酒工廠", loc: "甘木鐵道 太刀洗站", lat: 33.3980, lng: 130.6050, 
+                  note: "路線：JR到「基山站」 -> 轉乘甘木鐵道至「太刀洗站」。\n⚠️ 甘木鐵道只收現金 (¥330)，請備零錢。", bookingRef: "" },
+                
+                { id: 403, date: "2026-02-17", time: "10:30", type: "sightseeing", title: "麒麟啤酒福岡工廠", loc: "朝倉市", lat: 33.3900, lng: 130.6100, 
+                  note: "費用：¥500 (含見學+試飲)。需預約。\n💡紀念品：啤酒杯。", bookingRef: "需預約", link: "https://kirinfactory.my.salesforce-sites.com/ensp/WebSelectEnSp" },
+                
+                { id: 404, date: "2026-02-17", time: "12:00", type: "food", title: "Kirin Beer Farm", loc: "工廠園區內", lat: 33.3900, lng: 130.6100, 
+                  note: "🍽️ 必吃：成吉思汗烤肉 (羊肉)。", bookingRef: "" },
+                
+                { id: 405, date: "2026-02-17", time: "15:00", type: "sightseeing", title: "南藏院 (涅槃佛)", loc: "篠栗町", lat: 33.6190, lng: 130.5730, 
+                  note: "【交通】太刀洗 -> 基山 -> JR博多 (轉篠栗線) -> 城戶南藏院前站。\n世界最大青銅釋迦涅槃佛。參拜費¥300。", bookingRef: "" },
+                
+                { id: 406, date: "2026-02-17", time: "18:30", type: "food", title: "海風土 (Seafood)", loc: "博多駅東2-4-17", lat: 33.5908, lng: 130.4230, 
+                  note: "【交通】博多站筑紫口右轉，沿博多駅東街走200米，過路口左手邊。\n🍽️ 必點：海之寶箱生魚片(500円)、胡麻鯖魚。", bookingRef: "" },
+
+                // Day 5: Feb 18 (Wed) - Beppu
+                { id: 501, date: "2026-02-18", time: "07:30", type: "food", title: "東筑軒 雞肉飯便當", loc: "博多站中央改札口", lat: 33.5900, lng: 130.4205, 
+                  note: "必買：東筑軒 かしわめし (¥1,000)。車上享用。", bookingRef: "" },
+                
+                { id: 502, date: "2026-02-18", time: "08:00", type: "transport", title: "特急 Sonic 往別府", loc: "JR博多站", lat: 33.5900, lng: 130.4205, 
+                  note: "車程約2小時。請事先買票或用IC卡。", bookingRef: "Sonic" },
+                
+                { id: 503, date: "2026-02-18", time: "10:20", type: "sightseeing", title: "大分香水博物館", loc: "別府", lat: 33.3080, lng: 131.4900, 
+                  note: "【交通】別府站西口搭龜之井巴士(2/5/7/41號)至「別府大學下」。\n調香體驗 ¥2,500。", bookingRef: "" },
+                
+                { id: 504, date: "2026-02-18", time: "13:00", type: "food", title: "Beppu Brewery", loc: "別府站前", lat: 33.2790, lng: 131.5000, 
+                  note: "【交通】別府站前左轉沿駅前街走5分。\n🍽️ 必點：啤酒試飲組、炸雞天婦羅。", bookingRef: "" },
+                
+                { id: 505, date: "2026-02-18", time: "15:00", type: "other", title: "竹瓦溫泉 (砂湯)", loc: "別府市元町", lat: 33.2780, lng: 131.5050, 
+                  note: "【交通】沿元町街直走10分。\n體驗：熱砂排毒。費用 ¥1,500。", bookingRef: "" },
+                
+                { id: 506, date: "2026-02-18", time: "19:30", type: "food", title: "博多一雙 拉麵", loc: "博多駅東3-1-6", lat: 33.5895, lng: 130.4250, 
+                  note: "【交通】博多站筑紫口右轉，沿東3街走5分。\n🍽️ 必點：糖心蛋拉麵 (味玉ラーメン)。", bookingRef: "" },
+
+                // Day 6: Feb 19 (Thu) - Handmade Experience
+                { id: 601, date: "2026-02-19", time: "10:00", type: "sightseeing", title: "Haku Haku 明太子手作", loc: "吉塚", lat: 33.6080, lng: 130.4280, 
+                  note: "【交通】JR博多 -> 吉塚站 (1站)，東口直走13分鐘。\n需預約 (約¥2,200)。", bookingRef: "需預約", link: "https://www.hakuhaku.com/workshop/" },
+                
+                { id: 602, date: "2026-02-19", time: "11:45", type: "shopping", title: "市川香舖 (線香)", loc: "川端商店街", lat: 33.5930, lng: 130.4080, 
+                  note: "【交通】吉塚回博多 -> 地鐵「中洲川端站」5號出口。\n挑選日本製高級線香。", bookingRef: "" },
+                
+                { id: 603, date: "2026-02-19", time: "12:30", type: "food", title: "燒肉 BAKURO 大名店", loc: "大名", lat: 33.5875, lng: 130.3950, 
+                  note: "【交通】地鐵「赤坂站」出站走5分。\n🍽️ 必點：午間燒肉套餐 (CP值高)。", bookingRef: "建議預約" },
+                
+                { id: 604, date: "2026-02-19", time: "14:00", type: "shopping", title: "AEON Shoppers 福岡店", loc: "天神", lat: 33.5920, lng: 130.3980, 
+                  note: "【交通】沿天神街直走10-12分。\n大型超市，可退稅。", bookingRef: "" },
+                
+                { id: 605, date: "2026-02-19", time: "16:30", type: "sightseeing", title: "MY ONLY FRAGRANCE", loc: "大名", lat: 33.5860, lng: 130.3960, 
+                  note: "製作專屬香水體驗。\n預算：¥5,000起。", bookingRef: "需預約", link: "https://myonlyfragrance.com/reservation/" },
+                
+                { id: 606, date: "2026-02-19", time: "19:00", type: "food", title: "烏龍麵 和助", loc: "天神", lat: 33.5900, lng: 130.3990, 
+                  note: "🍽️ 必點：牛蒡天婦羅烏龍麵。", bookingRef: "" },
+
+                // Day 7: Feb 20 (Fri) - Departure
+                { id: 701, date: "2026-02-20", time: "10:00", type: "food", title: "Nana's Green Tea", loc: "JR博多城 Amu Plaza", lat: 33.5898, lng: 130.4207, 
+                  note: "Check-out後寄放行李。\n🍽️ 必吃：抹茶生巧克力芭菲。", bookingRef: "" },
+                
+                { id: 702, date: "2026-02-20", time: "11:00", type: "sightseeing", title: "石藏酒造 博多百年藏", loc: "博多区堅粕", lat: 33.6020, lng: 130.4220, 
+                  note: "【交通】博多口左轉沿堅粕街直走20分 (或搭巴士)。\n免費參觀，試飲¥300起。", bookingRef: "", link: "https://www.ishikura-shuzou.co.jp/" },
+                
+                { id: 703, date: "2026-02-20", time: "12:15", type: "food", title: "鮨 割烹 やま中", loc: "JR博多城 9F", lat: 33.5898, lng: 130.4207, 
+                  note: "🍽️ 必吃：特選握壽司套餐。\n💰 預算：¥4,000-¥6,000。\n⚠️ 務必預約 12:15。", bookingRef: "務必預約", link: "https://tabelog.com/en/fukuoka/A4001/A400101/40026334/" },
+                
+                { id: 704, date: "2026-02-20", time: "14:00", type: "transport", title: "前往機場", loc: "博多巴士總站 11號月台", lat: 33.5915, lng: 130.4190, 
+                  note: "搭乘「福岡機場國際線 直達巴士」(¥310)。", bookingRef: "" },
+                
+                { id: 705, date: "2026-02-20", time: "14:30", type: "flight", title: "抵達機場 (UO669)", loc: "Fukuoka Airport", lat: 33.5859, lng: 130.4446, 
+                  note: "辦理登機，起飛時間 16:05。", bookingRef: "UO669" }
             ]
         };
 
@@ -349,7 +551,7 @@
             if (saved) db = JSON.parse(saved);
             else {
                 db.itinerary = CONFIG.defaultItinerary;
-                db.luggage = ["護照", "現金", "網卡", "充電器", "常備藥", "保養品", "防狼警報器"].map((t,i)=>({id:i, text:t, done:false}));
+                db.luggage = ["IC卡 (Suica/ICOCA)", "現金 (LOPIA/甘木鐵道/¥20000+)", "翻譯App", "舒適鞋子", "護照", "網卡", "充電器", "保養品", "防狼警報器"].map((t,i)=>({id:i, text:t, done:false}));
             }
             if(!db.settings) db.settings = { safetyContact: "" };
             
@@ -407,37 +609,28 @@
             const txt = document.getElementById('siren-text');
             
             if (isSirenOn) {
-                // Stop Siren
                 if(oscillator) { oscillator.stop(); oscillator.disconnect(); oscillator = null; }
                 isSirenOn = false;
                 btn.classList.remove('siren-active');
                 txt.innerText = "啟動防狼警報 (最大聲)";
             } else {
-                // Start Siren
                 if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 
                 oscillator = audioContext.createOscillator();
                 const gainNode = audioContext.createGain();
                 
-                oscillator.type = 'sawtooth'; // Harsh sound
-                oscillator.frequency.setValueAtTime(800, audioContext.currentTime); // Start freq
-                
-                // Modulate frequency to create siren effect
+                oscillator.type = 'sawtooth';
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
                 oscillator.frequency.linearRampToValueAtTime(1200, audioContext.currentTime + 0.3);
-                
-                // Loop the siren effect using standard JS interval is easier for this simple implementation
-                // But for pure Web Audio API, we usually use an LFO. Here we just make a constant loud noise for simplicity and reliability.
-                // Let's make it a dual-tone alarm.
                 
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
                 
-                // LFO for Wailing
                 const lfo = audioContext.createOscillator();
                 lfo.type = 'square';
-                lfo.frequency.value = 4; // 4 times per second
+                lfo.frequency.value = 4;
                 const lfoGain = audioContext.createGain();
-                lfoGain.gain.value = 400; // Modulate by +/- 400Hz
+                lfoGain.gain.value = 400;
                 lfo.connect(lfoGain);
                 lfoGain.connect(oscillator.frequency);
                 lfo.start();
@@ -455,12 +648,10 @@
                 navigator.geolocation.getCurrentPosition(p => {
                     const lat = p.coords.latitude;
                     const lng = p.coords.longitude;
-                    // Japanese keywords: 交番(Police), 病院(Hospital), コンビニ(Convenience Store)
                     let query = "";
                     if(type === 'police') query = "交番";
                     else if(type === 'hospital') query = "病院";
                     else query = "コンビニ";
-                    
                     window.open(`https://www.google.com/maps/search/${query}/@${lat},${lng},15z`);
                 });
             } else {
@@ -510,8 +701,24 @@
             document.getElementById('detail-icon-bg').className = `w-20 h-20 rounded-full flex items-center justify-center text-3xl mb-4 shadow-lg ring-4 ring-white ${cat.bg}`;
             document.getElementById('detail-loc').innerText = item.loc || "點擊搜尋地圖";
             document.getElementById('detail-note').innerText = item.note || "（暫無備註）";
+            
+            // Handle Link Button
+            const linkBtn = document.getElementById('detail-link');
+            if (item.link) {
+                linkBtn.href = item.link;
+                linkBtn.classList.remove('hidden');
+            } else {
+                linkBtn.classList.add('hidden');
+            }
+
             const bk = document.getElementById('detail-booking-container');
-            if(item.bookingRef) { bk.classList.remove('hidden'); document.getElementById('detail-bk-ref').innerText = item.bookingRef; document.getElementById('detail-bk-platform').innerText = item.bookingPlatform || '預約資訊'; } else bk.classList.add('hidden');
+            if(item.bookingRef) { 
+                bk.classList.remove('hidden'); 
+                document.getElementById('detail-bk-ref').innerText = item.bookingRef; 
+                document.getElementById('detail-bk-platform').innerText = item.bookingPlatform || '預約資訊'; 
+            } else { 
+                bk.classList.add('hidden'); 
+            }
             document.getElementById('detail-modal').classList.remove('hidden');
         }
         function closeDetailModal() { document.getElementById('detail-modal').classList.add('hidden'); }
@@ -521,13 +728,17 @@
         // --- MAP ---
         function updateMap() {
             if(state.tab !== 'map') return;
-            if(!map) { map = L.map('osm-map', { zoomControl: false }).setView(CONFIG.hotel.coords, 13); L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '' }).addTo(map); }
+            if(!map) { map = L.map('osm-map', { zoomControl: false }).setView(CONFIG.hotel.coords, 12); L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '' }).addTo(map); }
             map.invalidateSize();
             markers.forEach(m => map.removeLayer(m)); markers = [];
             const items = db.itinerary.filter(i => i.date === state.date && i.lat);
             L.marker(CONFIG.hotel.coords, {icon: L.divIcon({ html: '<div class="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center shadow-lg border-2 border-white"><i class="fa-solid fa-bed"></i></div>', className: '' })}).addTo(map).bindPopup("<b>Home</b>");
             items.forEach(i => { const cat = CATS[i.type] || CATS.other; const c = cat.color.replace('text-', 'bg-').replace('600', '500'); const m = L.marker([i.lat, i.lng], {icon: L.divIcon({ html: `<div class="w-8 h-8 ${c} text-white rounded-full flex items-center justify-center shadow-lg border-2 border-white"><i class="fa-solid ${cat.icon} text-xs"></i></div>`, className: '' })}).addTo(map).bindPopup(i.title); markers.push(m); });
             document.getElementById('map-status').innerText = `顯示 ${items.length} 個地點`;
+            if(items.length > 0) {
+                 const group = new L.featureGroup([L.marker(CONFIG.hotel.coords), ...markers]);
+                 map.fitBounds(group.getBounds().pad(0.1));
+            }
         }
         function refreshMap() { setTimeout(updateMap, 300); }
 
@@ -548,6 +759,7 @@
 
         // --- LISTS & INFO ---
         function openModal(type) {
+            if(type === 'trip-info') { document.getElementById('modal-trip-info').classList.remove('hidden'); return; }
             if(type === 'converter') { document.getElementById('modal-converter').classList.remove('hidden'); return; }
             if(type === 'safety') { document.getElementById('modal-safety').classList.remove('hidden'); return; }
             state.currentList = type;
@@ -596,6 +808,7 @@
                     <input type="text" name="loc" placeholder="地點 (選填)" class="w-full bg-gray-50 p-4 rounded-xl outline-none border border-gray-100 text-sm">
                     <div class="p-3 bg-orange-50 rounded-xl border border-orange-100"><div class="text-xs text-orange-400 font-bold mb-1">預約資訊</div><input type="text" name="bookingRef" placeholder="代號 / 備註" class="w-full bg-white p-2 rounded-lg text-sm outline-none"></div>
                     <textarea name="note" placeholder="備註..." class="w-full bg-gray-50 p-4 rounded-xl outline-none border border-gray-100 h-24 resize-none"></textarea>
+                    <input type="url" name="link" placeholder="相關連結 (選填)" class="w-full bg-gray-50 p-4 rounded-xl outline-none border border-gray-100 text-sm mt-2">
                 `;
             } else if (type === 'expense') {
                 c.innerHTML = `<input type="text" name="desc" placeholder="項目" class="w-full bg-gray-50 p-4 rounded-xl font-bold outline-none" required><div class="flex gap-3"><input type="number" name="amount" placeholder="0" class="flex-1 bg-gray-50 p-4 rounded-xl font-bold text-xl outline-none" required><select name="curr" class="w-24 bg-jp-text text-white rounded-xl font-bold outline-none text-center"><option value="JPY">¥</option><option value="HKD">$</option></select></div>`;
