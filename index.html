@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#FFFBF0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>福岡之旅</title>
+    <title>福岡療癒之旅</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -40,16 +40,20 @@
         .modal-enter { animation: slideUp 0.25s cubic-bezier(0.2, 0.8, 0.2, 1); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(100%); } to { opacity: 1; transform: translateY(0); } }
-        .glass { background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid rgba(0,0,0,0.05); }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid rgba(0,0,0,0.05); }
         .siren-active { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both infinite; background-color: #EF4444 !important; color: white !important; border-color: #EF4444 !important; }
         @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
         .timeline-line { position: absolute; left: 1.65rem; top: 2rem; bottom: -1rem; width: 2px; background: #E5E7EB; z-index: 0; }
         .last-item .timeline-line { display: none; }
         .nav-btn.active { color: #C58945; transform: translateY(-2px); }
         .nav-btn.active::after { content: ''; position: absolute; bottom: -4px; width: 4px; height: 4px; background: #C58945; border-radius: 50%; }
-        
-        /* Weather Icon Animation */
         .weather-fade-in { animation: fadeIn 0.5s ease-in forwards; }
+        
+        /* Boarding Pass Style */
+        .ticket-notch { position: absolute; width: 20px; height: 20px; background-color: #FFFBF0; border-radius: 50%; top: 50%; margin-top: -10px; z-index: 10; }
+        .ticket-notch-l { left: -10px; }
+        .ticket-notch-r { right: -10px; }
+        .ticket-dash { border-top: 2px dashed #e5e7eb; margin-top: 1rem; margin-bottom: 1rem; }
     </style>
 </head>
 <body class="bg-jp-bg text-jp-text h-[100dvh] w-full flex flex-col overflow-hidden font-sans select-none">
@@ -57,12 +61,14 @@
     <header class="px-5 pt-10 pb-2 flex justify-between items-center bg-jp-bg z-30 relative shrink-0">
         <div onclick="openTaxiCard()" class="cursor-pointer group">
             <h1 class="text-xl font-bold tracking-widest text-jp-text flex items-center gap-2">
-                FUKUOKA <i class="fa-solid fa-taxi text-[10px] text-white bg-jp-accent p-1.5 rounded-full shadow-sm group-active:scale-110 transition"></i>
+                福岡療癒之旅 <i class="fa-solid fa-taxi text-[10px] text-white bg-jp-accent p-1.5 rounded-full shadow-sm group-active:scale-110 transition"></i>
             </h1>
-            <p class="text-[10px] text-gray-400 -mt-0.5 tracking-wider">五感療癒之旅</p>
         </div>
         
-        <div class="flex gap-3">
+        <div class="flex gap-2.5">
+            <button onclick="openTripInfo()" class="w-9 h-9 rounded-full bg-blue-50 text-blue-500 shadow-sm border border-blue-100 active:scale-95 transition flex items-center justify-center">
+                <i class="fa-solid fa-circle-info text-sm"></i>
+            </button>
             <button onclick="openModal('safety')" class="w-9 h-9 rounded-full bg-red-50 text-red-500 shadow-sm border border-red-100 active:scale-95 transition flex items-center justify-center">
                 <i class="fa-solid fa-shield-halved text-sm"></i>
             </button>
@@ -72,23 +78,23 @@
             </button>
         </div>
 
-        <div id="main-menu" class="hidden absolute top-20 right-5 w-60 glass rounded-xl shadow-xl p-2 z-50 transform origin-top-right transition-all duration-200 border border-white/50">
-            <button onclick="openModal('luggage')" class="w-full text-left px-4 py-3 rounded-lg hover:bg-white/60 flex items-center gap-3 transition text-sm">
+        <div id="main-menu" class="hidden absolute top-20 right-5 w-48 glass rounded-xl shadow-xl p-2 z-50 transform origin-top-right transition-all duration-200 border border-white/50">
+            <button onclick="openModal('luggage')" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-white/60 flex items-center gap-3 transition text-sm">
                 <i class="fa-solid fa-suitcase text-purple-400 w-4 text-center"></i> 行李
                 <span id="menu-badge-luggage" class="ml-auto text-[10px] bg-red-100 text-red-500 px-1.5 rounded-full hidden">0</span>
             </button>
-            <button onclick="openModal('shopping')" class="w-full text-left px-4 py-3 rounded-lg hover:bg-white/60 flex items-center gap-3 transition text-sm">
+            <button onclick="openModal('shopping')" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-white/60 flex items-center gap-3 transition text-sm">
                 <i class="fa-solid fa-bag-shopping text-pink-400 w-4 text-center"></i> 購物
                 <span id="menu-badge-shop" class="ml-auto text-[10px] bg-red-100 text-red-500 px-1.5 rounded-full hidden">0</span>
             </button>
-            <button onclick="openModal('todo')" class="w-full text-left px-4 py-3 rounded-lg hover:bg-white/60 flex items-center gap-3 transition text-sm">
+            <button onclick="openModal('todo')" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-white/60 flex items-center gap-3 transition text-sm">
                 <i class="fa-solid fa-check-circle text-blue-400 w-4 text-center"></i> 待辦
             </button>
             <div class="my-1 border-t border-gray-100/50"></div>
-            <button onclick="exportData()" class="w-full text-left px-4 py-3 rounded-lg hover:bg-white/60 flex items-center gap-3 transition text-xs text-gray-500">
+            <button onclick="exportData()" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-white/60 flex items-center gap-3 transition text-xs text-gray-500">
                 <i class="fa-solid fa-download w-4 text-center"></i> 備份
             </button>
-            <button onclick="document.getElementById('file-input').click()" class="w-full text-left px-4 py-3 rounded-lg hover:bg-white/60 flex items-center gap-3 transition text-xs text-gray-500">
+            <button onclick="document.getElementById('file-input').click()" class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-white/60 flex items-center gap-3 transition text-xs text-gray-500">
                 <i class="fa-solid fa-upload w-4 text-center"></i> 還原
             </button>
             <input type="file" id="file-input" class="hidden" accept=".json" onchange="importData(this)">
@@ -97,12 +103,12 @@
     </header>
 
     <div class="pl-5 py-2 bg-jp-bg z-10 shrink-0 border-b border-gray-100/50">
-        <div id="date-slider" class="flex gap-3 overflow-x-auto no-scrollbar pr-5 pb-2"></div>
+        <div id="date-slider" class="flex gap-2.5 overflow-x-auto no-scrollbar pr-5 pb-1"></div>
     </div>
 
     <main id="main-container" class="flex-1 overflow-y-auto bg-jp-bg relative scroll-smooth no-scrollbar">
         
-        <div id="view-itinerary" class="page-enter pb-24 px-5 pt-4">
+        <div id="view-itinerary" class="page-enter pb-24 px-5 pt-3">
             <div id="weather-info-bar" class="text-[10px] text-gray-400 text-center mb-2 hidden bg-white/50 py-1 rounded-lg">
                 <i class="fa-solid fa-clock-rotate-left"></i> 顯示 2024年同期歷史天氣供參考
             </div>
@@ -169,6 +175,87 @@
             <span class="text-[9px] font-bold">換算</span>
         </button>
     </nav>
+
+    <div id="modal-trip-info" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] hidden flex flex-col justify-end">
+        <div class="bg-jp-bg w-full rounded-t-[2rem] p-6 pb-10 modal-enter max-h-[85vh] overflow-y-auto no-scrollbar shadow-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-lg font-bold flex items-center gap-2 text-jp-text"><i class="fa-solid fa-circle-info text-blue-500"></i> 旅程資訊</h2>
+                <button onclick="closeModal('trip-info')" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-400"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-6 relative overflow-hidden">
+                <div class="absolute right-0 top-0 bg-yellow-100 text-yellow-700 text-[10px] font-bold px-3 py-1 rounded-bl-xl">住宿</div>
+                <h3 class="font-bold text-jp-text text-lg leading-tight mb-1">Hotel Wing International</h3>
+                <p class="text-xs text-gray-500 mb-3">Hakata Shinkansenguchi</p>
+                
+                <div class="bg-gray-50 rounded-xl p-3 border border-gray-100 mb-4">
+                    <div class="flex items-start gap-2 mb-2">
+                        <i class="fa-solid fa-location-dot text-jp-accent mt-0.5 text-xs"></i>
+                        <p id="hotel-address" class="text-xs text-gray-600 leading-relaxed flex-1">福岡市博多区博多駅東1-17-17</p>
+                        <button onclick="copyText('hotel-address')" class="text-gray-400 hover:text-jp-accent"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                    <a href="https://goo.gl/maps/example" target="_blank" class="text-[10px] font-bold text-blue-500 flex items-center gap-1"><i class="fa-solid fa-map"></i> 開啟地圖</a>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 text-center">
+                    <div class="bg-blue-50 rounded-lg p-2">
+                        <div class="text-[9px] text-blue-400 font-bold uppercase">Check-in</div>
+                        <div class="text-base font-bold text-blue-600 font-mono">15:00</div>
+                    </div>
+                    <div class="bg-orange-50 rounded-lg p-2">
+                        <div class="text-[9px] text-orange-400 font-bold uppercase">Check-out</div>
+                        <div class="text-base font-bold text-orange-600 font-mono">11:00</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <h3 class="text-sm font-bold text-gray-400 pl-2">航班資訊</h3>
+                
+                <div class="bg-white rounded-2xl p-0 shadow-sm border border-gray-100 relative">
+                    <div class="ticket-notch ticket-notch-l"></div>
+                    <div class="ticket-notch ticket-notch-r"></div>
+                    <div class="p-4 pb-2 flex justify-between items-center">
+                        <div class="text-xs font-bold bg-sky-100 text-sky-600 px-2 py-0.5 rounded">去程</div>
+                        <div class="text-sm font-bold text-gray-800 font-mono">UO638</div>
+                        <div class="text-[10px] text-gray-400">2026/02/14</div>
+                    </div>
+                    <div class="px-5 flex justify-between items-center text-center pb-4">
+                        <div>
+                            <div class="text-2xl font-bold text-jp-text font-mono">HKG</div>
+                            <div class="text-xs text-gray-400 font-mono">12:50</div>
+                        </div>
+                        <div class="text-gray-300 text-xs"><i class="fa-solid fa-plane"></i><div class="border-t border-dashed border-gray-300 w-12 mt-1"></div></div>
+                        <div>
+                            <div class="text-2xl font-bold text-jp-text font-mono">FUK</div>
+                            <div class="text-xs text-gray-400 font-mono">17:10</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-0 shadow-sm border border-gray-100 relative">
+                    <div class="ticket-notch ticket-notch-l"></div>
+                    <div class="ticket-notch ticket-notch-r"></div>
+                    <div class="p-4 pb-2 flex justify-between items-center">
+                        <div class="text-xs font-bold bg-pink-100 text-pink-600 px-2 py-0.5 rounded">回程</div>
+                        <div class="text-sm font-bold text-gray-800 font-mono">UO669</div>
+                        <div class="text-[10px] text-gray-400">2026/02/20</div>
+                    </div>
+                    <div class="px-5 flex justify-between items-center text-center pb-4">
+                        <div>
+                            <div class="text-2xl font-bold text-jp-text font-mono">FUK</div>
+                            <div class="text-xs text-gray-400 font-mono">16:05</div>
+                        </div>
+                        <div class="text-gray-300 text-xs"><i class="fa-solid fa-plane fa-rotate-180"></i><div class="border-t border-dashed border-gray-300 w-12 mt-1"></div></div>
+                        <div>
+                            <div class="text-2xl font-bold text-jp-text font-mono">HKG</div>
+                            <div class="text-xs text-gray-400 font-mono">19:15</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="detail-modal" class="fixed inset-0 bg-black/30 backdrop-blur-[2px] z-50 hidden flex items-end sm:items-center justify-center">
         <div class="bg-white w-full sm:w-96 rounded-t-3xl sm:rounded-3xl p-6 pb-8 modal-enter relative max-h-[85vh] overflow-y-auto no-scrollbar shadow-2xl">
@@ -296,7 +383,7 @@
     <script>
         // CONFIG
         const CONFIG = {
-            key: "fukuoka_trip_2026_final_v5_humidity",
+            key: "fukuoka_trip_2026_final_v6_info",
             dates: ["2026-02-14", "2026-02-15", "2026-02-16", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20"],
             rate: 0.052,
             hotel: { name: "Hotel Wing International", coords: [33.5910, 130.4225] },
@@ -492,7 +579,6 @@
                 else if (code >= 71 && code <= 77) { icon = "fa-snowflake"; color = "text-sky-300"; }
                 else if (code >= 80) { icon = "fa-cloud-bolt"; color = "text-purple-400"; }
 
-                // New Stacked UI
                 el.innerHTML = `
                     <i class="fa-solid ${icon} ${color} text-lg mb-0.5 weather-fade-in"></i>
                     <span class="text-xs font-bold text-jp-text leading-none mb-0.5">${temp}°C</span>
@@ -501,7 +587,9 @@
             });
         }
 
-        // --- MODAL FUNCTIONS (Keep existing) ---
+        // --- MODAL FUNCTIONS ---
+        function openTripInfo() { document.getElementById('modal-trip-info').classList.remove('hidden'); }
+
         function openDetail(id) {
             const item = db.itinerary.find(i => i.id === id);
             if(!item) return;
@@ -551,6 +639,10 @@
         function copyAddress() {
             const txt = document.getElementById('detail-loc').innerText;
             if(txt) { navigator.clipboard.writeText(txt); alert("地址已複製"); }
+        }
+        function copyText(id) {
+            const txt = document.getElementById(id).innerText;
+            if(txt) { navigator.clipboard.writeText(txt); alert("複製成功！"); }
         }
         function closeDetailModal() { document.getElementById('detail-modal').classList.add('hidden'); }
         function deleteFromDetail() { if(confirm("確定刪除？")) { db.itinerary = db.itinerary.filter(i => i.id !== state.currentItem.id); save(); closeDetailModal(); } }
