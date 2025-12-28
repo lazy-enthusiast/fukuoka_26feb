@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#FFFBF0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>福岡療癒之旅</title>
+    <title>福岡癒旅</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -43,8 +43,11 @@
         .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid rgba(0,0,0,0.05); }
         .siren-active { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both infinite; background-color: #EF4444 !important; color: white !important; border-color: #EF4444 !important; }
         @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
-        .timeline-line { position: absolute; left: 1.65rem; top: 2rem; bottom: -1rem; width: 2px; background: #E5E7EB; z-index: 0; }
+        
+        /* FIX: Timeline Line Position Adjusted */
+        .timeline-line { position: absolute; left: 3.5rem; top: 2rem; bottom: -1rem; width: 2px; background: #E5E7EB; z-index: 0; }
         .last-item .timeline-line { display: none; }
+        
         .nav-btn.active { color: #C58945; transform: translateY(-2px); }
         .nav-btn.active::after { content: ''; position: absolute; bottom: -4px; width: 4px; height: 4px; background: #C58945; border-radius: 50%; }
         .weather-fade-in { animation: fadeIn 0.5s ease-in forwards; }
@@ -53,7 +56,6 @@
         .ticket-notch { position: absolute; width: 20px; height: 20px; background-color: #FFFBF0; border-radius: 50%; top: 50%; margin-top: -10px; z-index: 10; }
         .ticket-notch-l { left: -10px; }
         .ticket-notch-r { right: -10px; }
-        .ticket-dash { border-top: 2px dashed #e5e7eb; margin-top: 1rem; margin-bottom: 1rem; }
     </style>
 </head>
 <body class="bg-jp-bg text-jp-text h-[100dvh] w-full flex flex-col overflow-hidden font-sans select-none">
@@ -383,7 +385,7 @@
     <script>
         // CONFIG
         const CONFIG = {
-            key: "fukuoka_trip_2026_final_v6_info",
+            key: "fukuoka_trip_2026_final_v7_fixed_timeline",
             dates: ["2026-02-14", "2026-02-15", "2026-02-16", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20"],
             rate: 0.052,
             hotel: { name: "Hotel Wing International", coords: [33.5910, 130.4225] },
@@ -451,7 +453,7 @@
         function save() { localStorage.setItem(CONFIG.key, JSON.stringify(db)); renderAll(); }
         function renderAll() { renderItinerary(); renderExpenses(); renderInfo(); updateBadges(); }
 
-        // --- RENDER ITINERARY ---
+        // --- RENDER ITINERARY (FIXED OVERLAP) ---
         function renderDateSlider() {
             const el = document.getElementById('date-slider');
             el.innerHTML = CONFIG.dates.map(d => {
@@ -482,15 +484,18 @@
             list.innerHTML = items.map((i, index) => {
                 const cat = CATS[i.type] || CATS.other;
                 const isLast = index === items.length - 1 ? 'last-item' : '';
+                
+                // FIX: Increased left padding (pl-16) to create separate column for time
+                // Adjusted absolute positions of time, icon, and line
                 return `
-                <div onclick="openDetail(${i.id})" class="relative pl-12 py-2 group cursor-pointer ${isLast}">
+                <div onclick="openDetail(${i.id})" class="relative pl-16 py-2 group cursor-pointer ${isLast}">
                     <div class="timeline-line"></div>
                     
-                    <div class="absolute left-0 top-3 w-10 text-right">
-                        <div class="text-xs font-bold font-mono text-gray-500">${i.time}</div>
+                    <div class="absolute left-0 top-3 w-12 text-right">
+                        <div class="text-xs font-bold font-mono text-gray-400">${i.time}</div>
                     </div>
 
-                    <div class="absolute left-[1.15rem] top-3.5 w-4 h-4 rounded-full border-2 border-white ${cat.bg} z-10 shadow-sm flex items-center justify-center">
+                    <div class="absolute left-[3.35rem] top-3.5 w-3.5 h-3.5 rounded-full border-2 border-white ${cat.bg} z-10 shadow-sm flex items-center justify-center">
                         <div class="w-1.5 h-1.5 rounded-full ${cat.color.replace('text-', 'bg-')}"></div>
                     </div>
 
@@ -523,8 +528,6 @@
             
             const lat = 33.59, lng = 130.42;
             let url = "", isHistorical = false;
-
-            // Include relative_humidity_2m in API call
             const params = "&hourly=temperature_2m,weathercode,relative_humidity_2m&timezone=Asia%2FTokyo";
 
             if (diffDays > 10) {
@@ -567,7 +570,6 @@
 
                 const temp = Math.round(data.hourly.temperature_2m[hour]);
                 const code = data.hourly.weathercode[hour];
-                // Get Humidity, default to 0 if missing
                 const humid = data.hourly.relative_humidity_2m ? Math.round(data.hourly.relative_humidity_2m[hour]) : '--';
                 
                 let icon = "fa-cloud", color = "text-gray-400";
@@ -644,7 +646,7 @@
             const txt = document.getElementById(id).innerText;
             if(txt) { navigator.clipboard.writeText(txt); alert("複製成功！"); }
         }
-        function closeDetailModal() { document.getElementById('detail-modal').classList.add('hidden'); }
+        function closeModal(t) { document.getElementById(`modal-${t}`).classList.add('hidden'); }
         function deleteFromDetail() { if(confirm("確定刪除？")) { db.itinerary = db.itinerary.filter(i => i.id !== state.currentItem.id); save(); closeDetailModal(); } }
 
         // --- MAP LOGIC ---
