@@ -11,26 +11,19 @@
     <style>
         :root {
             /* --- 方案 B：博多織藍 (Hakata Blue) --- */
-            /* 勝色 (Kachi-iro)：日本傳統深靛藍，象徵博多灣與夜色 */
-            --bg-color: #1D2536;       
-            /* 乾淨的灰白：像現代美術館或新幹線 */
-            --card-color: #F0F4F8;     
-            /* 山吹色：像福岡著名的銀杏、明太子或啤酒，充滿活力 */
-            --accent-color: #EAA800;   
-            /* 純白 */
+            --bg-color: #1D2536;       /* 勝色 */
+            --card-color: #F0F4F8;     /* 灰白 */
+            --accent-color: #EAA800;   /* 山吹色 */
             --text-on-dark: #FFFFFF;   
-            /* 深藍黑字體 */
             --text-on-light: #0F172A;  
-            /* 選單背景 */
             --menu-bg: #141B2D;
-            /* 天氣卡片：玄界灘海洋漸層 */
             --weather-gradient: linear-gradient(135deg, #2b5876 0%, #4e4376 100%);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            font-family: "Noto Sans TC", sans-serif; /* 改為現代無襯線體 */
+            font-family: "Noto Sans TC", sans-serif;
             background-color: var(--bg-color);
             color: var(--text-on-dark);
             margin: 0; padding: 0;
@@ -47,11 +40,10 @@
             display: flex; justify-content: space-between; align-items: center;
             height: 60px;
         }
-        header h1 { margin: 0; font-size: 1.2rem; font-weight: 700; letter-spacing: 1px; } /* 移除襯線體設定 */
+        header h1 { margin: 0; font-size: 1.2rem; font-weight: 700; letter-spacing: 1px; }
         
         .header-icons { display: flex; gap: 20px; align-items: center; }
         .header-btn { color: var(--text-on-dark); font-size: 1.2rem; cursor: pointer; text-decoration: none; position: relative;}
-        .fan-btn i { color: var(--accent-color); }
 
         /* --- Global Date Selector --- */
         .date-selector-container {
@@ -72,7 +64,7 @@
             transition: all 0.2s; border: 1px solid transparent;
         }
         .date-chip.active {
-            background: var(--accent-color); color: #0F172A; /* 激活時字體變深 */
+            background: var(--accent-color); color: #0F172A;
             box-shadow: 0 0 10px rgba(234, 168, 0, 0.4); transform: scale(1.05); font-weight: bold;
         }
 
@@ -116,7 +108,7 @@
         .timeline-container { padding: 0 20px; }
         .timeline-item {
             position: relative; padding-left: 25px; padding-bottom: 30px;
-            border-left: 2px solid rgba(234, 168, 0, 0.3); /* 金色線條 */
+            border-left: 2px solid rgba(234, 168, 0, 0.3);
         }
         .timeline-item:last-child { border-left: 2px solid transparent; padding-bottom: 0; }
         .timeline-item::before {
@@ -132,7 +124,7 @@
             position: relative;
         }
         .card:active { transform: scale(0.98); }
-        .card-time { font-size: 0.85rem; color: #B45309; font-weight: 700; display: block; margin-bottom: 6px; } /* 深金色時間 */
+        .card-time { font-size: 0.85rem; color: #B45309; font-weight: 700; display: block; margin-bottom: 6px; }
         .card-title { font-size: 1.1rem; font-weight: 700; margin: 0 0 8px 0; line-height: 1.4; padding-right: 10px;}
         .card-price {
             position: absolute; bottom: 12px; right: 15px;
@@ -142,7 +134,7 @@
 
         .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 5px; max-width: 70%; }
         .card-tag { font-size: 0.7rem; background: #CBD5E1; padding: 3px 8px; border-radius: 4px; color: #334155; }
-        .card-tag.highlight { background: #FEF3C7; color: #B45309; border: 1px solid #FCD34D; } /* 重點：亮黃底金字 */
+        .card-tag.highlight { background: #FEF3C7; color: #B45309; border: 1px solid #FCD34D; }
         .card-tag.tips { background: #e0f2fe; color: #0369a1; }
         .card-tag.alert { background: #fee2e2; color: #b91c1c; border: 1px solid #f87171; font-weight: bold;}
 
@@ -210,7 +202,7 @@
         .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; color: #888; cursor: pointer; }
         
         .info-row { margin: 12px 0; display: flex; align-items: flex-start; gap: 12px; font-size: 0.95rem; line-height: 1.6; }
-        .info-row i { color: #B45309; margin-top: 4px; width: 20px; text-align: center; } /* 圖示改為深金色 */
+        .info-row i { color: #B45309; margin-top: 4px; width: 20px; text-align: center; } 
         .note-box {
             background: #f8f8f8; border-left: 4px solid var(--accent-color);
             padding: 15px; margin: 20px 0; border-radius: 0 8px 8px 0;
@@ -224,7 +216,7 @@
         .action-btn {
             display: flex; justify-content: center; align-items: center; gap: 8px;
             width: 100%; padding: 14px; margin-top: 20px;
-            background: var(--accent-color); color: #0F172A; /* 按鈕文字改為深色 */
+            background: var(--accent-color); color: #0F172A; 
             text-decoration: none; border-radius: 10px;
             font-weight: bold; font-size: 1rem; border: none; cursor: pointer;
         }
@@ -235,6 +227,25 @@
             border: 4px solid #000; margin: 15px 0; 
             text-align: center; border-radius: 8px;
         }
+
+        /* Hotel Info Card */
+        .hotel-info-card {
+            background: #fff; color: #333;
+            border-radius: 12px; overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .hotel-info-header {
+            background: var(--accent-color); color: #0F172A;
+            padding: 15px 20px; font-weight: bold; font-size: 1.1rem;
+        }
+        .hotel-info-body { padding: 20px; }
+        .hotel-detail-row {
+            display: flex; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 12px;
+        }
+        .hotel-detail-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .hotel-label { font-weight: bold; width: 80px; flex-shrink: 0; color: #666; font-size: 0.9rem; }
+        .hotel-val { flex: 1; font-size: 0.95rem; line-height: 1.5; }
 
     </style>
 </head>
@@ -258,10 +269,7 @@
 
     <main>
         <div id="page-itinerary" class="page active">
-            <div style="padding: 15px 20px 0 20px; font-size: 0.9rem; color: #ccc;">
-                <i class="fa-solid fa-bed" style="color:var(--accent-color)"></i> Hotel Wing International 博多新幹線口
-            </div>
-            <div class="timeline-container" id="timeline-container" style="padding-top: 10px;"></div>
+            <div class="timeline-container" id="timeline-container" style="padding-top: 20px;"></div>
             <div style="text-align:center; color:#666; font-size:0.8rem; margin:30px 0;">博多美食 • 一期一會</div>
         </div>
 
@@ -314,6 +322,9 @@
         <div id="page-tools" class="page">
             <h2 style="text-align:center; margin: 30px 0 20px 0; font-weight:700;">旅人百寶箱</h2>
             <div class="tools-grid">
+                <div class="tool-btn" onclick="openSubPage('info')">
+                    <i class="fa-solid fa-hotel"></i><span>實用資訊</span>
+                </div>
                 <div class="tool-btn" onclick="openSubPage('packing')">
                     <i class="fa-solid fa-suitcase"></i><span>行李清單</span>
                 </div>
@@ -335,6 +346,57 @@
             </div>
             <div style="text-align:center; margin-top:30px;">
                 <button onclick="history.back()" style="background:none; border:1px solid #777; color:#fff; padding:10px 20px; border-radius:20px;">關閉百寶箱</button>
+            </div>
+        </div>
+
+        <div id="subpage-info" class="sub-page">
+            <div class="sub-header"><button class="back-btn" onclick="closeSubPage('info')"><i class="fa-solid fa-arrow-left"></i></button><h2>住宿與實用資訊</h2></div>
+            <div class="sub-content">
+                <div class="hotel-info-card">
+                    <div class="hotel-info-header"><i class="fa-solid fa-bed"></i> 住宿資料</div>
+                    <div class="hotel-info-body">
+                        <h3 style="margin:0 0 15px 0; line-height:1.4;">Hotel Wing International<br>博多新幹線口</h3>
+                        
+                        <div class="hotel-detail-row">
+                            <div class="hotel-label">地址</div>
+                            <div class="hotel-val">〒812-0013<br>福岡県福岡市博多区博多駅東1-17-17</div>
+                        </div>
+                        <div class="hotel-detail-row">
+                            <div class="hotel-label">交通</div>
+                            <div class="hotel-val">JR博多站筑紫口步行4分鐘。<br><span style="font-size:0.85rem; color:#666;">(出筑紫口轉右沿博多駅東街直走，過第一個小路口右手邊)</span></div>
+                        </div>
+                        <div class="hotel-detail-row">
+                            <div class="hotel-label">時間</div>
+                            <div class="hotel-val">Check-in: 15:00<br>Check-out: 11:00</div>
+                        </div>
+                        
+                        <a href="https://maps.google.com/?q=Hotel+Wing+International+Hakata+Shinkansen-guchi" target="_blank" class="action-btn" style="margin-top:15px; font-size:0.9rem; padding:10px;">
+                            <i class="fa-solid fa-map-location-dot"></i> Google Map 導航
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hotel-info-card">
+                    <div class="hotel-info-header" style="background:#555; color:#fff;"><i class="fa-solid fa-star"></i> 設施亮點</div>
+                    <div class="hotel-info-body">
+                        <div class="hotel-detail-row">
+                            <div class="hotel-label"><i class="fa-solid fa-mug-hot"></i> 早餐</div>
+                            <div class="hotel-val">06:00 - 09:30<br>免費輕早餐（麵包+飲料）</div>
+                        </div>
+                        <div class="hotel-detail-row">
+                            <div class="hotel-label"><i class="fa-solid fa-hot-tub-person"></i> 大浴場</div>
+                            <div class="hotel-val">15:00 - 25:00 / 05:00 - 10:00<br>配備 ReFa 細泡噴頭</div>
+                        </div>
+                        <div class="hotel-detail-row">
+                            <div class="hotel-label"><i class="fa-solid fa-couch"></i> Lounge</div>
+                            <div class="hotel-val">24小時免費咖啡<br>18:00 - 23:00 提供付費酒水</div>
+                        </div>
+                         <div class="hotel-detail-row">
+                            <div class="hotel-label"><i class="fa-solid fa-wifi"></i> 網路</div>
+                            <div class="hotel-val">全室免費 Wi-Fi</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -580,10 +642,10 @@
 
         function renderWeather(dayKey) {
             const container = document.getElementById('weather-content');
-            // 2月福岡天氣邏輯 (約 5-12度)
+            // 2月福岡天氣邏輯
             const baseTemp = 6; 
             const dayIndex = parseInt(dayKey.replace('day', ''));
-            const temp = baseTemp + (dayIndex % 3); // 隨機波動
+            const temp = baseTemp + (dayIndex % 3);
             const humidity = 60 + (dayIndex % 5);
             
             let icon = "fa-cloud-sun";
@@ -768,7 +830,7 @@
             if(markers.length > 0) {
                 map.fitBounds(group.getBounds(), {padding: [50, 50]});
             } else {
-                map.setView([33.5900, 130.4200], 13); // Default Hakata
+                map.setView([33.5900, 130.4200], 13);
             }
         }
         
