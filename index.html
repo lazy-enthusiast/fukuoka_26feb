@@ -7,19 +7,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
-   
+    
     <style>
         :root {
             /* --- 方案 B：博多織藍 (Hakata Blue) --- */
-            --bg-color: #1D2536; /* 勝色 */
-            --card-color: #F0F4F8; /* 灰白 */
-            --accent-color: #EAA800; /* 山吹色 */
-            --text-on-dark: #FFFFFF;
-            --text-on-light: #0F172A;
+            --bg-color: #1D2536;       /* 勝色 */
+            --card-color: #F0F4F8;     /* 灰白 */
+            --accent-color: #EAA800;   /* 山吹色 */
+            --text-on-dark: #FFFFFF;   
+            --text-on-light: #0F172A;  
             --menu-bg: #141B2D;
             --weather-gradient: linear-gradient(135deg, #2b5876 0%, #4e4376 100%);
         }
+
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
         body {
             font-family: "Noto Sans TC", sans-serif;
             background-color: var(--bg-color);
@@ -28,6 +30,7 @@
             height: 100vh;
             display: flex; flex-direction: column; overflow: hidden;
         }
+
         /* --- Header --- */
         header {
             padding: 15px 20px;
@@ -38,21 +41,22 @@
             height: 60px;
         }
         header h1 { margin: 0; font-size: 1.2rem; font-weight: 700; letter-spacing: 1px; }
-       
+        
         .header-icons { display: flex; gap: 20px; align-items: center; }
         .header-btn { color: var(--text-on-dark); font-size: 1.2rem; cursor: pointer; text-decoration: none; position: relative;}
+
         /* --- Global Date Selector --- */
         .date-selector-container {
             background: var(--bg-color); z-index: 90;
             padding: 10px 20px 10px 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .date-selector {
-            display: flex; overflow-x: auto; gap: 10px; padding-bottom: 5px; scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
+        .date-selector { 
+            display: flex; overflow-x: auto; gap: 10px; padding-bottom: 5px; scrollbar-width: none; 
+            -webkit-overflow-scrolling: touch; 
         }
         .date-selector::-webkit-scrollbar { display: none; }
-       
+        
         .date-chip {
             background: rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 16px;
             white-space: nowrap; font-size: 0.85rem; cursor: pointer; color: #aaa;
@@ -63,8 +67,10 @@
             background: var(--accent-color); color: #0F172A;
             box-shadow: 0 0 10px rgba(234, 168, 0, 0.4); transform: scale(1.05); font-weight: bold;
         }
+
         /* --- Main Content --- */
         main { flex: 1; overflow-y: hidden; position: relative; }
+
         .page {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             overflow-y: auto; padding: 10px 0 90px 0;
@@ -73,10 +79,11 @@
             -webkit-overflow-scrolling: touch;
         }
         .page.active { display: block; opacity: 1; z-index: 10; }
-       
+        
         /* Map Page Specific */
-        #page-map { padding: 0 0 80px 0; }
+        #page-map { padding: 0 0 80px 0; } 
         #map-container { width: 100%; height: 100%; }
+
         /* 子頁面 */
         .sub-page {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -92,10 +99,11 @@
         }
         .back-btn { font-size: 1.2rem; color: var(--accent-color); background: none; border: none; padding: 5px; cursor: pointer;}
         .sub-header h2 { margin: 0; font-size: 1.1rem; font-weight: 700; }
-        .sub-content {
-            flex: 1; overflow-y: auto; padding: 20px;
+        .sub-content { 
+            flex: 1; overflow-y: auto; padding: 20px; 
             -webkit-overflow-scrolling: touch;
         }
+
         /* --- Timeline & Cards --- */
         .timeline-container { padding: 0 20px; }
         .timeline-item {
@@ -108,6 +116,7 @@
             width: 10px; height: 10px; background: var(--accent-color);
             border-radius: 50%; box-shadow: 0 0 0 4px var(--bg-color);
         }
+
         .card {
             background-color: var(--card-color); color: var(--text-on-light);
             border-radius: 12px; padding: 16px; margin-bottom: 5px;
@@ -122,11 +131,13 @@
             font-weight: bold; color: #0369a1; font-size: 0.9rem;
             background: rgba(255,255,255,0.6); padding: 2px 6px; border-radius: 4px;
         }
+
         .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 5px; max-width: 70%; }
         .card-tag { font-size: 0.7rem; background: #CBD5E1; padding: 3px 8px; border-radius: 4px; color: #334155; }
         .card-tag.highlight { background: #FEF3C7; color: #B45309; border: 1px solid #FCD34D; }
         .card-tag.tips { background: #e0f2fe; color: #0369a1; }
         .card-tag.alert { background: #fee2e2; color: #b91c1c; border: 1px solid #f87171; font-weight: bold;}
+
         /* --- Weather Styles --- */
         .weather-card {
             background: var(--weather-gradient);
@@ -139,9 +150,11 @@
         .weather-temp { font-size: 3rem; font-weight: 300; }
         .weather-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; }
         .w-item { font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
+
         /* --- Shopping Styles --- */
         .shopping-section-title { font-weight: 700; margin: 0 0 10px 0; color: var(--accent-color); border-bottom: 1px solid #555; padding-bottom: 5px;}
         .shopping-group { margin-bottom: 25px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; }
+
         /* --- Tools Grid --- */
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 10px; }
         .tool-btn {
@@ -150,6 +163,7 @@
             border: 1px solid rgba(255,255,255,0.05); cursor: pointer;
         }
         .tool-btn i { font-size: 2.2rem; color: var(--accent-color); margin-bottom: 12px; display: block; }
+
         /* --- Lists --- */
         .checklist-item {
             background: rgba(255,255,255,0.08); padding: 15px; margin-bottom: 12px;
@@ -158,7 +172,7 @@
         .checklist-item.checked { opacity: 0.5; }
         .checklist-item.checked span { text-decoration: line-through; }
         .checklist-item input { width: 22px; height: 22px; accent-color: var(--accent-color); }
-       
+        
         /* --- Footer --- */
         nav.bottom-nav {
             position: fixed; bottom: 0; width: 100%;
@@ -169,6 +183,7 @@
         .nav-item { color: #64748B; text-align: center; font-size: 0.75rem; cursor: pointer; width: 25%; }
         .nav-item i { display: block; font-size: 1.4rem; margin-bottom: 4px; }
         .nav-item.active { color: var(--accent-color); }
+
         /* --- Modal --- */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -185,33 +200,34 @@
         }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; color: #888; cursor: pointer; }
-       
+        
         .info-row { margin: 12px 0; display: flex; align-items: flex-start; gap: 12px; font-size: 0.95rem; line-height: 1.6; }
-        .info-row i { color: #B45309; margin-top: 4px; width: 20px; text-align: center; }
+        .info-row i { color: #B45309; margin-top: 4px; width: 20px; text-align: center; } 
         .note-box {
             background: #f8f8f8; border-left: 4px solid var(--accent-color);
             padding: 15px; margin: 20px 0; border-radius: 0 8px 8px 0;
             font-size: 0.95rem; color: #333; line-height: 1.7;
         }
         .link-btn {
-            display: inline-block; background: #eee; color: #333;
-            padding: 6px 12px; border-radius: 4px; text-decoration: none;
+            display: inline-block; background: #eee; color: #333; 
+            padding: 6px 12px; border-radius: 4px; text-decoration: none; 
             font-size: 0.85rem; margin-top: 5px; border: 1px solid #ccc;
         }
         .action-btn {
             display: flex; justify-content: center; align-items: center; gap: 8px;
             width: 100%; padding: 14px; margin-top: 20px;
-            background: var(--accent-color); color: #0F172A;
+            background: var(--accent-color); color: #0F172A; 
             text-decoration: none; border-radius: 10px;
             font-weight: bold; font-size: 1rem; border: none; cursor: pointer;
         }
-       
+        
         /* Taxi Card */
         .taxi-card {
-            background: #fff; color: #000; padding: 20px;
-            border: 4px solid #000; margin: 15px 0;
+            background: #fff; color: #000; padding: 20px; 
+            border: 4px solid #000; margin: 15px 0; 
             text-align: center; border-radius: 8px;
         }
+
         /* Hotel Info Card */
         .hotel-info-card {
             background: #fff; color: #333;
@@ -230,9 +246,11 @@
         .hotel-detail-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         .hotel-label { font-weight: bold; width: 80px; flex-shrink: 0; color: #666; font-size: 0.9rem; }
         .hotel-val { flex: 1; font-size: 0.95rem; line-height: 1.5; }
+
     </style>
 </head>
 <body>
+
     <header>
         <h1>FUKUOKA 2026</h1>
         <div class="header-icons">
@@ -244,25 +262,29 @@
             </a>
         </div>
     </header>
+
     <div class="date-selector-container">
         <div class="date-selector" id="date-selector"></div>
     </div>
+
     <main>
         <div id="page-itinerary" class="page active">
             <div class="timeline-container" id="timeline-container" style="padding-top: 20px;"></div>
             <div style="text-align:center; color:#666; font-size:0.8rem; margin:30px 0;">博多美食 • 一期一會</div>
         </div>
+
         <div id="page-map" class="page">
             <div id="map-container"></div>
             <div style="position:absolute; bottom:90px; left:10px; background:rgba(255,255,255,0.9); padding:8px 12px; border-radius:8px; color:#333; font-size:0.8rem; box-shadow:0 2px 5px rgba(0,0,0,0.3); pointer-events:none; z-index:999;">
                 <i class="fa-solid fa-location-dot" style="color:var(--accent-color)"></i> 顯示當日行程地點
             </div>
         </div>
+
         <div id="page-weather" class="page">
             <div style="padding: 20px;">
                 <h2 style="font-weight:700; text-align:center; margin-bottom:10px;">當日天氣預報</h2>
                 <div id="weather-content"></div>
-               
+                
                 <div style="background:rgba(255,255,255,0.1); padding:15px; border-radius:12px; margin:20px 0; display:flex; align-items:center; justify-content:space-between; border:1px solid rgba(255,255,255,0.1);">
                     <div>
                         <div style="font-weight:bold; color:var(--accent-color);"><i class="fa-solid fa-glass-water"></i> 水分補給 Check</div>
@@ -273,6 +295,7 @@
                         <span id="water-count" style="font-size:2rem; font-weight:700; min-width:30px; text-align:center;">0</span>
                     </div>
                 </div>
+
                 <div class="note-box">
                     <div style="font-weight:bold; margin-bottom:5px; color:var(--accent-color);">2月福岡氣候 TIPS：</div>
                     平均氣溫 5°C - 12°C，仍屬寒冷冬季。<br>
@@ -281,18 +304,21 @@
                 </div>
             </div>
         </div>
+
         <div id="page-shopping" class="page">
             <div style="padding: 20px;">
                 <h2 style="font-weight:700; text-align:center;">今日購物建議</h2>
                 <p style="text-align:center; opacity:0.7; font-size:0.85rem; margin-bottom:20px;">根據當日行程地點推薦</p>
-               
+                
                 <div id="daily-shopping-list"></div>
+
                 <div style="margin-top:40px; border-top:1px solid rgba(255,255,255,0.1); padding-top:20px;">
                     <h3 style="color:#aaa; font-size:1rem;">全行程購物清單 (General)</h3>
                     <div id="general-shopping-container"></div>
                 </div>
             </div>
         </div>
+
         <div id="page-tools" class="page">
             <h2 style="text-align:center; margin: 30px 0 20px 0; font-weight:700;">旅人百寶箱</h2>
             <div class="tools-grid">
@@ -322,6 +348,7 @@
                 <button onclick="history.back()" style="background:none; border:1px solid #777; color:#fff; padding:10px 20px; border-radius:20px;">關閉百寶箱</button>
             </div>
         </div>
+
         <div id="subpage-info" class="sub-page">
             <div class="sub-header"><button class="back-btn" onclick="closeSubPage('info')"><i class="fa-solid fa-arrow-left"></i></button><h2>住宿與實用資訊</h2></div>
             <div class="sub-content">
@@ -329,7 +356,7 @@
                     <div class="hotel-info-header"><i class="fa-solid fa-bed"></i> 住宿資料</div>
                     <div class="hotel-info-body">
                         <h3 style="margin:0 0 15px 0; line-height:1.4;">Hotel Wing International<br>博多新幹線口</h3>
-                       
+                        
                         <div class="hotel-detail-row">
                             <div class="hotel-label">地址</div>
                             <div class="hotel-val">〒812-0013<br>福岡県福岡市博多区博多駅東1-17-17</div>
@@ -342,12 +369,13 @@
                             <div class="hotel-label">時間</div>
                             <div class="hotel-val">Check-in: 15:00<br>Check-out: 11:00</div>
                         </div>
-                       
+                        
                         <a href="https://maps.google.com/?q=Hotel+Wing+International+Hakata+Shinkansen-guchi" target="_blank" class="action-btn" style="margin-top:15px; font-size:0.9rem; padding:10px;">
                             <i class="fa-solid fa-map-location-dot"></i> Google Map 導航
                         </a>
                     </div>
                 </div>
+
                 <div class="hotel-info-card">
                     <div class="hotel-info-header" style="background:#555; color:#fff;"><i class="fa-solid fa-star"></i> 設施亮點</div>
                     <div class="hotel-info-body">
@@ -371,11 +399,12 @@
                 </div>
             </div>
         </div>
+
         <div id="subpage-packing" class="sub-page">
             <div class="sub-header"><button class="back-btn" onclick="closeSubPage('packing')"><i class="fa-solid fa-arrow-left"></i></button><h2>行李清單</h2></div>
             <div class="sub-content" id="packing-list-container"></div>
         </div>
-       
+        
         <div id="subpage-rate" class="sub-page">
             <div class="sub-header"><button class="back-btn" onclick="closeSubPage('rate')"><i class="fa-solid fa-arrow-left"></i></button><h2>匯率換算</h2></div>
             <div class="sub-content" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:80%;">
@@ -389,7 +418,7 @@
                 </div>
             </div>
         </div>
-       
+        
         <div id="subpage-safety" class="sub-page">
             <div class="sub-header"><button class="back-btn" onclick="closeSubPage('safety')"><i class="fa-solid fa-arrow-left"></i></button><h2>安全功能</h2></div>
             <div class="sub-content">
@@ -403,34 +432,38 @@
                 <div class="checklist-item" onclick="alert('119')"><i class="fa-solid fa-truck-medical" style="color:var(--accent-color);"></i><span>救護/消防: 119</span></div>
             </div>
         </div>
+
     </main>
+
     <nav class="bottom-nav">
         <div class="nav-item active" onclick="switchMainPage('itinerary', this)"><i class="fa-solid fa-calendar-days"></i> 行程</div>
         <div class="nav-item" onclick="switchMainPage('map', this)"><i class="fa-solid fa-map-location-dot"></i> 地圖</div>
         <div class="nav-item" onclick="switchMainPage('weather', this)"><i class="fa-solid fa-cloud-sun-rain"></i> 天氣</div>
         <div class="nav-item" onclick="switchMainPage('shopping', this)"><i class="fa-solid fa-basket-shopping"></i> 購物</div>
     </nav>
+
     <div id="detail-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal()">×</span>
             <div class="modal-header"><h2 id="modal-title">標題</h2><span id="modal-type" class="sub">類型</span></div>
             <div class="modal-body">
-               
+                
                 <div id="taxi-card" class="taxi-card" style="display:none;">
                     <p style="font-size:0.8rem; color:#666; margin:0 0 5px 0;">運転手さん、ここへお願いします（博多弁：ここに行きんしゃい）</p>
                     <h2 id="taxi-address" style="font-size:1.5rem; margin:5px 0; font-weight:bold; line-height:1.2;"></h2>
                     <p id="taxi-name" style="font-size:1rem; margin-top:5px; color:#444;"></p>
                 </div>
+
                 <div class="info-row"><i class="fa-regular fa-clock"></i><span id="modal-time">時間</span></div>
                 <div class="info-row"><i class="fa-solid fa-location-dot"></i><span id="modal-address">地址</span></div>
                 <div class="info-row" id="modal-price-row"><i class="fa-solid fa-money-bill-wave"></i><span id="modal-price"></span></div>
-               
+                
                 <div class="note-box">
                     <div style="font-weight:bold; margin-bottom:8px; color:var(--accent-color);">攻略與 TIPS：</div>
                     <span id="modal-note">內容...</span>
                 </div>
                 <div id="modal-links" style="margin-bottom: 20px;"></div>
-               
+                
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:20px;">
                      <button class="action-btn" id="modal-map-btn" style="margin-top:0;"><i class="fa-solid fa-map-location-dot"></i> Google 導航</button>
                      <button class="action-btn" onclick="toggleTaxiCard()" style="margin-top:0; background:#444; color:#fff;"><i class="fa-solid fa-taxi"></i> 給司機看</button>
@@ -438,6 +471,7 @@
             </div>
         </div>
     </div>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // --- DATA: 福岡 2/14 - 2/20 行程 ---
@@ -511,24 +545,28 @@
                 ]
             }
         };
+
         const packingList = ["護照", "ICOCA/Suica", "行動電源", "保溫瓶 (重要)", "折疊傘", "好走的鞋", "藥品", "網卡/Wifi", "小額現金 (¥30,000)", "零錢包 (神社用)"];
         const generalShoppingListItems = ["無濾過生原酒", "酒粕/酒器", "九州調味料 (柚子胡椒)", "Loipa 熟食", "梅枝餅", "明太子 (自製/購買)", "博多線香", "自製香水", "抹茶粉", "溫泉鹽"];
+
         let currentDay = "day1";
         let map = null;
         let markers = [];
         let waterCount = 0;
+
         // --- Logic ---
-        function init() {
-            renderDateSelector();
+        function init() { 
+            renderDateSelector(); 
             selectDay('day1', document.querySelector('.date-chip')); // Default Init
             renderPackingList();
             renderGeneralShoppingList();
             initMap();
         }
+
         function switchMainPage(pageId, navEl) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
-           
+            
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             if(navEl) {
                 navEl.classList.add('active');
@@ -536,92 +574,87 @@
                 const idx = ['itinerary', 'map', 'weather', 'shopping'].indexOf(pageId);
                 if(idx !== -1) document.querySelectorAll('.nav-item')[idx].classList.add('active');
             }
+
             if(pageId === 'map' && map) {
                 setTimeout(() => { map.invalidateSize(); fitMapToDay(); }, 200);
             }
         }
+
         function openToolsPage() {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('page-tools').classList.add('active');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         }
+
         function openSubPage(id) { document.getElementById('subpage-' + id).classList.add('open'); }
         function closeSubPage(id) { document.getElementById('subpage-' + id).classList.remove('open'); }
+
         function renderDateSelector() {
             const container = document.getElementById('date-selector'); container.innerHTML = '';
             Object.keys(scheduleData).forEach(dayKey => {
                 const dayInfo = scheduleData[dayKey];
                 const dayNum = dayKey.replace('day', '');
                 const chip = document.createElement('div');
-                chip.className = `date-chip ${dayKey === 'day1' ? 'active' : ''}`;
+                chip.className = date-chip ${dayKey === 'day1' ? 'active' : ''};
                 chip.onclick = () => selectDay(dayKey, chip);
-                chip.innerHTML = `<span class="day-num">D${dayNum}</span><span class="day-week">${dayInfo.date.split(' ')[0]}</span>`;
+                chip.innerHTML = <span class="day-num">D${dayNum}</span><span class="day-week">${dayInfo.date.split(' ')[0]}</span>;
                 container.appendChild(chip);
             });
         }
+
         function selectDay(dayKey, chipEl) {
             currentDay = dayKey;
             document.querySelectorAll('.date-chip').forEach(c => c.classList.remove('active'));
             chipEl.classList.add('active');
-           
+            
             renderTimeline(dayKey);
             renderWeather(dayKey);
             renderDailyShopping(dayKey);
             if(map) updateMapMarkers(dayKey);
         }
+
         function renderTimeline(dayKey) {
-            const container = document.getElementById('timeline-container');
-            container.innerHTML = '';
-            const dayTitle = document.createElement('h3');
-            dayTitle.style.marginBottom = '20px';
-            dayTitle.innerHTML = `<span style="color:var(--accent-color); font-weight:700;">${scheduleData[dayKey].date}</span>`;
+            const container = document.getElementById('timeline-container'); container.innerHTML = '';
+            const dayTitle = document.createElement('h3'); dayTitle.style.marginBottom='20px';
+            dayTitle.innerHTML = <span style="color:var(--accent-color); font-weight:700;">${scheduleData[dayKey].date}</span>;
             container.appendChild(dayTitle);
 
             scheduleData[dayKey].events.forEach(event => {
-                const item = document.createElement('div');
-                item.className = 'timeline-item';
-
-                let tagsHtml = (event.tags || []).map(t => {
-                    let c = 'card-tag';
-                    if (t.includes('必') || t.includes('重點') || t.includes('酒')) c += ' highlight';
-                    if (t.includes('注意') || t.includes('現金')) c += ' alert';
-                    return `<span class="${c}">${t}</span>`;
+                const item = document.createElement('div'); item.className = 'timeline-item';
+                let tagsHtml = event.tags.map(t => {
+                    let c = 'card-tag'; 
+                    if(t.includes('必')||t.includes('重點')||t.includes('酒')) c+=' highlight';
+                    if(t.includes('注意')||t.includes('現金')) c+=' alert';
+                    return <span class="${c}">${t}</span>;
                 }).join('');
+                
+                let priceHtml = event.price ? <div class="card-price">${event.price}</div> : '';
 
-                let priceHtml = event.price ? `<div class="card-price">${event.price}</div>` : '';
-
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.dataset.event = JSON.stringify(event);
-                card.innerHTML = `
+                item.innerHTML = `<div class="card" onclick='openEventModal(${JSON.stringify(event)})'>
                     <span class="card-time">${event.time}</span>
                     <h3 class="card-title">${event.title}</h3>
                     <div class="tags">${tagsHtml}</div>
                     ${priceHtml}
-                `;
-
-                card.addEventListener('click', function() {
-                    const ev = JSON.parse(this.dataset.event);
-                    openEventModal(ev);
-                });
-
-                item.appendChild(card);
+                </div>`;
                 container.appendChild(item);
             });
         }
+
         function renderWeather(dayKey) {
             const container = document.getElementById('weather-content');
             // 2月福岡天氣邏輯
-            const baseTemp = 6;
+            const baseTemp = 6; 
             const dayIndex = parseInt(dayKey.replace('day', ''));
             const temp = baseTemp + (dayIndex % 3);
             const humidity = 60 + (dayIndex % 5);
-           
+            
             let icon = "fa-cloud-sun";
             let desc = "多雲乾冷";
             let rainChance = 20;
+
             if(dayIndex % 4 === 0) { icon = "fa-cloud-showers-heavy"; desc = "寒冷有雨"; rainChance = 60; }
             else if (dayIndex % 3 === 0) { icon = "fa-sun"; desc = "晴朗寒冷"; rainChance = 10; }
+
             container.innerHTML = `
                 <div class="weather-card">
                     <div style="font-size:0.9rem; opacity:0.9;">${scheduleData[dayKey].date} • 福岡</div>
@@ -639,36 +672,40 @@
                 </div>
             `;
         }
-       
+        
         // Add Water
         function addWater() {
             waterCount++;
             document.getElementById('water-count').innerText = waterCount;
         }
+
         function renderDailyShopping(dayKey) {
             const container = document.getElementById('daily-shopping-list');
             container.innerHTML = '';
-           
+            
             const events = scheduleData[dayKey].events;
             let hasItems = false;
+
             events.forEach(event => {
                 if (event.shopping_items && event.shopping_items.length > 0) {
                     hasItems = true;
                     const group = document.createElement('div');
                     group.className = 'shopping-group';
-                   
+                    
                     let itemsHtml = '';
                     event.shopping_items.forEach((item, i) => {
-                        const id = `shop-${dayKey}-${event.title}-${i}`;
+                        const id = shop-${dayKey}-${event.title}-${i};
                         itemsHtml += `<div class="checklist-item" onclick="toggleCheck(this)">
                             <input type="checkbox" id="${id}">
                             <label for="${id}"><span>${item}</span></label>
                         </div>`;
                     });
-                    group.innerHTML = `<h4 class="shopping-section-title"><i class="fa-solid fa-location-dot"></i> ${event.title}</h4>${itemsHtml}`;
+
+                    group.innerHTML = <h4 class="shopping-section-title"><i class="fa-solid fa-location-dot"></i> ${event.title}</h4>${itemsHtml};
                     container.appendChild(group);
                 }
             });
+
             if (!hasItems) {
                 container.innerHTML = `<div style="text-align:center; padding:30px; opacity:0.5;">
                     <i class="fa-solid fa-bag-shopping" style="font-size:2rem; margin-bottom:10px;"></i><br>
@@ -676,54 +713,56 @@
                 </div>`;
             }
         }
+
         function renderGeneralShoppingList() {
             const container = document.getElementById('general-shopping-container');
-            container.innerHTML = '';
             generalShoppingListItems.forEach((item,i) => {
-                container.innerHTML += `<div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" id="g${i}"><label for="g${i}"><span>${item}</span></label></div>`;
+                container.innerHTML += <div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" id="g${i}"><label for="g${i}"><span>${item}</span></label></div>;
             });
         }
+
         function renderPackingList() {
             const pC = document.getElementById('packing-list-container');
             pC.innerHTML = '';
-            packingList.forEach((item,i) => pC.innerHTML += `<div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" id="p${i}"><label for="p${i}"><span>${item}</span></label></div>`;
+            packingList.forEach((item,i) => pC.innerHTML += <div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" id="p${i}"><label for="p${i}"><span>${item}</span></label></div>);
         }
         function toggleCheck(el) { const i = el.querySelector('input'); i.checked = !i.checked; el.classList.toggle('checked', i.checked); }
+
         function calcRate(type) {
             const rate = parseFloat(document.getElementById('rate-setting').value) || 0.052;
-            const jpy = document.getElementById('jpy-input');
+            const jpy = document.getElementById('jpy-input'); 
             const hkd = document.getElementById('hkd-input');
-           
+            
             if(type==='jpy') {
                 if(jpy.value === '') hkd.value = '';
-                else hkd.value = (jpy.value * rate).toFixed(1);
+                else hkd.value = (jpy.value * rate).toFixed(1); 
             } else {
                 if(hkd.value === '') jpy.value = '';
                 else jpy.value = (hkd.value / rate).toFixed(0);
             }
         }
+
         function sendSafetyMessage() {
              if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(pos) {
-                    const lat = pos.coords.latitude;
-                    const lng = pos.coords.longitude;
-                    const mapLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
-                    const text = encodeURIComponent(`Hello! 我在福岡一切安好，目前位置：${mapLink}`);
-                    window.open(`https://wa.me/?text=${text}`, '_blank');
+                    const link = https://www.google.com/maps/search/?api=1&query=${pos.coords.latitude},${pos.coords.longitude};
+                    window.open(https://wa.me/?text=${encodeURIComponent("Hello! 我在福岡一切安好，目前位置：" + link)}, '_blank');
                 });
             } else alert("無法獲取定位");
         }
+
         function openEventModal(event) {
             document.getElementById('modal-title').innerText = event.title;
             document.getElementById('modal-type').innerText = event.type;
             document.getElementById('modal-time').innerText = event.time;
             document.getElementById('modal-address').innerText = event.address;
             document.getElementById('modal-note').innerHTML = event.note;
-           
+            
             // Setup Taxi Card Data
             document.getElementById('taxi-address').innerText = event.address;
             document.getElementById('taxi-name').innerText = event.title;
-            document.getElementById('taxi-card').style.display = 'none';
+            document.getElementById('taxi-card').style.display = 'none'; 
+
             const priceRow = document.getElementById('modal-price-row');
             if (event.price) {
                 priceRow.style.display = 'flex';
@@ -731,44 +770,49 @@
             } else {
                 priceRow.style.display = 'none';
             }
+
             const lc = document.getElementById('modal-links'); lc.innerHTML = '';
-            if(event.link) lc.innerHTML = `<a href="${event.link}" target="_blank" class="link-btn"><i class="fa-solid fa-link"></i> 預約/詳情</a>`;
-           
+            if(event.link) lc.innerHTML = <a href="${event.link}" target="_blank" class="link-btn"><i class="fa-solid fa-link"></i> 預約/詳情</a>;
+            
             // Map Logic
             let mapUrl = "";
             if(event.coords) {
-                mapUrl = `https://www.google.com/maps/search/?api=1&query=${event.coords[0]},${event.coords[1]}`;
+                mapUrl = https://www.google.com/maps/search/?api=1&query=${event.coords[0]},${event.coords[1]};
             } else {
                 const q = encodeURIComponent(event.address + " " + event.title);
-                mapUrl = `https://www.google.com/maps/search/?api=1&query=${q}`;
+                mapUrl = https://www.google.com/maps/search/?api=1&query=${q};
             }
             document.getElementById('modal-map-btn').onclick = () => window.open(mapUrl, '_blank');
             document.getElementById('detail-modal').classList.add('open');
         }
-       
+        
         function toggleTaxiCard() {
             const card = document.getElementById('taxi-card');
             card.style.display = card.style.display === 'none' ? 'block' : 'none';
         }
+
         function closeModal() { document.getElementById('detail-modal').classList.remove('open'); }
         document.getElementById('detail-modal').addEventListener('click', function(e){if(e.target===this)closeModal()});
         function openTipsModal() { openEventModal({title:"路痴救星 (福岡版)",type:"TIPS",time:"隨時",address:"博多全區",note:"1. 博多站分「博多口」(西/巴士) 和「筑紫口」(東/新幹線/酒店)。<br>2. 地鐵在地下，標示顏色很清楚。<br>3. 迷路就找地上工作人員，秀出日文地址。<br>4. 計程車門會自動開。", tags:[]}); }
+
         // --- Map Logic ---
         function initMap() {
             map = L.map('map-container');
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '© OpenStreetMap' }).addTo(map);
             updateMapMarkers(currentDay);
         }
+
         function updateMapMarkers(dayKey) {
             if(!map) return;
             markers.forEach(m => map.removeLayer(m));
             markers = [];
-           
+            
             const events = scheduleData[dayKey].events;
             const group = new L.featureGroup();
+
             events.forEach(event => {
                 if(event.coords) {
-                    const navUrl = `https://www.google.com/maps/search/?api=1&query=${event.coords[0]},${event.coords[1]}`;
+                    const navUrl = https://www.google.com/maps/search/?api=1&query=${event.coords[0]},${event.coords[1]};
                     const popupContent = `
                         <div style="text-align:center">
                             <b>${event.title}</b><br>${event.time}<br>
@@ -782,19 +826,21 @@
                     group.addLayer(m);
                 }
             });
+
             if(markers.length > 0) {
                 map.fitBounds(group.getBounds(), {padding: [50, 50]});
             } else {
                 map.setView([33.5900, 130.4200], 13);
             }
         }
-       
+        
         function fitMapToDay() {
             if(map && markers.length > 0) {
                 const group = new L.featureGroup(markers);
                 map.fitBounds(group.getBounds(), {padding: [50, 50]});
             }
         }
+
         init();
     </script>
 </body>
