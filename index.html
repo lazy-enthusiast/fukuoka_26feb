@@ -40,10 +40,7 @@
             overflow-x: auto;
             white-space: nowrap;
         }
-        .date-selector {
-            display: flex;
-            gap: 10px;
-        }
+        .date-selector { display: flex; gap: 10px; }
         .date-chip {
             background: rgba(255,255,255,0.1);
             padding: 10px 12px;
@@ -61,9 +58,7 @@
             transform: scale(1.05);
             box-shadow: 0 0 10px rgba(234,168,0,0.4);
         }
-        .timeline-container {
-            padding: 20px;
-        }
+        .timeline-container { padding: 20px; }
         .timeline-item {
             position: relative;
             padding-left: 25px;
@@ -88,6 +83,7 @@
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.2);
             cursor: pointer;
+            position: relative;
         }
         .card:active { transform: scale(0.98); }
         .card-time {
@@ -103,11 +99,7 @@
             margin: 0 0 8px 0;
             line-height: 1.4;
         }
-        .tags {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
+        .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
         .card-tag {
             font-size: 0.7rem;
             background: #CBD5E1;
@@ -203,6 +195,7 @@
             margin: 20px 0;
             border-radius: 0 8px 8px 0;
             line-height: 1.7;
+            font-size: 0.95rem;
         }
         .action-btn {
             width: 100%;
@@ -219,6 +212,7 @@
             justify-content: center;
             align-items: center;
             gap: 8px;
+            font-size: 1rem;
         }
         .taxi-card {
             background: white;
@@ -227,8 +221,10 @@
             border: 4px solid black;
             border-radius: 8px;
             text-align: center;
-            margin: 15px 0;
+            margin: 20px 0;
             display: none;
+            font-size: 1.2rem;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -237,12 +233,8 @@
     <header>
         <h1>FUKUOKA 2026</h1>
         <div class="header-icons">
-            <a href="#" onclick="alert('可使用 Google Translate App 翻譯本頁')">
-                <i class="fa-solid fa-language"></i>
-            </a>
-            <a href="#">
-                <i class="fa-solid fa-martini-glass-citrus"></i>
-            </a>
+            <a href="#" onclick="alert('可使用 Google Translate App 翻譯本頁')"><i class="fa-solid fa-language"></i></a>
+            <a href="#"><i class="fa-solid fa-martini-glass-citrus"></i></a>
         </div>
     </header>
 
@@ -261,61 +253,226 @@
         <div class="nav-item">購物</div>
     </nav>
 
-    <!-- Modal -->
+    <!-- Detail Modal -->
     <div id="detail-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal()">×</span>
-            <h2 id="modal-title" style="margin-top:0"></h2>
+            <h2 id="modal-title" style="margin-top:0; color:#0F172A;"></h2>
+
             <div id="taxi-card" class="taxi-card">
-                <p style="font-size:0.8rem; color:#666; margin:0 0 10px 0;">運転手さん、ここへお願いします</p>
-                <h2 id="taxi-address" style="margin:10px 0;"></h2>
-                <p id="taxi-name"></p>
+                <p style="font-size:0.8rem; color:#666; margin:0 0 10px 0;">運転手さん、ここへお願いします（博多弁：ここに行きんしゃい）</p>
+                <h2 id="taxi-address" style="margin:10px 0; font-weight:bold;"></h2>
+                <p id="taxi-name" style="font-weight:bold;"></p>
             </div>
+
             <div class="info-row"><i class="fa-regular fa-clock"></i><span id="modal-time"></span></div>
             <div class="info-row"><i class="fa-solid fa-location-dot"></i><span id="modal-address"></span></div>
-            <div class="info-row" id="modal-price-row" style="display:none;"><i class="fa-solid fa-money-bill-wave"></i><span id="modal-price"></span></div>
+            <div class="info-row" id="modal-price-row"><i class="fa-solid fa-yen-sign"></i><span id="modal-price"></span></div>
+
             <div class="note-box" id="modal-note"></div>
-            <button class="action-btn" id="modal-map-btn">Google 導航</button>
-            <button class="action-btn" onclick="toggleTaxiCard()" style="background:#444; color:white;">給司機看</button>
+
+            <button class="action-btn" id="modal-map-btn"><i class="fa-solid fa-map-location-dot"></i> Google 導航</button>
+            <button class="action-btn" onclick="toggleTaxiCard()" style="background:#444; color:white;"><i class="fa-solid fa-taxi"></i> 給司機看</button>
         </div>
     </div>
 
     <script>
-        // 完整 7 天行程資料
         const scheduleData = {
             "day1": { date: "2/14 (六)", events: [
-                { time: "17:10", title: "抵達福岡機場 (UO638)", type: "交通", price: "巴士 ¥310", address: "福岡機場國際線航廈", note: "<b>路痴TIPS：</b>入境後直走50米到2號巴士站，搭西鐵巴士往博多駅，在筑紫口下車。", tags: ["移動", "必讀"] },
-                { time: "18:00 - 18:30", title: "Hotel Wing Int. 博多新幹線口", type: "住宿", address: "博多駅東1-17-17", note: "Check-in，步行4分鐘，有大浴場與免費飲料吧。", tags: ["飯店"] },
-                { time: "18:30 - 19:30", title: "住吉酒販 (博多站內)", type: "清酒", price: "¥2,000", address: "博多 Deitos Annex 1F", note: "<b>必買：</b>九州限定無濾過生原酒<br><b>體驗：</b>角打立飲區", tags: ["清酒", "必去"] },
-                { time: "19:30 - 21:00", title: "博多牛腸鍋 飯山 (おおやま)", type: "美食", price: "¥2,500", address: "博多 Deitos 1F", note: "<b>必點：</b>味噌牛腸鍋 + 生啤酒", tags: ["美食", "牛腸鍋"] },
-                { time: "21:00 後", title: "回酒店休息", type: "休息", address: "酒店 Lounge", note: "Lounge 有免費咖啡，建議早睡準備明天酒祭", tags: ["放鬆"] }
+                { time: "17:10", title: "抵達福岡機場 (UO638)", type: "交通", price: "巴士 ¥310", address: "福岡機場國際線航廈", note: `
+                    <b>您的時間：</b>17:10 抵達 → 預計 18:30 到酒店<br><br>
+                    <b>交通指引（機場 → 酒店）：</b><br>
+                    • 入境大堂出來後，直走看到「Bus / 巴士」標誌。<br>
+                    • 走到航廈外尋找 <b>2號乘車處</b>（西鐵巴士）。<br>
+                    • 上車後在 <b>博多駅筑紫口（Chikushi-guchi）</b> 下車。<br>
+                    • 下車後面向車站大樓，向右轉沿博多駅東街直走約4分鐘。<br>
+                    • 過第一個紅綠燈後，右手邊即是 Hotel Wing International。<br><br>
+                    <b>路痴筆記：</b>跟著拉行李的人下車通常沒錯，千萬不要走去博多口！`, tags: ["移動", "必讀"] },
+
+                { time: "18:30 - 19:30", title: "住吉酒販 (博多站內)", type: "清酒", price: "¥2,000", address: "博多 Deitos Annex 1F", note: `
+                    <b>開放時間：</b>08:00 - 21:00<br>
+                    <b>您的時間：</b>18:30 - 19:30<br><br>
+                    <b>交通指引（酒店 → 住吉酒販）：</b><br>
+                    • 離開酒店左轉走回博多站筑紫口。<br>
+                    • 進入筑紫口後不要過剪票口，立即向右尋找 Deitos Annex 招牌。<br>
+                    • 走進去直走 50-100 米，左手邊即是住吉酒販。<br><br>
+                    <b>推薦：</b>九州限定無濾過生原酒 + 角打立飲體驗`, tags: ["清酒", "必去"] },
+
+                { time: "19:30 - 21:00", title: "博多牛腸鍋 飯山 (おおやま)", type: "美食", price: "¥2,500", address: "博多 Deitos 1F 博多麺街道", note: `
+                    <b>開放時間：</b>11:00 - 23:00<br>
+                    <b>您的時間：</b>19:30 - 21:00<br><br>
+                    <b>交通指引：</b><br>
+                    • 走出住吉酒販後繼續往車站中心走。<br>
+                    • 進入 Deitos 區域，尋找「博多麺街道」。<br>
+                    • 店就在麺街道內，若找不到可出示日文店名給工作人員看。`, tags: ["美食", "牛腸鍋"] }
             ]},
+
             "day2": { date: "2/15 (日)", events: [
-                { time: "09:00 - 10:30", title: "前往城島酒藏", type: "交通", price: "¥1,130", note: "JR到荒木站 + 免費接駁", tags: ["移動"] },
-                { time: "11:00 - 15:30", title: "城島酒藏びらき (酒祭)", type: "祭典", price: "試飲券 ¥2,000", note: "九州最大早春酒祭，必吃牡蠣配酒", tags: ["清酒", "祭典", "重點"] },
-                { time: "16:30 - 18:00", title: "LOPIA 超市 (Yodobashi)", type: "購物", price: "¥3,000", note: "只收現金！必買九州調味料", tags: ["超市", "現金"] },
-                { time: "18:30 - 20:30", title: "博多雞皮大臣 (KITTE)", type: "美食", price: "¥2,500", note: "必點醬汁雞皮串 + Highball", tags: ["燒鳥"] }
+                { time: "09:00 - 15:30", title: "城島酒藏びらき (酒祭)", type: "祭典", price: "試飲券 ¥2,000", address: "久留米市城島町楢津764", note: `
+                    <b>活動時間：</b>09:30 - 16:00<br>
+                    <b>您的時間：</b>09:00 出發 - 15:30 離開<br><br>
+                    <b>交通指引（酒店 → 會場）：</b><br>
+                    • 步行回博多站筑紫口進站。<br>
+                    • 搭 JR 鹿兒島本線往久留米方向 → 在 <b>荒木駅</b> 下車。<br>
+                    • 出站後跟隨人群搭免費接駁巴士（工作人員會舉牌）。<br><br>
+                    <b>必吃：</b>牡蠣配酒、鰻魚蒸飯`, tags: ["清酒", "祭典", "重點"] },
+
+                { time: "16:30 - 18:00", title: "LOPIA 超市 (Yodobashi 博多)", type: "購物", price: "¥3,000", address: "Yodobashi Hakata 4F", note: `
+                    <b>開放時間：</b>10:00 - 21:00<br>
+                    <b>您的時間：</b>16:30 - 18:00<br><br>
+                    <b>交通指引：</b><br>
+                    • 搭接駁車回荒木站 → JR 回博多站。<br>
+                    • <b>務必從筑紫口出站</b>。<br>
+                    • 出站後右轉過小馬路即抵 Yodobashi，搭電梯上4樓。<br><br>
+                    <b>重要提醒：</b>只收現金！`, tags: ["超市", "現金"] },
+
+                { time: "18:30 - 20:30", title: "博多雞皮大臣 (KITTE)", type: "美食", price: "¥2,500", address: "KITTE 博多 B1", note: `
+                    <b>開放時間：</b>11:00 - 23:30<br>
+                    <b>您的時間：</b>18:30 - 20:30<br><br>
+                    <b>交通指引：</b><br>
+                    • 從 Yodobashi 走回博多站。<br>
+                    • 穿越車站大廳從筑紫口走到博多口。<br>
+                    • 出博多口後左轉進入 KITTE 大樓，下 B1 美食街右手邊。`, tags: ["燒鳥"] }
             ]},
+
             "day3": { date: "2/16 (一)", events: [
-                { time: "09:30 - 17:00", title: "太宰府天滿宮 → 竈門神社 → 二日市溫泉", type: "觀光", note: "梅花季 + 求良緣 + 古湯排毒", tags: ["神社", "溫泉"] },
-                { time: "19:00 - 21:00", title: "旭軒 (一口餃子)", type: "美食", price: "¥2,000", note: "博多老字號煎餃子", tags: ["餃子"] }
+                { time: "09:30 - 12:00", title: "太宰府天滿宮", type: "神社", address: "太宰府市宰府4-7-1", note: `
+                    <b>開放時間：</b>06:30 - 19:00<br>
+                    <b>您的時間：</b>09:30 出發 - 12:00<br><br>
+                    <b>交通指引（酒店 → 太宰府）：</b><br>
+                    • 穿越車站到博多口 → 上博多巴士總站1樓。<br>
+                    • 在 <b>11號月台</b> 搭「旅人號」直達巴士。<br>
+                    • 終點站下車即到。<br><br>
+                    <b>建議：</b>梅花季節，參道買梅枝餅吃`, tags: ["神社", "梅花"] },
+
+                { time: "13:00 - 14:00", title: "竈門神社 (求良緣)", type: "神社", price: "巴士 ¥100", address: "太宰府市內山833", note: `
+                    <b>開放時間：</b>09:00 - 17:00<br>
+                    <b>您的時間：</b>13:00 - 14:00<br><br>
+                    <b>交通指引：</b><br>
+                    • 回西鐵太宰府站。<br>
+                    • 搭 <b>まほろば号（內山線）</b> 到終點站「内山」下車。<br><br>
+                    <b>重點：</b>非常靈驗的結緣神社，御守很美`, tags: ["結緣", "神社"] },
+
+                { time: "14:00 - 15:00", title: "茶和々 (抹茶甜點)", type: "美食", price: "¥800", address: "太宰府參道", note: `
+                    <b>您的時間：</b>14:00 - 15:00<br><br>
+                    <b>推薦：</b>Premium 抹茶霜淇淋（就在參道上，很顯眼）`, tags: ["甜點"] },
+
+                { time: "15:00 - 17:00", title: "博多湯 (二日市溫泉)", type: "溫泉", price: "¥550", address: "筑紫野市湯町1-14-5", note: `
+                    <b>開放時間：</b>09:00 - 21:00<br>
+                    <b>您的時間：</b>15:00 - 17:00<br><br>
+                    <b>交通指引：</b><br>
+                    • 搭 Mahoroba 回太宰府站。<br>
+                    • 搭西鐵電車 2 站到西鐵二日市站（西口）。<br>
+                    • 沿商店街直走約 10-12 分鐘即抵古色古香的木造建築。`, tags: ["溫泉"] },
+
+                { time: "19:00 - 21:00", title: "旭軒 (一口餃子)", type: "美食", price: "¥2,000", address: "博多駅前2-15-22", note: `
+                    <b>開放時間：</b>15:00 - 00:00<br>
+                    <b>您的時間：</b>19:00 - 21:00<br><br>
+                    <b>交通指引：</b><br>
+                    • 從博多湯走至 JR 二日市站（約10分）。<br>
+                    • 搭 JR 回博多站博多口出站。<br>
+                    • 過馬路直走約5分鐘（建議用導航，店在巷子裡）。`, tags: ["餃子"] }
             ]},
+
             "day4": { date: "2/17 (二)", events: [
-                { time: "10:30 - 12:00", title: "麒麟啤酒工廠見學", type: "體驗", price: "¥500", note: "需預約，試飲3杯", tags: ["啤酒"] },
-                { time: "15:00 - 17:00", title: "南藏院 (世界最大涅槃佛)", type: "觀光", tags: ["大佛"] },
-                { time: "18:30 - 20:30", title: "海風土 (海鮮居酒屋)", type: "美食", price: "¥3,000", note: "必點海之玉手箱生魚片", tags: ["海鮮"] }
+                { time: "09:00 - 12:00", title: "甘木鐵道 → 麒麟啤酒工廠見學", type: "體驗", price: "¥500 + 交通 ¥810", address: "朝倉市馬田3601", note: `
+                    <b>預約時間：</b>10:30 見學<br>
+                    <b>您的時間：</b>09:00 出發 - 12:00<br><br>
+                    <b>交通指引：</b><br>
+                    • 博多站搭 JR 到基山站。<br>
+                    • 轉甘木鐵道（現金購票）到太刀洗站。<br>
+                    • 步行約15分鐘到工廠（鄉間小路，用導航）。`, tags: ["啤酒", "鐵道"] },
+
+                { time: "15:00 - 17:00", title: "南藏院 (世界最大涅槃佛)", type: "觀光", address: "篠栗町篠栗1035", note: `
+                    <b>開放時間：</b>09:00 - 17:00<br>
+                    <b>您的時間：</b>15:00 - 17:00<br><br>
+                    <b>交通指引：</b><br>
+                    • 回程經基山站轉 JR 回博多。<br>
+                    • 在博多站內轉篠栗線到 <b>城戸南蔵院前站</b>。<br>
+                    • 出站過橋左轉上坡約3分鐘。`, tags: ["大佛"] },
+
+                { time: "18:30 - 20:30", title: "海風土 (海鮮居酒屋)", type: "美食", price: "¥3,000", address: "博多駅東2-4-17", note: `
+                    <b>開放時間：</b>17:00 - 23:00<br>
+                    <b>您的時間：</b>18:30 - 20:30<br><br>
+                    <b>交通指引：</b><br>
+                    • 搭 JR 回博多站筑紫口出站。<br>
+                    • 右轉沿博多駅東街走約5分鐘（離酒店很近）。<br><br>
+                    <b>必點：</b>海之玉手箱生魚片 + 胡麻鯖魚`, tags: ["海鮮"] }
             ]},
+
             "day5": { date: "2/18 (三)", events: [
-                { time: "08:00 - 10:20", title: "特急 Sonic 去別府", type: "交通", note: "藍色音速號，車上吃雞肉便當", tags: ["鐵道"] },
-                { time: "10:30 - 17:00", title: "香氣博物館 → Brewery → 竹瓦砂湯", type: "體驗", note: "自製香水 + 啤酒 + 熱砂埋身", tags: ["香氛", "溫泉"] },
-                { time: "19:30 - 21:00", title: "博多一雙 (豚骨拉麵)", type: "美食", price: "¥1,000", note: "濃郁泡系，滿滿豚骨臭", tags: ["拉麵"] }
+                { time: "08:00 - 13:00", title: "特急 Sonic → 大分香氣博物館", type: "體驗", price: "¥3,000 + 交通 ¥4,000+", address: "別府市北石垣48-1", note: `
+                    <b>開放時間：</b>10:00 - 18:00<br>
+                    <b>您的時間：</b>08:00 出發 - 13:00<br><br>
+                    <b>交通指引：</b><br>
+                    • 博多站搭特急 Sonic 到別府站（約2小時）。<br>
+                    • 別府站西口搭龜之井巴士到「別府大学下」，步行5分鐘。`, tags: ["香氛", "鐵道"] },
+
+                { time: "13:00 - 15:00", title: "Beppu Brewery", type: "美食", price: "¥2,000", address: "別府市駅前町13-8", note: `
+                    <b>您的時間：</b>13:00 - 15:00<br><br>
+                    <b>交通指引：</b>別府站前走5分鐘<br>
+                    <b>必點：</b>啤酒試飲組 + 大分炸雞天`, tags: ["啤酒"] },
+
+                { time: "15:00 - 17:00", title: "竹瓦溫泉 砂湯", type: "溫泉", price: "¥1,500", address: "別府市元町16-23", note: `
+                    <b>您的時間：</b>15:00 - 17:00<br><br>
+                    <b>交通指引：</b><br>
+                    • 沿駅前通往海邊走，快盡頭右轉進入巷子（用導航）。<br>
+                    • 先拿號碼牌排隊。<br><br>
+                    <b>提醒：</b>建築為古蹟，非常舒服的熱砂埋身體驗`, tags: ["溫泉", "砂湯"] },
+
+                { time: "19:30 - 21:00", title: "博多一雙 (豚骨拉麵)", type: "美食", price: "¥1,000", address: "博多駅東本店", note: `
+                    <b>開放時間：</b>11:00 - 00:00<br>
+                    <b>您的時間：</b>19:30 - 21:00<br><br>
+                    <b>交通指引：</b><br>
+                    • 搭 Sonic 回博多站筑紫口出站。<br>
+                    • 右轉步行5-8分鐘（大排長龍就是了）。`, tags: ["拉麵", "排隊店"] }
             ]},
+
             "day6": { date: "2/19 (四)", events: [
-                { time: "10:00 - 18:00", title: "明太子手作 → 線香 → 和牛 → 調香", type: "體驗", note: "豐富手作體驗日", tags: ["體驗"] },
-                { time: "19:00 - 20:30", title: "Udon 和助", type: "美食", note: "必點牛蒡天婦羅烏龍麵", tags: ["烏龍麵"] }
+                { time: "10:00 - 11:00", title: "Haku Haku 明太子手作", type: "體驗", price: "¥2,200", address: "吉塚站附近", note: `
+                    <b>預約時間：</b>10:00<br>
+                    <b>交通指引：</b><br>
+                    • 博多站搭 JR 一站到吉塚站東口。<br>
+                    • 步行約13分鐘（最考驗路痴的一段，務必開導航）。`, tags: ["體驗", "明太子"] },
+
+                { time: "11:15 - 12:30", title: "市川香舖 (線香)", type: "購物", price: "¥1,000", address: "川端商店街", note: `
+                    <b>交通指引：</b><br>
+                    • 回吉塚站搭 JR 到博多站。<br>
+                    • 轉地鐵空港線 2 站到中洲川端站 5號出口。<br>
+                    • 出來就是川端商店街，香舖在裡面。`, tags: ["香氛"] },
+
+                { time: "12:30 - 14:00", title: "燒肉 BAKURO (和牛午餐)", type: "美食", price: "¥3,000", address: "大名區", note: `
+                    <b>交通指引：</b><br>
+                    • 繼續搭空港線到赤坂站。<br>
+                    • 步行約5分鐘（巷弄多，開導航）。`, tags: ["燒肉", "和牛"] },
+
+                { time: "16:30 - 18:00", title: "MY ONLY FRAGRANCE (調香)", type: "體驗", price: "¥5,000", address: "中央区大名1-1-35", note: `
+                    <b>交通指引：</b><br>
+                    • 大名區內步行範圍，約10-15分鐘（可先逛超市）。`, tags: ["香氛"] },
+
+                { time: "19:00 - 20:30", title: "Udon 和助", type: "美食", price: "¥1,000", address: "天神店", note: `
+                    <b>必點：</b>牛蒡天婦羅烏龍麵 (ごぼう天)`, tags: ["烏龍麵"] }
             ]},
+
             "day7": { date: "2/20 (五)", events: [
-                { time: "10:00 - 14:00", title: "抹茶 → 博多百年藏 → 高級壽司 → 返程", type: "美食", note: "完美句點旅程", tags: ["甜點", "壽司"] }
+                { time: "10:00 - 11:00", title: "Nana's Green Tea", type: "美食", price: "¥1,500", address: "博多站 Amu Plaza", note: `
+                    <b>推薦：</b>抹茶聖代 + 買抹茶粉`, tags: ["甜點"] },
+
+                { time: "11:00 - 12:00", title: "博多百年蔵 (石藏酒造)", type: "清酒", address: "博多區堅粕1-30-1", note: `
+                    <b>開放時間：</b>11:00 - 19:00<br>
+                    <b>交通指引：</b><br>
+                    • Check-out 後寄放行李。<br>
+                    • 從酒店往左前方步行15-20分鐘（或計程車 ¥1,000 以內）。<br>
+                    • 150年歷史酒造，可試飲博多地酒。`, tags: ["清酒", "歷史"] },
+
+                { time: "12:15 - 14:00", title: "壽司午餐 + 返程", type: "美食", price: "¥5,000 + 巴士 ¥310", address: "JR博多City 9F → 機場", note: `
+                    <b>您的飛機：</b>16:05 UO669<br>
+                    <b>關鍵時間：</b>務必 14:00 前上國際線直達巴士<br><br>
+                    <b>交通指引：</b><br>
+                    • 吃完壽司回酒店取行李。<br>
+                    • 走到博多巴士總站 11號月台搭機場直達巴士。<br>
+                    • 14:30 前抵達機場辦理登機。<br><br>
+                    <b>完美句點：</b>高級壽司午餐`, tags: ["壽司", "移動"] }
             ]}
         };
 
@@ -376,9 +533,10 @@
         function openModal(event) {
             document.getElementById('modal-title').textContent = event.title;
             document.getElementById('modal-time').textContent = event.time;
-            document.getElementById('modal-address').textContent = event.address || '無特定地址';
+            document.getElementById('modal-address').textContent = event.address || '市區內';
             document.getElementById('modal-note').innerHTML = event.note || '無額外說明';
-            document.getElementById('taxi-address').textContent = event.address || '';
+
+            document.getElementById('taxi-address').textContent = event.address || event.title;
             document.getElementById('taxi-name').textContent = event.title;
             document.getElementById('taxi-card').style.display = 'none';
 
@@ -389,10 +547,8 @@
                 document.getElementById('modal-price-row').style.display = 'none';
             }
 
-            // Google 導航按鈕
-            const mapUrl = event.address 
-                ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.address + " 福岡")}`
-                : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.title + " 福岡")}`;
+            const mapQuery = event.address ? event.address + " 福岡" : event.title + " 福岡";
+            const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
             document.getElementById('modal-map-btn').onclick = () => window.open(mapUrl, '_blank');
 
             document.getElementById('detail-modal').classList.add('open');
@@ -407,12 +563,10 @@
             card.style.display = card.style.display === 'none' ? 'block' : 'none';
         }
 
-        // 點擊 modal 背景關閉
         document.getElementById('detail-modal').onclick = function(e) {
             if (e.target === this) closeModal();
         };
 
-        // 初始化
         window.onload = function() {
             renderDateSelector();
             renderTimeline();
