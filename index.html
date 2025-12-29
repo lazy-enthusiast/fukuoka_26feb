@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>福岡 2026 - 博多美食與酒旅</title>
+    <title>福岡 2026 - 博多美食與酒旅 (詳細導航版)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
@@ -459,7 +459,7 @@
                 <div class="info-row" id="modal-price-row"><i class="fa-solid fa-money-bill-wave"></i><span id="modal-price"></span></div>
                 
                 <div class="note-box">
-                    <div style="font-weight:bold; margin-bottom:8px; color:var(--accent-color);">攻略與 TIPS：</div>
+                    <div style="font-weight:bold; margin-bottom:8px; color:var(--accent-color);">詳細導航與 TIPS：</div>
                     <span id="modal-note">內容...</span>
                 </div>
                 <div id="modal-links" style="margin-bottom: 20px;"></div>
@@ -474,74 +474,290 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // --- DATA: 福岡 2/14 - 2/20 行程 ---
+        // --- DATA: 福岡 2/14 - 2/20 行程 (詳細導航版) ---
         const scheduleData = {
             "day1": {
                 "date": "2/14 (六)",
                 "events": [
-                    { time: "17:10", title: "抵達福岡機場 (UO638)", type: "交通", price: "巴士 ¥310", address: "福岡機場國際線航廈", coords: [33.5859, 130.4500], note: "<b>路痴TIPS：</b>入境後直走50米到「2號巴士站」，搭西鐵巴士往「博多駅・天神」方向，在「博多駅筑紫口」下車（約20分）。<br>準備好 Suica/ICOCA 卡。", tags: ["移動", "必讀"], shopping_items: ["IC卡儲值", "便利商店水"] },
-                    { time: "18:00 - 18:30", title: "Hotel Wing Int. 博多新幹線口", type: "住宿", price: "", address: "福岡市博多区博多駅東1-17-17", coords: [33.5905, 130.4230], note: "Check-in。大浴場在1F，有免費飲料吧。<br>位置：博多筑紫口步行4分鐘，過小路口右手邊。", tags: ["飯店"], shopping_items: [] },
-                    { time: "18:30 - 19:30", title: "住吉酒販 (博多站內)", type: "清酒", price: "¥2,000", address: "博多 Deitos Annex 1F", coords: [33.5898, 130.4210], note: "<b>必買：</b>九州限定「無濾過生原酒」。<br><b>體驗：</b>角打立飲區，用花札代幣換酒喝。<br>位置：筑紫口進站右側 Deitos Annex。", tags: ["清酒", "必去"], shopping_items: ["無濾過生原酒", "九州純米酒"] },
-                    { time: "19:30 - 21:00", title: "博多牛腸鍋 飯山 (おおやま)", type: "美食", price: "¥2,500", address: "博多 Deitos 1F 麵街道", coords: [33.5900, 130.4205], note: "<b>必點：</b>味噌牛腸鍋、生啤酒。<br>位置：Deitos 1F 博多麵街道內。", link: "https://resy.com/cities/fukuoka-japan/venues/hakata-motsunabe-ooyama-deitos-hakata", tags: ["美食", "牛腸鍋"] },
-                    { time: "21:00 後", title: "回酒店休息", type: "休息", price: "免費", address: "酒店 Lounge", coords: [33.5905, 130.4230], note: "Lounge 有免費咖啡或有料酒。建議早睡為明天酒祭準備。", tags: ["放鬆"] }
+                    { 
+                        time: "17:10 抵達 ➔ 18:30 酒店", 
+                        title: "抵達福岡機場 & 酒店", 
+                        type: "交通", 
+                        price: "巴士 ¥310", 
+                        address: "福岡市博多区博多駅東1-17-17", 
+                        coords: [33.5905, 130.4230], 
+                        note: "<b>⚠️ 路痴生存法則：</b>酒店在<span style='color:red; font-weight:bold;'>筑紫口 (Chikushi)</span>（後站），千萬不要走去博多口！<br><br><b>🚌 交通指引：</b><br>1. 入境大堂直走找「2號巴士站」。<br>2. 搭往「博多駅」巴士。<br>3. <b>下車地點：</b><span style='color:red'>博多駅筑紫口</span>。<br>4. 面向車站右轉，沿大馬路（博多駅東街）直走4分鐘。<br>5. 過第一個紅綠燈後，酒店就在<b>右手邊</b>（不用過對面馬路）。", 
+                        tags: ["移動", "必讀", "路痴TIPS"], 
+                        shopping_items: ["IC卡儲值", "便利商店水"] 
+                    },
+                    { 
+                        time: "18:30 - 19:30 (開放至21:00)", 
+                        title: "住吉酒販 (博多站內)", 
+                        type: "清酒", 
+                        price: "¥2,000", 
+                        address: "博多 Deitos Annex 1F", 
+                        coords: [33.5898, 130.4210], 
+                        note: "<b>🚶 交通指引：</b><br>1. 離開酒店，原路走回<span style='color:red'>筑紫口</span>。<br>2. 進大門後<b>不要過剪票口</b>。<br>3. 立刻向右看，找「Deitos Annex」招牌。<br>4. 直走約50米左手邊。<br><br><b>體驗：</b>用花札代幣換酒喝，必買九州限定「無濾過生原酒」。", 
+                        tags: ["清酒", "必去"], 
+                        shopping_items: ["無濾過生原酒", "九州純米酒"] 
+                    },
+                    { 
+                        time: "19:30 - 21:00 (開放至23:00)", 
+                        title: "博多牛腸鍋 飯山", 
+                        type: "美食", 
+                        price: "¥2,500", 
+                        address: "博多 Deitos 1F 麵街道", 
+                        coords: [33.5900, 130.4205], 
+                        note: "<b>🚶 交通指引：</b><br>1. 走出住吉酒販，回到車站通道。<br>2. 往車站中心走，進入「博多 Deitos」區域。<br>3. 找「博多麵街道」（有紅燈籠裝飾）。<br>4. 找不到請秀日文：「博多もつ鍋 おおやま」。<br><br><b>必點：</b>味噌牛腸鍋、生啤酒。", 
+                        link: "https://resy.com/cities/fukuoka-japan/venues/hakata-motsunabe-ooyama-deitos-hakata", 
+                        tags: ["美食", "牛腸鍋"] 
+                    }
                 ]
             },
             "day2": {
                 "date": "2/15 (日)",
                 "events": [
-                    { time: "09:00 - 10:30", title: "前往城島酒藏 (JR+巴士)", type: "交通", price: "¥1,130", address: "JR荒木站", coords: [33.2790, 130.5050], note: "1. 酒店走回筑紫口進站。<br>2. 搭JR鹿兒島本線往「久留米」方向 -> 「荒木站」下車。<br>3. 站前搭免費接駁巴士。", tags: ["移動"] },
-                    { time: "11:00 - 15:30", title: "城島酒藏びらき (酒祭)", type: "祭典", price: "試飲券 ¥2,000", address: "久留米市城島町楢津764", coords: [33.2675, 130.4243], note: "九州最大早春酒祭！<br><b>攻略：</b>買試飲券(含豬口杯)，搭巡迴巴士訪酒藏(旭菊、池龜等)。<br><b>必吃：</b>牡蠣配酒、鰻魚蒸飯。", link: "http://nanbu-shoko.jp/sakagura/", tags: ["清酒", "祭典", "重點"], shopping_items: ["新酒", "酒粕", "酒器"] },
-                    { time: "16:30 - 18:00", title: "LOPIA 超市 (Yodobashi)", type: "購物", price: "¥3,000", address: "Yodobashi 博多 4F", coords: [33.5888, 130.4225], note: "<b>注意：只收現金！</b><br><b>必買：</b>九州調味料、熟食便當、香氛沐浴品。", tags: ["超市", "現金"], shopping_items: ["九州調味料", "熟食便當", "洗浴用品"] },
-                    { time: "18:30 - 20:30", title: "博多雞皮大臣 (KITTE)", type: "美食", price: "¥2,500", address: "KITTE博多 B1", coords: [33.5892, 130.4185], note: "<b>必點：</b>醬汁雞皮串、Highball。<br>位置：博多口旁 KITTE B1。", tags: ["燒鳥", "居酒屋"] }
+                    { 
+                        time: "09:00 出發 - 15:30", 
+                        title: "城島酒藏びらき (酒祭)", 
+                        type: "祭典", 
+                        price: "試飲券 ¥2,000", 
+                        address: "久留米市城島町", 
+                        coords: [33.2675, 130.4243], 
+                        note: "<b>🚆 去程指引：</b><br>1. 酒店走回<span style='color:red'>筑紫口</span>進站（刷IC卡）。<br>2. 搭JR鹿兒島本線往「久留米/大牟田」方向。<br>3. 在<b>「荒木站 (Araki)」</b>下車（約30-45分）。<br>4. 出站跟人群走，搭免費接駁巴士。<br><br><b>活動：</b>九州最大早春酒祭！", 
+                        link: "http://nanbu-shoko.jp/sakagura/", 
+                        tags: ["清酒", "祭典", "重點"], 
+                        shopping_items: ["新酒", "酒粕", "酒器"] 
+                    },
+                    { 
+                        time: "16:30 - 18:00 (開放至21:00)", 
+                        title: "LOPIA 超市 (Yodobashi)", 
+                        type: "購物", 
+                        price: "¥3,000", 
+                        address: "Yodobashi 博多 4F", 
+                        coords: [33.5888, 130.4225], 
+                        note: "<b>🚶 回程指引：</b><br>1. 搭接駁車回荒木站 ➔ JR回博多站。<br>2. 務必從<span style='color:red'>筑紫口</span>出站！<br>3. 出站向右看，那棟大電器行就是。<br>4. 電梯直上4F。<br><br><b>⚠️ 注意：只收現金！</b>", 
+                        tags: ["超市", "現金"], 
+                        shopping_items: ["九州調味料", "熟食便當", "洗浴用品"] 
+                    },
+                    { 
+                        time: "18:30 - 20:30 (開放至23:30)", 
+                        title: "博多雞皮大臣 (KITTE)", 
+                        type: "美食", 
+                        price: "¥2,500", 
+                        address: "KITTE博多 B1", 
+                        coords: [33.5892, 130.4185], 
+                        note: "<b>🚶 交通指引：</b><br>1. 從Yodobashi走回筑紫口。<br>2. <b>穿越整個車站大廳</b>走到西邊的<span style='color:red'>博多口</span>。<br>3. 出大門左看，連著車站的大樓就是 KITTE。<br>4. 下B1美食街直走右手邊。<br><br><b>必點：</b>醬汁雞皮串、Highball。", 
+                        tags: ["燒鳥", "居酒屋"] 
+                    }
                 ]
             },
             "day3": {
                 "date": "2/16 (一)",
                 "events": [
-                    { time: "09:30 - 10:30", title: "搭「旅人號」去太宰府", type: "交通", price: "¥610", address: "博多巴士總站 1F 11號月台", coords: [33.5915, 130.4180], note: "博多口出站左側巴士總站。直達太宰府。", tags: ["移動"] },
-                    { time: "10:30 - 12:00", title: "太宰府天滿宮", type: "神社", price: "免費", address: "太宰府市宰府4-7-1", coords: [33.5215, 130.5349], note: "梅花季節！抽籤祈福、看飛梅。<br>參道買「梅枝餅」吃。", tags: ["神社", "梅花"], shopping_items: ["牛形繪馬", "御守", "梅枝餅"] },
-                    { time: "13:00 - 14:00", title: "竈門神社 (求良緣)", type: "神社", price: "巴士 ¥100", address: "太宰府市內山833", coords: [33.5350, 130.5500], note: "<b>交通：</b>西鐵太宰府站搭 Mahoroba 巴士。<br><b>重點：</b>非常靈驗的結緣神社，適合獨旅祈福。御守很美。", tags: ["結緣", "神社"], shopping_items: ["粉紅結緣御守"] },
-                    { time: "14:00 - 15:00", title: "茶和々 (抹茶甜點)", type: "美食", price: "¥800", address: "太宰府參道", coords: [33.5200, 130.5330], note: "必吃 Premium 抹茶霜淇淋。", tags: ["甜點"] },
-                    { time: "15:00 - 17:00", title: "博多湯 (二日市溫泉)", type: "溫泉", price: "¥550", address: "筑紫野市湯町1-14-5", coords: [33.4930, 130.5180], note: "1300年歷史古湯。排毒放鬆。<br><b>交通：</b>太宰府站搭電車到二日市，步行12分。", tags: ["溫泉"], shopping_items: ["溫泉鹽"] },
-                    { time: "19:00 - 21:00", title: "旭軒 (一口餃子)", type: "美食", price: "¥2,000", address: "博多駅前2-15-22", coords: [33.5880, 130.4160], note: "<b>必點：</b>煎餃子、炸雞翅。<br>博多老字號。", tags: ["餃子"] }
+                    { 
+                        time: "09:30 出發 - 12:00", 
+                        title: "太宰府天滿宮", 
+                        type: "神社", 
+                        price: "巴士 ¥610", 
+                        address: "太宰府市宰府4-7-1", 
+                        coords: [33.5215, 130.5349], 
+                        note: "<b>🚌 去程指引 (巴士總站)：</b><br>1. 穿過車站到<span style='color:red'>博多口</span>。<br>2. 右手邊大樓「博多バスターミナル」上1樓。<br>3. 走到<b>11號月台</b>（地面有粉紅線）。<br>4. 搭乘「旅人 (Tabito)」號直達太宰府。<br><br><b>活動：</b>梅花季、吃梅枝餅。", 
+                        tags: ["神社", "梅花", "移動"], 
+                        shopping_items: ["牛形繪馬", "御守", "梅枝餅"] 
+                    },
+                    { 
+                        time: "12:00 - 14:00 (開放至17:00)", 
+                        title: "竈門神社 (求良緣)", 
+                        type: "神社", 
+                        price: "巴士 ¥100", 
+                        address: "太宰府市內山833", 
+                        coords: [33.5350, 130.5500], 
+                        note: "<b>🚌 交通指引：</b><br>1. 走回西鐵太宰府站。<br>2. 站前搭社區巴士「まほろば号 (Mahoroba)」。<br>3. 終點站「内山」下車。<br><br><b>重點：</b>非常靈驗的結緣神社，御守很美。", 
+                        tags: ["結緣", "神社"], 
+                        shopping_items: ["粉紅結緣御守"] 
+                    },
+                    { 
+                        time: "15:00 - 17:00 (開放至21:00)", 
+                        title: "博多湯 (二日市溫泉)", 
+                        type: "溫泉", 
+                        price: "¥550", 
+                        address: "筑紫野市湯町1-14-5", 
+                        coords: [33.4930, 130.5180], 
+                        note: "<b>🚆 交通指引：</b><br>1. 搭巴士回西鐵太宰府站。<br>2. 搭西鐵電車坐2站到「西鐵二日市站」。<br>3. 西口出站右轉，沿商店街直走10分鐘。<br>4. 認古色古香木造建築。<br><br><b>中途：</b>參道上可吃「茶和々」抹茶冰。", 
+                        tags: ["溫泉"], 
+                        shopping_items: ["溫泉鹽"] 
+                    },
+                    { 
+                        time: "19:00 - 21:00 (開放至00:00)", 
+                        title: "旭軒 (一口餃子)", 
+                        type: "美食", 
+                        price: "¥2,000", 
+                        address: "博多駅前2-15-22", 
+                        coords: [33.5880, 130.4160], 
+                        note: "<b>🚆 回程指引：</b><br>1. 從博多湯步行到<b>「JR二日市站」</b>（非西鐵，約10分）。<br>2. 搭JR回博多站。<br>3. <span style='color:red'>博多口</span>出站，直走過馬路約5分鐘。<br>4. 在巷子裡，建議開Google Map。", 
+                        tags: ["餃子"] 
+                    }
                 ]
             },
             "day4": {
                 "date": "2/17 (二)",
                 "events": [
-                    { time: "09:00 - 10:30", title: "甘木鐵道小火車", type: "交通", price: "¥810", address: "太刀洗站", coords: [33.4000, 130.6000], note: "JR基山站轉乘甘木鐵道。單節復古火車，很可愛。", tags: ["鐵道"] },
-                    { time: "10:30 - 12:00", title: "麒麟啤酒工廠見學", type: "體驗", price: "¥500", address: "朝倉市馬田3601", coords: [33.3900, 130.6050], note: "<b>需預約：</b>試飲3杯 (一番搾等)。<br>午餐在園區吃成吉思汗烤肉。", link: "https://www.kirin.co.jp/experience/factory/fukuoka/", tags: ["啤酒", "見學"], shopping_items: ["啤酒杯", "限定啤酒"] },
-                    { time: "15:00 - 17:00", title: "南藏院 (涅槃佛)", type: "神社", price: "¥300", address: "篠栗町篠栗1035", coords: [33.6160, 130.5600], note: "世界最大青銅涅槃佛。氣場強大。<br><b>交通：</b>JR城戶南藏院前站。", tags: ["神社", "大佛"], shopping_items: ["強力御守"] },
-                    { time: "18:30 - 20:30", title: "海風土 (海鮮居酒屋)", type: "美食", price: "¥3,000", address: "博多駅東2-4-17", coords: [33.5910, 130.4250], note: "<b>必點：</b>「海之玉手箱」生魚片拼盤 (¥500)、胡麻鯖魚。", tags: ["海鮮", "居酒屋"] }
+                    { 
+                        time: "09:00 出發 (10:30見學)", 
+                        title: "麒麟啤酒工廠 & 甘木鐵道", 
+                        type: "體驗", 
+                        price: "¥810 + ¥500", 
+                        address: "朝倉市馬田3601", 
+                        coords: [33.3900, 130.6050], 
+                        note: "<b>🚆 交通指引 (需轉車)：</b><br>1. <span style='color:red'>筑紫口</span>進站，搭JR到「基山站 (Kiyama)」。<br>2. 站內轉乘「甘木鐵道」（小火車，<b style='color:red'>備現金</b>）。<br>3. 在「太刀洗站」下車，步行15分。<br><br><b>需預約：</b>試飲3杯 (一番搾等)。", 
+                        link: "https://www.kirin.co.jp/experience/factory/fukuoka/", 
+                        tags: ["啤酒", "鐵道", "現金"], 
+                        shopping_items: ["啤酒杯", "限定啤酒"] 
+                    },
+                    { 
+                        time: "13:30 出發 - 17:00", 
+                        title: "南藏院 (涅槃佛)", 
+                        type: "神社", 
+                        price: "¥300", 
+                        address: "篠栗町篠栗1035", 
+                        coords: [33.6160, 130.5600], 
+                        note: "<b>🚆 交通指引：</b><br>1. 原路回基山站，搭JR回博多站。<br>2. <b>不要出站</b>，轉第8月台「JR篠栗線」。<br>3. 往篠栗/直方方向，在「城戸南蔵院前」下車。<br>4. 出站過橋左轉上坡。<br><br><b>看點：</b>世界最大青銅涅槃佛。", 
+                        tags: ["神社", "大佛"], 
+                        shopping_items: ["強力御守"] 
+                    },
+                    { 
+                        time: "18:30 - 20:30 (開放至23:00)", 
+                        title: "海風土 (海鮮居酒屋)", 
+                        type: "美食", 
+                        price: "¥3,000", 
+                        address: "博多駅東2-4-17", 
+                        coords: [33.5910, 130.4250], 
+                        note: "<b>🚶 交通指引：</b><br>1. 搭JR回博多，<span style='color:red'>筑紫口</span>出站。<br>2. 右轉沿博多駅東街走5分鐘。<br>3. 離酒店非常近。<br><br><b>必點：</b>海之玉手箱生魚片。", 
+                        tags: ["海鮮", "居酒屋"] 
+                    }
                 ]
             },
             "day5": {
                 "date": "2/18 (三)",
                 "events": [
-                    { time: "08:00 - 10:20", title: "特急 Sonic 去別府", type: "交通", price: "¥4,000+", address: "博多站", coords: [33.5900, 130.4206], note: "買個「東筑軒」雞肉便當上車吃。藍色音速號列車。", tags: ["鐵道", "便當"] },
-                    { time: "10:30 - 13:00", title: "大分香氣博物館", type: "體驗", price: "¥3,000", address: "別府市北石垣48-1", coords: [33.3000, 131.4900], note: "<b>重點：</b>調製專屬香水 (40-50分)。<br>交通：別府站搭巴士到「別府大學下」。", tags: ["香氛", "手作"], shopping_items: ["自製香水"] },
-                    { time: "13:00 - 15:00", title: "Beppu Brewery", type: "美食", price: "¥2,000", address: "別府市駅前町13-8", coords: [33.2780, 131.5000], note: "<b>必點：</b>啤酒試飲組 (Flight)、大分炸雞天。", tags: ["啤酒"] },
-                    { time: "15:00 - 17:00", title: "竹瓦溫泉 砂湯", type: "溫泉", price: "¥1,500", address: "別府市元町16-23", coords: [33.2760, 131.5050], note: "熱砂埋在身上排毒，非常舒服。建築本身是古蹟。", tags: ["溫泉", "砂湯"] },
-                    { time: "19:30 - 21:00", title: "博多一雙 (豚骨拉麵)", type: "美食", price: "¥1,000", address: "博多駅東本店", coords: [33.5905, 130.4245], note: "<b>必點：</b>味玉拉麵。湯頭充滿「豚骨臭」的濃郁泡系拉麵。", tags: ["拉麵", "排隊店"] }
+                    { 
+                        time: "08:00 出發 - 13:00", 
+                        title: "別府香水博物館", 
+                        type: "體驗", 
+                        price: "¥4,000+", 
+                        address: "別府市北石垣48-1", 
+                        coords: [33.3000, 131.4900], 
+                        note: "<b>🚆 交通指引：</b><br>1. 博多站搭<b>「特急 Sonic (藍色音速號)」</b>往大分。<br>2. <b>「別府站」</b>下車。<br>3. 西口搭龜之井巴士到「別府大學下」，步行5分。<br><br><b>重點：</b>調製專屬香水。", 
+                        tags: ["鐵道", "香氛"], 
+                        shopping_items: ["自製香水"] 
+                    },
+                    { 
+                        time: "13:00 - 17:00", 
+                        title: "竹瓦溫泉 & Beppu Brewery", 
+                        type: "溫泉", 
+                        price: "¥1,500", 
+                        address: "別府市元町16-23", 
+                        coords: [33.2760, 131.5050], 
+                        note: "<b>🚶 交通指引：</b><br>1. 搭巴士回別府站。<br>2. 午餐：站前 Beppu Brewery。<br>3. 溫泉：往海邊沿「駅前通」走，依導航右轉入巷（古老木造建築）。<br><br><b>體驗：</b>熱砂浴（建議先拿號碼牌）。", 
+                        tags: ["溫泉", "砂湯", "啤酒"] 
+                    },
+                    { 
+                        time: "19:30 - 21:00 (開放至00:00)", 
+                        title: "博多一雙 (豚骨拉麵)", 
+                        type: "美食", 
+                        price: "¥1,000", 
+                        address: "博多駅東本店", 
+                        coords: [33.5905, 130.4245], 
+                        note: "<b>🚶 回程指引：</b><br>1. 搭Sonic特急回博多，<span style='color:red'>筑紫口</span>出站。<br>2. 右轉步行5-8分鐘。<br>3. 認明排隊人潮與濃郁豚骨味。", 
+                        tags: ["拉麵", "排隊店"] 
+                    }
                 ]
             },
             "day6": {
                 "date": "2/19 (四)",
                 "events": [
-                    { time: "10:00 - 11:00", title: "Haku Haku 明太子手作", type: "體驗", price: "¥2,200", address: "吉塚站附近", coords: [33.6050, 130.4300], note: "<b>需預約：</b>製作自己的明太子。<br>JR吉塚站步行13分。", tags: ["體驗", "明太子"], shopping_items: ["自製明太子"] },
-                    { time: "11:15 - 12:30", title: "市川香舖 (線香)", type: "購物", price: "¥1,000", address: "川端商店街", coords: [33.5930, 130.4100], note: "買好聞的日式線香。", tags: ["香氛"], shopping_items: ["線香"] },
-                    { time: "12:30 - 14:00", title: "燒肉 BAKURO (和牛)", type: "美食", price: "¥3,000", address: "大名店", coords: [33.5870, 130.3950], note: "午間和牛套餐CP值高。地鐵赤坂站。", tags: ["燒肉", "和牛"] },
-                    { time: "16:30 - 18:00", title: "MY ONLY FRAGRANCE", type: "體驗", price: "¥5,000", address: "中央区大名1-1-35", coords: [33.5865, 130.3960], note: "第二次調香體驗！<br>需 LINE 預約。", tags: ["香氛"], shopping_items: ["專屬香水"] },
-                    { time: "19:00 - 20:30", title: "Udon 和助", type: "美食", price: "¥1,000", address: "天神店", coords: [33.5900, 130.3980], note: "<b>必點：</b>牛蒡天婦羅烏龍麵 (ごぼう天)。", tags: ["烏龍麵"] }
+                    { 
+                        time: "09:00 出發 (10:00預約)", 
+                        title: "Haku Haku 明太子手作", 
+                        type: "體驗", 
+                        price: "¥2,200", 
+                        address: "吉塚站附近", 
+                        coords: [33.6050, 130.4300], 
+                        note: "<b>🚆 交通指引：</b><br>1. 博多站搭JR（往小倉）坐1站到<b>「吉塚站」</b>。<br>2. <b>東口</b>出來。<br>3. ⚠️ <b>路痴注意：</b>這段路約13分，務必開Google Map沿大路走，不要鑽巷子。<br><br><b>活動：</b>DIY明太子。", 
+                        tags: ["體驗", "明太子"], 
+                        shopping_items: ["自製明太子"] 
+                    },
+                    { 
+                        time: "11:15 - 12:30", 
+                        title: "中洲川端 & 線香", 
+                        type: "購物", 
+                        price: "¥1,000", 
+                        address: "川端商店街", 
+                        coords: [33.5930, 130.4100], 
+                        note: "<b>🚇 交通指引：</b><br>1. 回吉塚站搭JR回博多。<br>2. 轉乘「地下鐵空港線」（往天神/姪浜）。<br>3. <b>「中洲川端站」</b>下車，5號出口。<br><br><b>逛：</b>市川香舖買線香。", 
+                        tags: ["香氛", "地鐵"], 
+                        shopping_items: ["線香"] 
+                    },
+                    { 
+                        time: "12:30 - 14:00 (午餐)", 
+                        title: "燒肉 BAKURO (大名)", 
+                        type: "美食", 
+                        price: "¥3,000", 
+                        address: "大名店", 
+                        coords: [33.5870, 130.3950], 
+                        note: "<b>🚇 交通指引：</b><br>1. 繼續搭空港線到<b>「赤坂站」</b>。<br>2. 步行5分鐘（巷弄多，開導航）。<br><br><b>必點：</b>午間和牛套餐。", 
+                        tags: ["燒肉", "和牛"] 
+                    },
+                    { 
+                        time: "16:30 - 18:00 (開放至20:00)", 
+                        title: "MY ONLY FRAGRANCE", 
+                        type: "體驗", 
+                        price: "¥5,000", 
+                        address: "中央区大名1-1-35", 
+                        coords: [33.5865, 130.3960], 
+                        note: "<b>🚶 交通指引：</b><br>離午餐地點和天神商圈步行可達。<br>建議逛完天神超市後導航走過來（約10-15分）。<br><br><b>活動：</b>第二次調香。", 
+                        tags: ["香氛"], 
+                        shopping_items: ["專屬香水"] 
+                    }
                 ]
             },
             "day7": {
                 "date": "2/20 (五)",
                 "events": [
-                    { time: "10:00 - 11:00", title: "Nana's Green Tea", type: "美食", price: "¥1,500", address: "博多站 Amu Plaza", coords: [33.5895, 130.4200], note: "吃抹茶聖代，買抹茶粉。", tags: ["甜點"], shopping_items: ["抹茶粉"] },
-                    { time: "11:00 - 12:00", title: "博多百年藏 (石藏酒造)", type: "清酒", price: "免費", address: "博多区堅粕1-30-1", coords: [33.6000, 130.4250], note: "150年歷史酒造，登錄有形文化財。<br>試飲博多地酒。", tags: ["清酒", "歷史"], shopping_items: ["博多地酒"] },
-                    { time: "12:15 - 14:00", title: "Sushi Yamanaka (壽司)", type: "美食", price: "¥5,000", address: "JR博多City 9F", coords: [33.5900, 130.4200], note: "<b>完美句點：</b>高級壽司午餐 (特選握壽司)。<br>需預約。", link: "https://tabelog.com/fukuoka/A4001/A400101/40026367/", tags: ["壽司", "奢華"] },
-                    { time: "14:00", title: "前往機場", type: "交通", price: "巴士 ¥310", address: "博多巴士總站", coords: [33.5915, 130.4180], note: "搭國際線直達巴士。<br>UO669 (16:05 起飛)。", tags: ["移動"] }
+                    { 
+                        time: "11:00 - 12:00 (開放至19:00)", 
+                        title: "博多百年藏 (石藏酒造)", 
+                        type: "清酒", 
+                        price: "免費", 
+                        address: "博多区堅粕1-30-1", 
+                        coords: [33.6000, 130.4250], 
+                        note: "<b>🚕 交通指引：</b><br>1. Check-out 行李寄放酒店。<br>2. <b>強烈建議搭計程車</b>（從酒店出發約¥1,000）。<br>3. 給司機看：「Hakata Hyakunen-gura, please」。<br><br><b>活動：</b>參觀古老酒造、買地酒。", 
+                        tags: ["清酒", "歷史"], 
+                        shopping_items: ["博多地酒"] 
+                    },
+                    { 
+                        time: "12:15 - 14:00 (午餐)", 
+                        title: "Sushi Yamanaka (壽司)", 
+                        type: "美食", 
+                        price: "¥5,000", 
+                        address: "JR博多City 9F", 
+                        coords: [33.5900, 130.4200], 
+                        note: "<b>🚶 交通指引：</b><br>1. 回博多站（搭車或走）。<br>2. <span style='color:red'>博多口</span>大樓電梯上9F (Kuuten)。<br><br><b>必點：</b>特選握壽司。", 
+                        link: "https://tabelog.com/fukuoka/A4001/A400101/40026367/", 
+                        tags: ["壽司", "奢華"] 
+                    },
+                    { 
+                        time: "14:00 巴士 (16:05起飛)", 
+                        title: "前往機場", 
+                        type: "交通", 
+                        price: "巴士 ¥310", 
+                        address: "博多巴士總站", 
+                        coords: [33.5915, 130.4180], 
+                        note: "<b>⚠️ 最後衝刺：</b><br>1. 吃完飯回酒店拿行李。<br>2. 走到<span style='color:red'>博多口</span>巴士總站1F。<br>3. <b>11號月台</b>搭「國際線直達巴士」。<br>4. <b style='color:red'>務必 14:00 前上車！</b>", 
+                        tags: ["移動", "必讀"], 
+                        shopping_items: [] 
+                    }
                 ]
             }
         };
