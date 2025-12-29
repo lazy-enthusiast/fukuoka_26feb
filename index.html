@@ -570,26 +570,42 @@
             if(map) updateMapMarkers(dayKey);
         }
         function renderTimeline(dayKey) {
-            const container = document.getElementById('timeline-container'); container.innerHTML = '';
-            const dayTitle = document.createElement('h3'); dayTitle.style.marginBottom='20px';
+            const container = document.getElementById('timeline-container');
+            container.innerHTML = '';
+            const dayTitle = document.createElement('h3');
+            dayTitle.style.marginBottom = '20px';
             dayTitle.innerHTML = `<span style="color:var(--accent-color); font-weight:700;">${scheduleData[dayKey].date}</span>`;
             container.appendChild(dayTitle);
+
             scheduleData[dayKey].events.forEach(event => {
-                const item = document.createElement('div'); item.className = 'timeline-item';
-                let tagsHtml = event.tags.map(t => {
+                const item = document.createElement('div');
+                item.className = 'timeline-item';
+
+                let tagsHtml = (event.tags || []).map(t => {
                     let c = 'card-tag';
-                    if(t.includes('必')||t.includes('重點')||t.includes('酒')) c+=' highlight';
-                    if(t.includes('注意')||t.includes('現金')) c+=' alert';
+                    if (t.includes('必') || t.includes('重點') || t.includes('酒')) c += ' highlight';
+                    if (t.includes('注意') || t.includes('現金')) c += ' alert';
                     return `<span class="${c}">${t}</span>`;
                 }).join('');
-               
+
                 let priceHtml = event.price ? `<div class="card-price">${event.price}</div>` : '';
-                item.innerHTML = `<div class="card" onclick='openEventModal(${JSON.stringify(event)})'>
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.event = JSON.stringify(event);
+                card.innerHTML = `
                     <span class="card-time">${event.time}</span>
                     <h3 class="card-title">${event.title}</h3>
                     <div class="tags">${tagsHtml}</div>
                     ${priceHtml}
-                </div>`;
+                `;
+
+                card.addEventListener('click', function() {
+                    const ev = JSON.parse(this.dataset.event);
+                    openEventModal(ev);
+                });
+
+                item.appendChild(card);
                 container.appendChild(item);
             });
         }
