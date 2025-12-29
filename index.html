@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>福岡 2026 - 博多美食與酒旅</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #1D2536;
@@ -15,16 +14,15 @@
             --text-on-dark: #FFFFFF;
             --text-on-light: #0F172A;
             --menu-bg: #141B2D;
-            --weather-gradient: linear-gradient(135deg, #2b5876 0%, #4e4376 100%);
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: "Noto Sans TC", sans-serif;
             background-color: var(--bg-color);
             color: var(--text-on-dark);
-            margin: 0; padding: 0;
-            height: 100vh;
-            display: flex; flex-direction: column; overflow: hidden;
+            margin: 0;
+            padding: 0 0 80px 0;
+            min-height: 100vh;
         }
         header {
             padding: 15px 20px;
@@ -32,292 +30,331 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
             position: sticky; top: 0; z-index: 100;
             display: flex; justify-content: space-between; align-items: center;
-            height: 60px;
         }
         header h1 { margin: 0; font-size: 1.2rem; font-weight: 700; letter-spacing: 1px; }
-        .header-icons { display: flex; gap: 20px; align-items: center; }
-        .header-btn { color: var(--text-on-dark); font-size: 1.2rem; cursor: pointer; text-decoration: none; }
+        .header-icons a { color: var(--text-on-dark); font-size: 1.2rem; margin-left: 20px; text-decoration: none; }
         .date-selector-container {
-            background: var(--bg-color); z-index: 90;
+            background: var(--bg-color);
             padding: 10px 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            overflow-x: auto;
+            white-space: nowrap;
         }
         .date-selector {
-            display: flex; overflow-x: auto; gap: 10px; padding-bottom: 5px; scrollbar-width: none;
+            display: flex;
+            gap: 10px;
         }
-        .date-selector::-webkit-scrollbar { display: none; }
         .date-chip {
-            background: rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 16px;
-            white-space: nowrap; font-size: 0.85rem; cursor: pointer; color: #aaa;
-            display: flex; flex-direction: column; align-items: center; min-width: 55px;
+            background: rgba(255,255,255,0.1);
+            padding: 10px 12px;
+            border-radius: 16px;
+            min-width: 60px;
+            text-align: center;
+            cursor: pointer;
             transition: all 0.2s;
+            flex-shrink: 0;
         }
         .date-chip.active {
-            background: var(--accent-color); color: #0F172A;
-            box-shadow: 0 0 10px rgba(234, 168, 0, 0.4); transform: scale(1.05); font-weight: bold;
+            background: var(--accent-color);
+            color: #0F172A;
+            font-weight: bold;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(234,168,0,0.4);
         }
-        main { flex: 1; overflow-y: hidden; position: relative; }
-        .page {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            overflow-y: auto; padding: 10px 0 90px 0;
-            display: none; opacity: 0; transition: opacity 0.3s ease;
-            background-color: var(--bg-color);
+        .timeline-container {
+            padding: 20px;
         }
-        .page.active { display: block; opacity: 1; z-index: 10; }
-        #page-map { padding: 0 0 80px 0; }
-        #map-container { width: 100%; height: 100%; }
-        .sub-page {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--bg-color); z-index: 2000;
-            display: flex; flex-direction: column;
-            transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-        }
-        .sub-page.open { transform: translateX(0); }
-        .sub-header {
-            padding: 15px 20px; background: var(--menu-bg);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            display: flex; align-items: center; gap: 15px;
-        }
-        .back-btn { font-size: 1.2rem; color: var(--accent-color); background: none; border: none; padding: 5px; cursor: pointer;}
-        .sub-header h2 { margin: 0; font-size: 1.1rem; font-weight: 700; }
-        .sub-content { flex: 1; overflow-y: auto; padding: 20px; }
-        .timeline-container { padding: 0 20px; }
         .timeline-item {
-            position: relative; padding-left: 25px; padding-bottom: 30px;
-            border-left: 2px solid rgba(234, 168, 0, 0.3);
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 30px;
+            border-left: 2px solid rgba(234,168,0,0.3);
         }
-        .timeline-item:last-child { border-left: 2px solid transparent; padding-bottom: 0; }
         .timeline-item::before {
-            content: ''; position: absolute; left: -6px; top: 18px;
-            width: 10px; height: 10px; background: var(--accent-color);
-            border-radius: 50%; box-shadow: 0 0 0 4px var(--bg-color);
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 20px;
+            width: 10px;
+            height: 10px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px var(--bg-color);
         }
         .card {
-            background-color: var(--card-color); color: var(--text-on-light);
-            border-radius: 12px; padding: 16px; margin-bottom: 5px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2); cursor: pointer;
-            position: relative;
+            background: var(--card-color);
+            color: var(--text-on-light);
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            cursor: pointer;
         }
         .card:active { transform: scale(0.98); }
-        .card-time { font-size: 0.85rem; color: #B45309; font-weight: 700; display: block; margin-bottom: 6px; }
-        .card-title { font-size: 1.1rem; font-weight: 700; margin: 0 0 8px 0; line-height: 1.4; }
+        .card-time {
+            font-size: 0.85rem;
+            color: #B45309;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            line-height: 1.4;
+        }
+        .tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .card-tag {
+            font-size: 0.7rem;
+            background: #CBD5E1;
+            color: #334155;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+        .card-tag.highlight {
+            background: #FEF3C7;
+            color: #B45309;
+            border: 1px solid #FCD34D;
+        }
         .card-price {
-            position: absolute; bottom: 12px; right: 15px;
-            font-weight: bold; color: #0369a1; font-size: 0.9rem;
-            background: rgba(255,255,255,0.6); padding: 2px 6px; border-radius: 4px;
+            position: absolute;
+            bottom: 12px;
+            right: 15px;
+            background: rgba(255,255,255,0.8);
+            color: #0369a1;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
         }
-        .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 5px; }
-        .card-tag { font-size: 0.7rem; background: #CBD5E1; padding: 3px 8px; border-radius: 4px; color: #334155; }
-        .card-tag.highlight { background: #FEF3C7; color: #B45309; border: 1px solid #FCD34D; }
-        .card-tag.alert { background: #fee2e2; color: #b91c1c; border: 1px solid #f87171; font-weight: bold;}
-        .weather-card {
-            background: var(--weather-gradient);
-            border-radius: 16px; padding: 25px; margin: 20px;
-            text-align: center; color: white;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: var(--menu-bg);
+            display: flex;
+            padding: 10px 0 25px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            z-index: 100;
         }
-        .weather-main { display: flex; justify-content: space-around; align-items: center; margin: 20px 0; }
-        .weather-icon { font-size: 3.5rem; }
-        .weather-temp { font-size: 3rem; font-weight: 300; }
-        .weather-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; }
-        .w-item { font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
-        .shopping-section-title { font-weight: 700; margin: 0 0 10px 0; color: var(--accent-color); border-bottom: 1px solid #555; padding-bottom: 5px;}
-        .shopping-group { margin-bottom: 25px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; }
-        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 10px; }
-        .tool-btn {
-            background: rgba(255,255,255,0.08); padding: 25px 15px;
-            border-radius: 16px; text-align: center;
-            border: 1px solid rgba(255,255,255,0.05); cursor: pointer;
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            color: #64748B;
+            font-size: 0.75rem;
+            cursor: pointer;
         }
-        .tool-btn i { font-size: 2.2rem; color: var(--accent-color); margin-bottom: 12px; display: block; }
-        .checklist-item {
-            background: rgba(255,255,255,0.08); padding: 15px; margin-bottom: 12px;
-            border-radius: 8px; display: flex; align-items: center; gap: 15px;
-        }
-        .checklist-item.checked { opacity: 0.5; }
-        .checklist-item.checked span { text-decoration: line-through; }
-        .checklist-item input { width: 22px; height: 22px; accent-color: var(--accent-color); }
-        nav.bottom-nav {
-            position: fixed; bottom: 0; width: 100%;
-            background-color: var(--menu-bg);
-            display: flex; justify-content: space-around;
-            padding: 10px 0 25px 0; border-top: 1px solid rgba(255,255,255,0.1); z-index: 100;
-        }
-        .nav-item { color: #64748B; text-align: center; font-size: 0.75rem; cursor: pointer; width: 25%; }
-        .nav-item i { display: block; font-size: 1.4rem; margin-bottom: 4px; }
         .nav-item.active { color: var(--accent-color); }
+        .nav-item i { display: block; font-size: 1.4rem; margin-bottom: 4px; }
+
+        /* Modal */
         .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); z-index: 3000;
-            justify-content: center; align-items: end; backdrop-filter: blur(3px);
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 3000;
+            justify-content: flex-end;
+            align-items: center;
+            backdrop-filter: blur(3px);
         }
         .modal.open { display: flex; }
         .modal-content {
-            background: var(--card-color); color: var(--text-on-light);
-            width: 100%; max-width: 600px; max-height: 85vh;
-            border-radius: 20px 20px 0 0; padding: 25px;
-            overflow-y: auto; animation: slideUp 0.3s ease;
+            background: var(--card-color);
+            color: var(--text-on-light);
+            width: 100%;
+            max-width: 600px;
+            max-height: 85vh;
+            border-radius: 20px 20px 0 0;
+            padding: 25px;
+            overflow-y: auto;
+            position: relative;
         }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; color: #888; cursor: pointer; }
-        .info-row { margin: 12px 0; display: flex; align-items: flex-start; gap: 12px; font-size: 0.95rem; line-height: 1.6; }
-        .info-row i { color: #B45309; margin-top: 4px; width: 20px; text-align: center; }
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.8rem;
+            color: #888;
+            cursor: pointer;
+        }
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin: 15px 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .info-row i {
+            color: #B45309;
+            width: 20px;
+            text-align: center;
+            margin-top: 4px;
+        }
         .note-box {
-            background: #f8f8f8; border-left: 4px solid var(--accent-color);
-            padding: 15px; margin: 20px 0; border-radius: 0 8px 8px 0;
-            font-size: 0.95rem; color: #333; line-height: 1.7;
+            background: #f8f8f8;
+            border-left: 4px solid var(--accent-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            line-height: 1.7;
         }
         .action-btn {
-            display: flex; justify-content: center; align-items: center; gap: 8px;
-            width: 100%; padding: 14px; margin-top: 20px;
-            background: var(--accent-color); color: #0F172A;
-            border-radius: 10px; font-weight: bold; font-size: 1rem; border: none; cursor: pointer;
+            width: 100%;
+            padding: 14px;
+            background: var(--accent-color);
+            color: #0F172A;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
         }
         .taxi-card {
-            background: #fff; color: #000; padding: 20px;
-            border: 4px solid #000; margin: 15px 0;
-            text-align: center; border-radius: 8px;
+            background: white;
+            color: black;
+            padding: 20px;
+            border: 4px solid black;
+            border-radius: 8px;
+            text-align: center;
+            margin: 15px 0;
+            display: none;
         }
     </style>
 </head>
 <body>
+
     <header>
         <h1>FUKUOKA 2026</h1>
         <div class="header-icons">
-            <a href="#" class="header-btn" onclick="alert('手機上可使用 Google Translate App 翻譯本頁')">
+            <a href="#" onclick="alert('可使用 Google Translate App 翻譯本頁')">
                 <i class="fa-solid fa-language"></i>
             </a>
-            <a href="#" class="header-btn" onclick="openToolsPage(); return false;">
+            <a href="#">
                 <i class="fa-solid fa-martini-glass-citrus"></i>
             </a>
         </div>
     </header>
+
     <div class="date-selector-container">
         <div class="date-selector" id="date-selector"></div>
     </div>
-    <main>
-        <div id="page-itinerary" class="page active">
-            <div class="timeline-container" id="timeline-container" style="padding-top: 20px;"></div>
-            <div style="text-align:center; color:#666; font-size:0.8rem; margin:30px 0;">博多美食 • 一期一會</div>
-        </div>
-        <div id="page-map" class="page">
-            <div id="map-container"></div>
-        </div>
-        <div id="page-weather" class="page">
-            <div style="padding: 20px;">
-                <h2 style="font-weight:700; text-align:center; margin-bottom:10px;">當日天氣預報</h2>
-                <div id="weather-content"></div>
-                <!-- 水計數等內容省略以縮短 -->
-            </div>
-        </div>
-        <div id="page-shopping" class="page">
-            <div style="padding: 20px;">
-                <h2 style="font-weight:700; text-align:center;">今日購物建議</h2>
-                <div id="daily-shopping-list"></div>
-                <div id="general-shopping-container"></div>
-            </div>
-        </div>
-        <div id="page-tools" class="page">
-            <!-- 工具頁內容省略 -->
-        </div>
-    </main>
+
+    <div class="timeline-container" id="timeline-container"></div>
+
+    <div style="text-align:center; color:#666; font-size:0.8rem; padding:20px;">博多美食 • 一期一會</div>
+
     <nav class="bottom-nav">
-        <div class="nav-item active" onclick="switchMainPage('itinerary', this)"><i class="fa-solid fa-calendar-days"></i> 行程</div>
-        <div class="nav-item" onclick="switchMainPage('map', this)"><i class="fa-solid fa-map-location-dot"></i> 地圖</div>
-        <div class="nav-item" onclick="switchMainPage('weather', this)"><i class="fa-solid fa-cloud-sun-rain"></i> 天氣</div>
-        <div class="nav-item" onclick="switchMainPage('shopping', this)"><i class="fa-solid fa-basket-shopping"></i> 購物</div>
+        <div class="nav-item active">行程</div>
+        <div class="nav-item">地圖</div>
+        <div class="nav-item">天氣</div>
+        <div class="nav-item">購物</div>
     </nav>
+
+    <!-- Modal -->
     <div id="detail-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal()">×</span>
-            <h2 id="modal-title"></h2>
-            <div id="taxi-card" class="taxi-card" style="display:none;">
-                <h2 id="taxi-address"></h2>
+            <h2 id="modal-title" style="margin-top:0"></h2>
+            <div id="taxi-card" class="taxi-card">
+                <p style="font-size:0.8rem; color:#666; margin:0 0 10px 0;">運転手さん、ここへお願いします</p>
+                <h2 id="taxi-address" style="margin:10px 0;"></h2>
                 <p id="taxi-name"></p>
             </div>
             <div class="info-row"><i class="fa-regular fa-clock"></i><span id="modal-time"></span></div>
             <div class="info-row"><i class="fa-solid fa-location-dot"></i><span id="modal-address"></span></div>
-            <div class="info-row" id="modal-price-row"><i class="fa-solid fa-money-bill-wave"></i><span id="modal-price"></span></div>
-            <div class="note-box"><span id="modal-note"></span></div>
-            <div id="modal-links"></div>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:20px;">
-                <button class="action-btn" id="modal-map-btn">Google 導航</button>
-                <button class="action-btn" onclick="toggleTaxiCard()" style="background:#444; color:#fff;">給司機看</button>
-            </div>
+            <div class="info-row" id="modal-price-row" style="display:none;"><i class="fa-solid fa-money-bill-wave"></i><span id="modal-price"></span></div>
+            <div class="note-box" id="modal-note"></div>
+            <button class="action-btn" id="modal-map-btn">Google 導航</button>
+            <button class="action-btn" onclick="toggleTaxiCard()" style="background:#444; color:white;">給司機看</button>
         </div>
     </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
+        // 完整 7 天行程資料
         const scheduleData = {
-            "day1": { "date": "2/14 (六)", "events": [
-                { time: "17:10", title: "抵達福岡機場 (UO638)", type: "交通", price: "巴士 ¥310", address: "福岡機場國際線航廈", coords: [33.5859, 130.4500], note: "入境後直走至2號巴士站...", tags: ["移動", "必讀"] },
-                { time: "18:00 - 18:30", title: "Hotel Wing Int. 博多新幹線口", type: "住宿", address: "福岡市博多区博多駅東1-17-17", coords: [33.5905, 130.4230], note: "Check-in", tags: ["飯店"] },
-                { time: "18:30 - 19:30", title: "住吉酒販 (博多站內)", type: "清酒", price: "¥2,000", tags: ["清酒", "必去"] },
-                { time: "19:30 - 21:00", title: "博多牛腸鍋 飯山", type: "美食", price: "¥2,500", tags: ["美食"] },
-                { time: "21:00 後", title: "回酒店休息", type: "休息", tags: ["放鬆"] }
+            "day1": { date: "2/14 (六)", events: [
+                { time: "17:10", title: "抵達福岡機場 (UO638)", type: "交通", price: "巴士 ¥310", address: "福岡機場國際線航廈", note: "<b>路痴TIPS：</b>入境後直走50米到2號巴士站，搭西鐵巴士往博多駅，在筑紫口下車。", tags: ["移動", "必讀"] },
+                { time: "18:00 - 18:30", title: "Hotel Wing Int. 博多新幹線口", type: "住宿", address: "博多駅東1-17-17", note: "Check-in，步行4分鐘，有大浴場與免費飲料吧。", tags: ["飯店"] },
+                { time: "18:30 - 19:30", title: "住吉酒販 (博多站內)", type: "清酒", price: "¥2,000", address: "博多 Deitos Annex 1F", note: "<b>必買：</b>九州限定無濾過生原酒<br><b>體驗：</b>角打立飲區", tags: ["清酒", "必去"] },
+                { time: "19:30 - 21:00", title: "博多牛腸鍋 飯山 (おおやま)", type: "美食", price: "¥2,500", address: "博多 Deitos 1F", note: "<b>必點：</b>味噌牛腸鍋 + 生啤酒", tags: ["美食", "牛腸鍋"] },
+                { time: "21:00 後", title: "回酒店休息", type: "休息", address: "酒店 Lounge", note: "Lounge 有免費咖啡，建議早睡準備明天酒祭", tags: ["放鬆"] }
             ]},
-            // 其餘 day2~day7 資料相同，為了節省篇幅這裡僅示範 day1，實際使用請補全完整資料
-            "day2": { "date": "2/15 (日)", "events": [ /* ... */ ] },
-            "day3": { "date": "2/16 (一)", "events": [ /* ... */ ] },
-            "day4": { "date": "2/17 (二)", "events": [ /* ... */ ] },
-            "day5": { "date": "2/18 (三)", "events": [ /* ... */ ] },
-            "day6": { "date": "2/19 (四)", "events": [ /* ... */ ] },
-            "day7": { "date": "2/20 (五)", "events": [ /* ... */ ] }
+            "day2": { date: "2/15 (日)", events: [
+                { time: "09:00 - 10:30", title: "前往城島酒藏", type: "交通", price: "¥1,130", note: "JR到荒木站 + 免費接駁", tags: ["移動"] },
+                { time: "11:00 - 15:30", title: "城島酒藏びらき (酒祭)", type: "祭典", price: "試飲券 ¥2,000", note: "九州最大早春酒祭，必吃牡蠣配酒", tags: ["清酒", "祭典", "重點"] },
+                { time: "16:30 - 18:00", title: "LOPIA 超市 (Yodobashi)", type: "購物", price: "¥3,000", note: "只收現金！必買九州調味料", tags: ["超市", "現金"] },
+                { time: "18:30 - 20:30", title: "博多雞皮大臣 (KITTE)", type: "美食", price: "¥2,500", note: "必點醬汁雞皮串 + Highball", tags: ["燒鳥"] }
+            ]},
+            "day3": { date: "2/16 (一)", events: [
+                { time: "09:30 - 17:00", title: "太宰府天滿宮 → 竈門神社 → 二日市溫泉", type: "觀光", note: "梅花季 + 求良緣 + 古湯排毒", tags: ["神社", "溫泉"] },
+                { time: "19:00 - 21:00", title: "旭軒 (一口餃子)", type: "美食", price: "¥2,000", note: "博多老字號煎餃子", tags: ["餃子"] }
+            ]},
+            "day4": { date: "2/17 (二)", events: [
+                { time: "10:30 - 12:00", title: "麒麟啤酒工廠見學", type: "體驗", price: "¥500", note: "需預約，試飲3杯", tags: ["啤酒"] },
+                { time: "15:00 - 17:00", title: "南藏院 (世界最大涅槃佛)", type: "觀光", tags: ["大佛"] },
+                { time: "18:30 - 20:30", title: "海風土 (海鮮居酒屋)", type: "美食", price: "¥3,000", note: "必點海之玉手箱生魚片", tags: ["海鮮"] }
+            ]},
+            "day5": { date: "2/18 (三)", events: [
+                { time: "08:00 - 10:20", title: "特急 Sonic 去別府", type: "交通", note: "藍色音速號，車上吃雞肉便當", tags: ["鐵道"] },
+                { time: "10:30 - 17:00", title: "香氣博物館 → Brewery → 竹瓦砂湯", type: "體驗", note: "自製香水 + 啤酒 + 熱砂埋身", tags: ["香氛", "溫泉"] },
+                { time: "19:30 - 21:00", title: "博多一雙 (豚骨拉麵)", type: "美食", price: "¥1,000", note: "濃郁泡系，滿滿豚骨臭", tags: ["拉麵"] }
+            ]},
+            "day6": { date: "2/19 (四)", events: [
+                { time: "10:00 - 18:00", title: "明太子手作 → 線香 → 和牛 → 調香", type: "體驗", note: "豐富手作體驗日", tags: ["體驗"] },
+                { time: "19:00 - 20:30", title: "Udon 和助", type: "美食", note: "必點牛蒡天婦羅烏龍麵", tags: ["烏龍麵"] }
+            ]},
+            "day7": { date: "2/20 (五)", events: [
+                { time: "10:00 - 14:00", title: "抹茶 → 博多百年藏 → 高級壽司 → 返程", type: "美食", note: "完美句點旅程", tags: ["甜點", "壽司"] }
+            ]}
         };
 
         let currentDay = "day1";
-        let map = null;
-        let markers = [];
-
-        function init() {
-            renderDateSelector();
-            renderTimeline(currentDay);     // 直接渲染第一天
-            renderWeather(currentDay);
-            renderDailyShopping(currentDay);
-            initMap();
-            updateMapMarkers(currentDay);
-        }
 
         function renderDateSelector() {
             const container = document.getElementById('date-selector');
             container.innerHTML = '';
-            Object.keys(scheduleData).forEach(key => {
-                const info = scheduleData[key];
-                const num = key.replace('day', '');
+            Object.keys(scheduleData).forEach((key, index) => {
                 const chip = document.createElement('div');
                 chip.className = `date-chip ${key === currentDay ? 'active' : ''}`;
-                chip.innerHTML = `<span class="day-num">D${num}</span><span class="day-week">${info.date.split(' ')[0]}</span>`;
+                chip.innerHTML = `<div style="font-size:0.8rem;">D${index + 1}</div><div>${scheduleData[key].date.split(' ')[0]}</div>`;
                 chip.onclick = () => {
                     currentDay = key;
                     document.querySelectorAll('.date-chip').forEach(c => c.classList.remove('active'));
                     chip.classList.add('active');
-                    renderTimeline(key);
-                    renderWeather(key);
-                    renderDailyShopping(key);
-                    if (map) updateMapMarkers(key);
+                    renderTimeline();
                 };
                 container.appendChild(chip);
             });
         }
 
-        function renderTimeline(dayKey) {
+        function renderTimeline() {
             const container = document.getElementById('timeline-container');
             container.innerHTML = '';
+            const day = scheduleData[currentDay];
             const title = document.createElement('h3');
-            title.innerHTML = `<span style="color:var(--accent-color); font-weight:700;">${scheduleData[dayKey].date}</span>`;
-            title.style.marginBottom = '20px';
+            title.innerHTML = `<span style="color:var(--accent-color); font-weight:700;">${day.date}</span>`;
+            title.style.margin = '0 0 20px 0';
             container.appendChild(title);
 
-            scheduleData[dayKey].events.forEach(event => {
+            day.events.forEach(event => {
                 const item = document.createElement('div');
                 item.className = 'timeline-item';
 
-                const tagsHtml = (event.tags || []).map(t => {
+                const tagsHtml = (event.tags || []).map(tag => {
                     let cls = 'card-tag';
-                    if (t.includes('必') || t.includes('重點') || t.includes('清酒')) cls += ' highlight';
-                    if (t.includes('現金') || t.includes('注意')) cls += ' alert';
-                    return `<span class="${cls}">${t}</span>`;
+                    if (tag.includes('必') || tag.includes('重點') || tag.includes('清酒')) cls += ' highlight';
+                    return `<span class="${cls}">${tag}</span>`;
                 }).join('');
 
                 const priceHtml = event.price ? `<div class="card-price">${event.price}</div>` : '';
@@ -330,30 +367,32 @@
                     <div class="tags">${tagsHtml}</div>
                     ${priceHtml}
                 `;
-                card.onclick = () => openEventModal(event);
+                card.onclick = () => openModal(event);
                 item.appendChild(card);
                 container.appendChild(item);
             });
         }
 
-        function openEventModal(event) {
+        function openModal(event) {
             document.getElementById('modal-title').textContent = event.title;
             document.getElementById('modal-time').textContent = event.time;
-            document.getElementById('modal-address').textContent = event.address || '無';
-            document.getElementById('modal-note').innerHTML = event.note || '';
-            if (event.price) {
-                document.getElementById('modal-price-row').style.display = 'flex';
-                document.getElementById('modal-price').textContent = "預算：" + event.price;
-            } else {
-                document.getElementById('modal-price-row').style.display = 'none';
-            }
+            document.getElementById('modal-address').textContent = event.address || '無特定地址';
+            document.getElementById('modal-note').innerHTML = event.note || '無額外說明';
             document.getElementById('taxi-address').textContent = event.address || '';
             document.getElementById('taxi-name').textContent = event.title;
             document.getElementById('taxi-card').style.display = 'none';
 
-            let mapUrl = event.coords 
-                ? `https://www.google.com/maps/search/?api=1&query=${event.coords[0]},${event.coords[1]}`
-                : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.address || event.title)}`;
+            if (event.price) {
+                document.getElementById('modal-price-row').style.display = 'flex';
+                document.getElementById('modal-price').textContent = event.price;
+            } else {
+                document.getElementById('modal-price-row').style.display = 'none';
+            }
+
+            // Google 導航按鈕
+            const mapUrl = event.address 
+                ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.address + " 福岡")}`
+                : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.title + " 福岡")}`;
             document.getElementById('modal-map-btn').onclick = () => window.open(mapUrl, '_blank');
 
             document.getElementById('detail-modal').classList.add('open');
@@ -368,9 +407,16 @@
             card.style.display = card.style.display === 'none' ? 'block' : 'none';
         }
 
-        // 其餘函數（weather、shopping、map 等）保持原有邏輯，此處省略以縮短程式碼
+        // 點擊 modal 背景關閉
+        document.getElementById('detail-modal').onclick = function(e) {
+            if (e.target === this) closeModal();
+        };
 
-        window.onload = init;
+        // 初始化
+        window.onload = function() {
+            renderDateSelector();
+            renderTimeline();
+        };
     </script>
 </body>
 </html>
