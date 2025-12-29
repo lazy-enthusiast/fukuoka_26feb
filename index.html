@@ -3,25 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>福岡 2026 - 博多美食與酒旅 (詳細導航版)</title>
+    <title>福岡 2026 - 博多美食與酒旅</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
-    
+   
     <style>
         :root {
             /* --- 方案 B：博多織藍 (Hakata Blue) --- */
-            --bg-color: #1D2536;       /* 勝色 */
-            --card-color: #F0F4F8;     /* 灰白 */
-            --accent-color: #EAA800;   /* 山吹色 */
-            --text-on-dark: #FFFFFF;   
-            --text-on-light: #0F172A;  
+            --bg-color: #1D2536; /* 勝色 */
+            --card-color: #F0F4F8; /* 灰白 */
+            --accent-color: #EAA800; /* 山吹色 */
+            --text-on-dark: #FFFFFF;
+            --text-on-light: #0F172A;
             --menu-bg: #141B2D;
             --weather-gradient: linear-gradient(135deg, #2b5876 0%, #4e4376 100%);
         }
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
         body {
             font-family: "Noto Sans TC", sans-serif;
             background-color: var(--bg-color);
@@ -30,7 +28,6 @@
             height: 100vh;
             display: flex; flex-direction: column; overflow: hidden;
         }
-
         /* --- Header --- */
         header {
             padding: 15px 20px;
@@ -41,22 +38,21 @@
             height: 60px;
         }
         header h1 { margin: 0; font-size: 1.2rem; font-weight: 700; letter-spacing: 1px; }
-        
+       
         .header-icons { display: flex; gap: 20px; align-items: center; }
         .header-btn { color: var(--text-on-dark); font-size: 1.2rem; cursor: pointer; text-decoration: none; position: relative;}
-
         /* --- Global Date Selector --- */
         .date-selector-container {
             background: var(--bg-color); z-index: 90;
             padding: 10px 20px 10px 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .date-selector { 
-            display: flex; overflow-x: auto; gap: 10px; padding-bottom: 5px; scrollbar-width: none; 
-            -webkit-overflow-scrolling: touch; 
+        .date-selector {
+            display: flex; overflow-x: auto; gap: 10px; padding-bottom: 5px; scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
         }
         .date-selector::-webkit-scrollbar { display: none; }
-        
+       
         .date-chip {
             background: rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 16px;
             white-space: nowrap; font-size: 0.85rem; cursor: pointer; color: #aaa;
@@ -67,10 +63,8 @@
             background: var(--accent-color); color: #0F172A;
             box-shadow: 0 0 10px rgba(234, 168, 0, 0.4); transform: scale(1.05); font-weight: bold;
         }
-
         /* --- Main Content --- */
         main { flex: 1; overflow-y: hidden; position: relative; }
-
         .page {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             overflow-y: auto; padding: 10px 0 90px 0;
@@ -79,11 +73,10 @@
             -webkit-overflow-scrolling: touch;
         }
         .page.active { display: block; opacity: 1; z-index: 10; }
-        
+       
         /* Map Page Specific */
-        #page-map { padding: 0 0 80px 0; } 
+        #page-map { padding: 0 0 80px 0; }
         #map-container { width: 100%; height: 100%; }
-
         /* 子頁面 */
         .sub-page {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -99,11 +92,10 @@
         }
         .back-btn { font-size: 1.2rem; color: var(--accent-color); background: none; border: none; padding: 5px; cursor: pointer;}
         .sub-header h2 { margin: 0; font-size: 1.1rem; font-weight: 700; }
-        .sub-content { 
-            flex: 1; overflow-y: auto; padding: 20px; 
+        .sub-content {
+            flex: 1; overflow-y: auto; padding: 20px;
             -webkit-overflow-scrolling: touch;
         }
-
         /* --- Timeline & Cards --- */
         .timeline-container { padding: 0 20px; }
         .timeline-item {
@@ -116,7 +108,6 @@
             width: 10px; height: 10px; background: var(--accent-color);
             border-radius: 50%; box-shadow: 0 0 0 4px var(--bg-color);
         }
-
         .card {
             background-color: var(--card-color); color: var(--text-on-light);
             border-radius: 12px; padding: 16px; margin-bottom: 5px;
@@ -131,13 +122,11 @@
             font-weight: bold; color: #0369a1; font-size: 0.9rem;
             background: rgba(255,255,255,0.6); padding: 2px 6px; border-radius: 4px;
         }
-
         .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 5px; max-width: 70%; }
         .card-tag { font-size: 0.7rem; background: #CBD5E1; padding: 3px 8px; border-radius: 4px; color: #334155; }
         .card-tag.highlight { background: #FEF3C7; color: #B45309; border: 1px solid #FCD34D; }
         .card-tag.tips { background: #e0f2fe; color: #0369a1; }
         .card-tag.alert { background: #fee2e2; color: #b91c1c; border: 1px solid #f87171; font-weight: bold;}
-
         /* --- Weather Styles --- */
         .weather-card {
             background: var(--weather-gradient);
@@ -150,11 +139,9 @@
         .weather-temp { font-size: 3rem; font-weight: 300; }
         .weather-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; }
         .w-item { font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
-
         /* --- Shopping Styles --- */
         .shopping-section-title { font-weight: 700; margin: 0 0 10px 0; color: var(--accent-color); border-bottom: 1px solid #555; padding-bottom: 5px;}
         .shopping-group { margin-bottom: 25px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; }
-
         /* --- Tools Grid --- */
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 10px; }
         .tool-btn {
@@ -163,7 +150,6 @@
             border: 1px solid rgba(255,255,255,0.05); cursor: pointer;
         }
         .tool-btn i { font-size: 2.2rem; color: var(--accent-color); margin-bottom: 12px; display: block; }
-
         /* --- Lists --- */
         .checklist-item {
             background: rgba(255,255,255,0.08); padding: 15px; margin-bottom: 12px;
@@ -172,7 +158,7 @@
         .checklist-item.checked { opacity: 0.5; }
         .checklist-item.checked span { text-decoration: line-through; }
         .checklist-item input { width: 22px; height: 22px; accent-color: var(--accent-color); }
-        
+       
         /* --- Footer --- */
         nav.bottom-nav {
             position: fixed; bottom: 0; width: 100%;
@@ -183,7 +169,6 @@
         .nav-item { color: #64748B; text-align: center; font-size: 0.75rem; cursor: pointer; width: 25%; }
         .nav-item i { display: block; font-size: 1.4rem; margin-bottom: 4px; }
         .nav-item.active { color: var(--accent-color); }
-
         /* --- Modal --- */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -200,34 +185,33 @@
         }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; color: #888; cursor: pointer; }
-        
+       
         .info-row { margin: 12px 0; display: flex; align-items: flex-start; gap: 12px; font-size: 0.95rem; line-height: 1.6; }
-        .info-row i { color: #B45309; margin-top: 4px; width: 20px; text-align: center; } 
+        .info-row i { color: #B45309; margin-top: 4px; width: 20px; text-align: center; }
         .note-box {
             background: #f8f8f8; border-left: 4px solid var(--accent-color);
             padding: 15px; margin: 20px 0; border-radius: 0 8px 8px 0;
             font-size: 0.95rem; color: #333; line-height: 1.7;
         }
         .link-btn {
-            display: inline-block; background: #eee; color: #333; 
-            padding: 6px 12px; border-radius: 4px; text-decoration: none; 
+            display: inline-block; background: #eee; color: #333;
+            padding: 6px 12px; border-radius: 4px; text-decoration: none;
             font-size: 0.85rem; margin-top: 5px; border: 1px solid #ccc;
         }
         .action-btn {
             display: flex; justify-content: center; align-items: center; gap: 8px;
             width: 100%; padding: 14px; margin-top: 20px;
-            background: var(--accent-color); color: #0F172A; 
+            background: var(--accent-color); color: #0F172A;
             text-decoration: none; border-radius: 10px;
             font-weight: bold; font-size: 1rem; border: none; cursor: pointer;
         }
-        
+       
         /* Taxi Card */
         .taxi-card {
-            background: #fff; color: #000; padding: 20px; 
-            border: 4px solid #000; margin: 15px 0; 
+            background: #fff; color: #000; padding: 20px;
+            border: 4px solid #000; margin: 15px 0;
             text-align: center; border-radius: 8px;
         }
-
         /* Hotel Info Card */
         .hotel-info-card {
             background: #fff; color: #333;
@@ -246,11 +230,9 @@
         .hotel-detail-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         .hotel-label { font-weight: bold; width: 80px; flex-shrink: 0; color: #666; font-size: 0.9rem; }
         .hotel-val { flex: 1; font-size: 0.95rem; line-height: 1.5; }
-
     </style>
 </head>
 <body>
-
     <header>
         <h1>FUKUOKA 2026</h1>
         <div class="header-icons">
@@ -262,29 +244,25 @@
             </a>
         </div>
     </header>
-
     <div class="date-selector-container">
         <div class="date-selector" id="date-selector"></div>
     </div>
-
     <main>
         <div id="page-itinerary" class="page active">
             <div class="timeline-container" id="timeline-container" style="padding-top: 20px;"></div>
             <div style="text-align:center; color:#666; font-size:0.8rem; margin:30px 0;">博多美食 • 一期一會</div>
         </div>
-
         <div id="page-map" class="page">
             <div id="map-container"></div>
             <div style="position:absolute; bottom:90px; left:10px; background:rgba(255,255,255,0.9); padding:8px 12px; border-radius:8px; color:#333; font-size:0.8rem; box-shadow:0 2px 5px rgba(0,0,0,0.3); pointer-events:none; z-index:999;">
                 <i class="fa-solid fa-location-dot" style="color:var(--accent-color)"></i> 顯示當日行程地點
             </div>
         </div>
-
         <div id="page-weather" class="page">
             <div style="padding: 20px;">
                 <h2 style="font-weight:700; text-align:center; margin-bottom:10px;">當日天氣預報</h2>
                 <div id="weather-content"></div>
-                
+               
                 <div style="background:rgba(255,255,255,0.1); padding:15px; border-radius:12px; margin:20px 0; display:flex; align-items:center; justify-content:space-between; border:1px solid rgba(255,255,255,0.1);">
                     <div>
                         <div style="font-weight:bold; color:var(--accent-color);"><i class="fa-solid fa-glass-water"></i> 水分補給 Check</div>
@@ -295,7 +273,6 @@
                         <span id="water-count" style="font-size:2rem; font-weight:700; min-width:30px; text-align:center;">0</span>
                     </div>
                 </div>
-
                 <div class="note-box">
                     <div style="font-weight:bold; margin-bottom:5px; color:var(--accent-color);">2月福岡氣候 TIPS：</div>
                     平均氣溫 5°C - 12°C，仍屬寒冷冬季。<br>
@@ -304,21 +281,18 @@
                 </div>
             </div>
         </div>
-
         <div id="page-shopping" class="page">
             <div style="padding: 20px;">
                 <h2 style="font-weight:700; text-align:center;">今日購物建議</h2>
                 <p style="text-align:center; opacity:0.7; font-size:0.85rem; margin-bottom:20px;">根據當日行程地點推薦</p>
-                
+               
                 <div id="daily-shopping-list"></div>
-
                 <div style="margin-top:40px; border-top:1px solid rgba(255,255,255,0.1); padding-top:20px;">
                     <h3 style="color:#aaa; font-size:1rem;">全行程購物清單 (General)</h3>
                     <div id="general-shopping-container"></div>
                 </div>
             </div>
         </div>
-
         <div id="page-tools" class="page">
             <h2 style="text-align:center; margin: 30px 0 20px 0; font-weight:700;">旅人百寶箱</h2>
             <div class="tools-grid">
@@ -348,7 +322,6 @@
                 <button onclick="history.back()" style="background:none; border:1px solid #777; color:#fff; padding:10px 20px; border-radius:20px;">關閉百寶箱</button>
             </div>
         </div>
-
         <div id="subpage-info" class="sub-page">
             <div class="sub-header"><button class="back-btn" onclick="closeSubPage('info')"><i class="fa-solid fa-arrow-left"></i></button><h2>住宿與實用資訊</h2></div>
             <div class="sub-content">
@@ -356,7 +329,7 @@
                     <div class="hotel-info-header"><i class="fa-solid fa-bed"></i> 住宿資料</div>
                     <div class="hotel-info-body">
                         <h3 style="margin:0 0 15px 0; line-height:1.4;">Hotel Wing International<br>博多新幹線口</h3>
-                        
+                       
                         <div class="hotel-detail-row">
                             <div class="hotel-label">地址</div>
                             <div class="hotel-val">〒812-0013<br>福岡県福岡市博多区博多駅東1-17-17</div>
@@ -369,13 +342,12 @@
                             <div class="hotel-label">時間</div>
                             <div class="hotel-val">Check-in: 15:00<br>Check-out: 11:00</div>
                         </div>
-                        
+                       
                         <a href="https://maps.google.com/?q=Hotel+Wing+International+Hakata+Shinkansen-guchi" target="_blank" class="action-btn" style="margin-top:15px; font-size:0.9rem; padding:10px;">
                             <i class="fa-solid fa-map-location-dot"></i> Google Map 導航
                         </a>
                     </div>
                 </div>
-
                 <div class="hotel-info-card">
                     <div class="hotel-info-header" style="background:#555; color:#fff;"><i class="fa-solid fa-star"></i> 設施亮點</div>
                     <div class="hotel-info-body">
@@ -399,12 +371,11 @@
                 </div>
             </div>
         </div>
-
         <div id="subpage-packing" class="sub-page">
             <div class="sub-header"><button class="back-btn" onclick="closeSubPage('packing')"><i class="fa-solid fa-arrow-left"></i></button><h2>行李清單</h2></div>
             <div class="sub-content" id="packing-list-container"></div>
         </div>
-        
+       
         <div id="subpage-rate" class="sub-page">
             <div class="sub-header"><button class="back-btn" onclick="closeSubPage('rate')"><i class="fa-solid fa-arrow-left"></i></button><h2>匯率換算</h2></div>
             <div class="sub-content" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:80%;">
@@ -418,7 +389,7 @@
                 </div>
             </div>
         </div>
-        
+       
         <div id="subpage-safety" class="sub-page">
             <div class="sub-header"><button class="back-btn" onclick="closeSubPage('safety')"><i class="fa-solid fa-arrow-left"></i></button><h2>安全功能</h2></div>
             <div class="sub-content">
@@ -432,38 +403,34 @@
                 <div class="checklist-item" onclick="alert('119')"><i class="fa-solid fa-truck-medical" style="color:var(--accent-color);"></i><span>救護/消防: 119</span></div>
             </div>
         </div>
-
     </main>
-
     <nav class="bottom-nav">
         <div class="nav-item active" onclick="switchMainPage('itinerary', this)"><i class="fa-solid fa-calendar-days"></i> 行程</div>
         <div class="nav-item" onclick="switchMainPage('map', this)"><i class="fa-solid fa-map-location-dot"></i> 地圖</div>
         <div class="nav-item" onclick="switchMainPage('weather', this)"><i class="fa-solid fa-cloud-sun-rain"></i> 天氣</div>
         <div class="nav-item" onclick="switchMainPage('shopping', this)"><i class="fa-solid fa-basket-shopping"></i> 購物</div>
     </nav>
-
     <div id="detail-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal()">×</span>
             <div class="modal-header"><h2 id="modal-title">標題</h2><span id="modal-type" class="sub">類型</span></div>
             <div class="modal-body">
-                
+               
                 <div id="taxi-card" class="taxi-card" style="display:none;">
                     <p style="font-size:0.8rem; color:#666; margin:0 0 5px 0;">運転手さん、ここへお願いします（博多弁：ここに行きんしゃい）</p>
                     <h2 id="taxi-address" style="font-size:1.5rem; margin:5px 0; font-weight:bold; line-height:1.2;"></h2>
                     <p id="taxi-name" style="font-size:1rem; margin-top:5px; color:#444;"></p>
                 </div>
-
                 <div class="info-row"><i class="fa-regular fa-clock"></i><span id="modal-time">時間</span></div>
                 <div class="info-row"><i class="fa-solid fa-location-dot"></i><span id="modal-address">地址</span></div>
                 <div class="info-row" id="modal-price-row"><i class="fa-solid fa-money-bill-wave"></i><span id="modal-price"></span></div>
-                
+               
                 <div class="note-box">
-                    <div style="font-weight:bold; margin-bottom:8px; color:var(--accent-color);">詳細導航與 TIPS：</div>
+                    <div style="font-weight:bold; margin-bottom:8px; color:var(--accent-color);">攻略與 TIPS：</div>
                     <span id="modal-note">內容...</span>
                 </div>
                 <div id="modal-links" style="margin-bottom: 20px;"></div>
-                
+               
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:20px;">
                      <button class="action-btn" id="modal-map-btn" style="margin-top:0;"><i class="fa-solid fa-map-location-dot"></i> Google 導航</button>
                      <button class="action-btn" onclick="toggleTaxiCard()" style="margin-top:0; background:#444; color:#fff;"><i class="fa-solid fa-taxi"></i> 給司機看</button>
@@ -471,318 +438,97 @@
             </div>
         </div>
     </div>
-
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // --- DATA: 福岡 2/14 - 2/20 行程 (詳細導航版) ---
+        // --- DATA: 福岡 2/14 - 2/20 行程 ---
         const scheduleData = {
             "day1": {
                 "date": "2/14 (六)",
                 "events": [
-                    { 
-                        time: "17:10 抵達 ➔ 18:30 酒店", 
-                        title: "抵達福岡機場 & 酒店", 
-                        type: "交通", 
-                        price: "巴士 ¥310", 
-                        address: "福岡市博多区博多駅東1-17-17", 
-                        coords: [33.5905, 130.4230], 
-                        note: "<b>⚠️ 路痴生存法則：</b>酒店在<span style='color:red; font-weight:bold;'>筑紫口 (Chikushi)</span>（後站），千萬不要走去博多口！<br><br><b>🚌 交通指引：</b><br>1. 入境大堂直走找「2號巴士站」。<br>2. 搭往「博多駅」巴士。<br>3. <b>下車地點：</b><span style='color:red'>博多駅筑紫口</span>。<br>4. 面向車站右轉，沿大馬路（博多駅東街）直走4分鐘。<br>5. 過第一個紅綠燈後，酒店就在<b>右手邊</b>（不用過對面馬路）。", 
-                        tags: ["移動", "必讀", "路痴TIPS"], 
-                        shopping_items: ["IC卡儲值", "便利商店水"] 
-                    },
-                    { 
-                        time: "18:30 - 19:30 (開放至21:00)", 
-                        title: "住吉酒販 (博多站內)", 
-                        type: "清酒", 
-                        price: "¥2,000", 
-                        address: "博多 Deitos Annex 1F", 
-                        coords: [33.5898, 130.4210], 
-                        note: "<b>🚶 交通指引：</b><br>1. 離開酒店，原路走回<span style='color:red'>筑紫口</span>。<br>2. 進大門後<b>不要過剪票口</b>。<br>3. 立刻向右看，找「Deitos Annex」招牌。<br>4. 直走約50米左手邊。<br><br><b>體驗：</b>用花札代幣換酒喝，必買九州限定「無濾過生原酒」。", 
-                        tags: ["清酒", "必去"], 
-                        shopping_items: ["無濾過生原酒", "九州純米酒"] 
-                    },
-                    { 
-                        time: "19:30 - 21:00 (開放至23:00)", 
-                        title: "博多牛腸鍋 飯山", 
-                        type: "美食", 
-                        price: "¥2,500", 
-                        address: "博多 Deitos 1F 麵街道", 
-                        coords: [33.5900, 130.4205], 
-                        note: "<b>🚶 交通指引：</b><br>1. 走出住吉酒販，回到車站通道。<br>2. 往車站中心走，進入「博多 Deitos」區域。<br>3. 找「博多麵街道」（有紅燈籠裝飾）。<br>4. 找不到請秀日文：「博多もつ鍋 おおやま」。<br><br><b>必點：</b>味噌牛腸鍋、生啤酒。", 
-                        link: "https://resy.com/cities/fukuoka-japan/venues/hakata-motsunabe-ooyama-deitos-hakata", 
-                        tags: ["美食", "牛腸鍋"] 
-                    }
+                    { time: "17:10", title: "抵達福岡機場 (UO638)", type: "交通", price: "巴士 ¥310", address: "福岡機場國際線航廈", coords: [33.5859, 130.4500], note: "<b>路痴TIPS：</b>入境後直走50米到「2號巴士站」，搭西鐵巴士往「博多駅・天神」方向，在「博多駅筑紫口」下車（約20分）。<br>準備好 Suica/ICOCA 卡。", tags: ["移動", "必讀"], shopping_items: ["IC卡儲值", "便利商店水"] },
+                    { time: "18:00 - 18:30", title: "Hotel Wing Int. 博多新幹線口", type: "住宿", price: "", address: "福岡市博多区博多駅東1-17-17", coords: [33.5905, 130.4230], note: "Check-in。大浴場在1F，有免費飲料吧。<br>位置：博多筑紫口步行4分鐘，過小路口右手邊。", tags: ["飯店"], shopping_items: [] },
+                    { time: "18:30 - 19:30", title: "住吉酒販 (博多站內)", type: "清酒", price: "¥2,000", address: "博多 Deitos Annex 1F", coords: [33.5898, 130.4210], note: "<b>必買：</b>九州限定「無濾過生原酒」。<br><b>體驗：</b>角打立飲區，用花札代幣換酒喝。<br>位置：筑紫口進站右側 Deitos Annex。", tags: ["清酒", "必去"], shopping_items: ["無濾過生原酒", "九州純米酒"] },
+                    { time: "19:30 - 21:00", title: "博多牛腸鍋 飯山 (おおやま)", type: "美食", price: "¥2,500", address: "博多 Deitos 1F 麵街道", coords: [33.5900, 130.4205], note: "<b>必點：</b>味噌牛腸鍋、生啤酒。<br>位置：Deitos 1F 博多麵街道內。", link: "https://resy.com/cities/fukuoka-japan/venues/hakata-motsunabe-ooyama-deitos-hakata", tags: ["美食", "牛腸鍋"] },
+                    { time: "21:00 後", title: "回酒店休息", type: "休息", price: "免費", address: "酒店 Lounge", coords: [33.5905, 130.4230], note: "Lounge 有免費咖啡或有料酒。建議早睡為明天酒祭準備。", tags: ["放鬆"] }
                 ]
             },
             "day2": {
                 "date": "2/15 (日)",
                 "events": [
-                    { 
-                        time: "09:00 出發 - 15:30", 
-                        title: "城島酒藏びらき (酒祭)", 
-                        type: "祭典", 
-                        price: "試飲券 ¥2,000", 
-                        address: "久留米市城島町", 
-                        coords: [33.2675, 130.4243], 
-                        note: "<b>🚆 去程指引：</b><br>1. 酒店走回<span style='color:red'>筑紫口</span>進站（刷IC卡）。<br>2. 搭JR鹿兒島本線往「久留米/大牟田」方向。<br>3. 在<b>「荒木站 (Araki)」</b>下車（約30-45分）。<br>4. 出站跟人群走，搭免費接駁巴士。<br><br><b>活動：</b>九州最大早春酒祭！", 
-                        link: "http://nanbu-shoko.jp/sakagura/", 
-                        tags: ["清酒", "祭典", "重點"], 
-                        shopping_items: ["新酒", "酒粕", "酒器"] 
-                    },
-                    { 
-                        time: "16:30 - 18:00 (開放至21:00)", 
-                        title: "LOPIA 超市 (Yodobashi)", 
-                        type: "購物", 
-                        price: "¥3,000", 
-                        address: "Yodobashi 博多 4F", 
-                        coords: [33.5888, 130.4225], 
-                        note: "<b>🚶 回程指引：</b><br>1. 搭接駁車回荒木站 ➔ JR回博多站。<br>2. 務必從<span style='color:red'>筑紫口</span>出站！<br>3. 出站向右看，那棟大電器行就是。<br>4. 電梯直上4F。<br><br><b>⚠️ 注意：只收現金！</b>", 
-                        tags: ["超市", "現金"], 
-                        shopping_items: ["九州調味料", "熟食便當", "洗浴用品"] 
-                    },
-                    { 
-                        time: "18:30 - 20:30 (開放至23:30)", 
-                        title: "博多雞皮大臣 (KITTE)", 
-                        type: "美食", 
-                        price: "¥2,500", 
-                        address: "KITTE博多 B1", 
-                        coords: [33.5892, 130.4185], 
-                        note: "<b>🚶 交通指引：</b><br>1. 從Yodobashi走回筑紫口。<br>2. <b>穿越整個車站大廳</b>走到西邊的<span style='color:red'>博多口</span>。<br>3. 出大門左看，連著車站的大樓就是 KITTE。<br>4. 下B1美食街直走右手邊。<br><br><b>必點：</b>醬汁雞皮串、Highball。", 
-                        tags: ["燒鳥", "居酒屋"] 
-                    }
+                    { time: "09:00 - 10:30", title: "前往城島酒藏 (JR+巴士)", type: "交通", price: "¥1,130", address: "JR荒木站", coords: [33.2790, 130.5050], note: "1. 酒店走回筑紫口進站。<br>2. 搭JR鹿兒島本線往「久留米」方向 -> 「荒木站」下車。<br>3. 站前搭免費接駁巴士。", tags: ["移動"] },
+                    { time: "11:00 - 15:30", title: "城島酒藏びらき (酒祭)", type: "祭典", price: "試飲券 ¥2,000", address: "久留米市城島町楢津764", coords: [33.2675, 130.4243], note: "九州最大早春酒祭！<br><b>攻略：</b>買試飲券(含豬口杯)，搭巡迴巴士訪酒藏(旭菊、池龜等)。<br><b>必吃：</b>牡蠣配酒、鰻魚蒸飯。", link: "http://nanbu-shoko.jp/sakagura/", tags: ["清酒", "祭典", "重點"], shopping_items: ["新酒", "酒粕", "酒器"] },
+                    { time: "16:30 - 18:00", title: "LOPIA 超市 (Yodobashi)", type: "購物", price: "¥3,000", address: "Yodobashi 博多 4F", coords: [33.5888, 130.4225], note: "<b>注意：只收現金！</b><br><b>必買：</b>九州調味料、熟食便當、香氛沐浴品。", tags: ["超市", "現金"], shopping_items: ["九州調味料", "熟食便當", "洗浴用品"] },
+                    { time: "18:30 - 20:30", title: "博多雞皮大臣 (KITTE)", type: "美食", price: "¥2,500", address: "KITTE博多 B1", coords: [33.5892, 130.4185], note: "<b>必點：</b>醬汁雞皮串、Highball。<br>位置：博多口旁 KITTE B1。", tags: ["燒鳥", "居酒屋"] }
                 ]
             },
             "day3": {
                 "date": "2/16 (一)",
                 "events": [
-                    { 
-                        time: "09:30 出發 - 12:00", 
-                        title: "太宰府天滿宮", 
-                        type: "神社", 
-                        price: "巴士 ¥610", 
-                        address: "太宰府市宰府4-7-1", 
-                        coords: [33.5215, 130.5349], 
-                        note: "<b>🚌 去程指引 (巴士總站)：</b><br>1. 穿過車站到<span style='color:red'>博多口</span>。<br>2. 右手邊大樓「博多バスターミナル」上1樓。<br>3. 走到<b>11號月台</b>（地面有粉紅線）。<br>4. 搭乘「旅人 (Tabito)」號直達太宰府。<br><br><b>活動：</b>梅花季、吃梅枝餅。", 
-                        tags: ["神社", "梅花", "移動"], 
-                        shopping_items: ["牛形繪馬", "御守", "梅枝餅"] 
-                    },
-                    { 
-                        time: "12:00 - 14:00 (開放至17:00)", 
-                        title: "竈門神社 (求良緣)", 
-                        type: "神社", 
-                        price: "巴士 ¥100", 
-                        address: "太宰府市內山833", 
-                        coords: [33.5350, 130.5500], 
-                        note: "<b>🚌 交通指引：</b><br>1. 走回西鐵太宰府站。<br>2. 站前搭社區巴士「まほろば号 (Mahoroba)」。<br>3. 終點站「内山」下車。<br><br><b>重點：</b>非常靈驗的結緣神社，御守很美。", 
-                        tags: ["結緣", "神社"], 
-                        shopping_items: ["粉紅結緣御守"] 
-                    },
-                    { 
-                        time: "15:00 - 17:00 (開放至21:00)", 
-                        title: "博多湯 (二日市溫泉)", 
-                        type: "溫泉", 
-                        price: "¥550", 
-                        address: "筑紫野市湯町1-14-5", 
-                        coords: [33.4930, 130.5180], 
-                        note: "<b>🚆 交通指引：</b><br>1. 搭巴士回西鐵太宰府站。<br>2. 搭西鐵電車坐2站到「西鐵二日市站」。<br>3. 西口出站右轉，沿商店街直走10分鐘。<br>4. 認古色古香木造建築。<br><br><b>中途：</b>參道上可吃「茶和々」抹茶冰。", 
-                        tags: ["溫泉"], 
-                        shopping_items: ["溫泉鹽"] 
-                    },
-                    { 
-                        time: "19:00 - 21:00 (開放至00:00)", 
-                        title: "旭軒 (一口餃子)", 
-                        type: "美食", 
-                        price: "¥2,000", 
-                        address: "博多駅前2-15-22", 
-                        coords: [33.5880, 130.4160], 
-                        note: "<b>🚆 回程指引：</b><br>1. 從博多湯步行到<b>「JR二日市站」</b>（非西鐵，約10分）。<br>2. 搭JR回博多站。<br>3. <span style='color:red'>博多口</span>出站，直走過馬路約5分鐘。<br>4. 在巷子裡，建議開Google Map。", 
-                        tags: ["餃子"] 
-                    }
+                    { time: "09:30 - 10:30", title: "搭「旅人號」去太宰府", type: "交通", price: "¥610", address: "博多巴士總站 1F 11號月台", coords: [33.5915, 130.4180], note: "博多口出站左側巴士總站。直達太宰府。", tags: ["移動"] },
+                    { time: "10:30 - 12:00", title: "太宰府天滿宮", type: "神社", price: "免費", address: "太宰府市宰府4-7-1", coords: [33.5215, 130.5349], note: "梅花季節！抽籤祈福、看飛梅。<br>參道買「梅枝餅」吃。", tags: ["神社", "梅花"], shopping_items: ["牛形繪馬", "御守", "梅枝餅"] },
+                    { time: "13:00 - 14:00", title: "竈門神社 (求良緣)", type: "神社", price: "巴士 ¥100", address: "太宰府市內山833", coords: [33.5350, 130.5500], note: "<b>交通：</b>西鐵太宰府站搭 Mahoroba 巴士。<br><b>重點：</b>非常靈驗的結緣神社，適合獨旅祈福。御守很美。", tags: ["結緣", "神社"], shopping_items: ["粉紅結緣御守"] },
+                    { time: "14:00 - 15:00", title: "茶和々 (抹茶甜點)", type: "美食", price: "¥800", address: "太宰府參道", coords: [33.5200, 130.5330], note: "必吃 Premium 抹茶霜淇淋。", tags: ["甜點"] },
+                    { time: "15:00 - 17:00", title: "博多湯 (二日市溫泉)", type: "溫泉", price: "¥550", address: "筑紫野市湯町1-14-5", coords: [33.4930, 130.5180], note: "1300年歷史古湯。排毒放鬆。<br><b>交通：</b>太宰府站搭電車到二日市，步行12分。", tags: ["溫泉"], shopping_items: ["溫泉鹽"] },
+                    { time: "19:00 - 21:00", title: "旭軒 (一口餃子)", type: "美食", price: "¥2,000", address: "博多駅前2-15-22", coords: [33.5880, 130.4160], note: "<b>必點：</b>煎餃子、炸雞翅。<br>博多老字號。", tags: ["餃子"] }
                 ]
             },
             "day4": {
                 "date": "2/17 (二)",
                 "events": [
-                    { 
-                        time: "09:00 出發 (10:30見學)", 
-                        title: "麒麟啤酒工廠 & 甘木鐵道", 
-                        type: "體驗", 
-                        price: "¥810 + ¥500", 
-                        address: "朝倉市馬田3601", 
-                        coords: [33.3900, 130.6050], 
-                        note: "<b>🚆 交通指引 (需轉車)：</b><br>1. <span style='color:red'>筑紫口</span>進站，搭JR到「基山站 (Kiyama)」。<br>2. 站內轉乘「甘木鐵道」（小火車，<b style='color:red'>備現金</b>）。<br>3. 在「太刀洗站」下車，步行15分。<br><br><b>需預約：</b>試飲3杯 (一番搾等)。", 
-                        link: "https://www.kirin.co.jp/experience/factory/fukuoka/", 
-                        tags: ["啤酒", "鐵道", "現金"], 
-                        shopping_items: ["啤酒杯", "限定啤酒"] 
-                    },
-                    { 
-                        time: "13:30 出發 - 17:00", 
-                        title: "南藏院 (涅槃佛)", 
-                        type: "神社", 
-                        price: "¥300", 
-                        address: "篠栗町篠栗1035", 
-                        coords: [33.6160, 130.5600], 
-                        note: "<b>🚆 交通指引：</b><br>1. 原路回基山站，搭JR回博多站。<br>2. <b>不要出站</b>，轉第8月台「JR篠栗線」。<br>3. 往篠栗/直方方向，在「城戸南蔵院前」下車。<br>4. 出站過橋左轉上坡。<br><br><b>看點：</b>世界最大青銅涅槃佛。", 
-                        tags: ["神社", "大佛"], 
-                        shopping_items: ["強力御守"] 
-                    },
-                    { 
-                        time: "18:30 - 20:30 (開放至23:00)", 
-                        title: "海風土 (海鮮居酒屋)", 
-                        type: "美食", 
-                        price: "¥3,000", 
-                        address: "博多駅東2-4-17", 
-                        coords: [33.5910, 130.4250], 
-                        note: "<b>🚶 交通指引：</b><br>1. 搭JR回博多，<span style='color:red'>筑紫口</span>出站。<br>2. 右轉沿博多駅東街走5分鐘。<br>3. 離酒店非常近。<br><br><b>必點：</b>海之玉手箱生魚片。", 
-                        tags: ["海鮮", "居酒屋"] 
-                    }
+                    { time: "09:00 - 10:30", title: "甘木鐵道小火車", type: "交通", price: "¥810", address: "太刀洗站", coords: [33.4000, 130.6000], note: "JR基山站轉乘甘木鐵道。單節復古火車，很可愛。", tags: ["鐵道"] },
+                    { time: "10:30 - 12:00", title: "麒麟啤酒工廠見學", type: "體驗", price: "¥500", address: "朝倉市馬田3601", coords: [33.3900, 130.6050], note: "<b>需預約：</b>試飲3杯 (一番搾等)。<br>午餐在園區吃成吉思汗烤肉。", link: "https://www.kirin.co.jp/experience/factory/fukuoka/", tags: ["啤酒", "見學"], shopping_items: ["啤酒杯", "限定啤酒"] },
+                    { time: "15:00 - 17:00", title: "南藏院 (涅槃佛)", type: "神社", price: "¥300", address: "篠栗町篠栗1035", coords: [33.6160, 130.5600], note: "世界最大青銅涅槃佛。氣場強大。<br><b>交通：</b>JR城戶南藏院前站。", tags: ["神社", "大佛"], shopping_items: ["強力御守"] },
+                    { time: "18:30 - 20:30", title: "海風土 (海鮮居酒屋)", type: "美食", price: "¥3,000", address: "博多駅東2-4-17", coords: [33.5910, 130.4250], note: "<b>必點：</b>「海之玉手箱」生魚片拼盤 (¥500)、胡麻鯖魚。", tags: ["海鮮", "居酒屋"] }
                 ]
             },
             "day5": {
                 "date": "2/18 (三)",
                 "events": [
-                    { 
-                        time: "08:00 出發 - 13:00", 
-                        title: "別府香水博物館", 
-                        type: "體驗", 
-                        price: "¥4,000+", 
-                        address: "別府市北石垣48-1", 
-                        coords: [33.3000, 131.4900], 
-                        note: "<b>🚆 交通指引：</b><br>1. 博多站搭<b>「特急 Sonic (藍色音速號)」</b>往大分。<br>2. <b>「別府站」</b>下車。<br>3. 西口搭龜之井巴士到「別府大學下」，步行5分。<br><br><b>重點：</b>調製專屬香水。", 
-                        tags: ["鐵道", "香氛"], 
-                        shopping_items: ["自製香水"] 
-                    },
-                    { 
-                        time: "13:00 - 17:00", 
-                        title: "竹瓦溫泉 & Beppu Brewery", 
-                        type: "溫泉", 
-                        price: "¥1,500", 
-                        address: "別府市元町16-23", 
-                        coords: [33.2760, 131.5050], 
-                        note: "<b>🚶 交通指引：</b><br>1. 搭巴士回別府站。<br>2. 午餐：站前 Beppu Brewery。<br>3. 溫泉：往海邊沿「駅前通」走，依導航右轉入巷（古老木造建築）。<br><br><b>體驗：</b>熱砂浴（建議先拿號碼牌）。", 
-                        tags: ["溫泉", "砂湯", "啤酒"] 
-                    },
-                    { 
-                        time: "19:30 - 21:00 (開放至00:00)", 
-                        title: "博多一雙 (豚骨拉麵)", 
-                        type: "美食", 
-                        price: "¥1,000", 
-                        address: "博多駅東本店", 
-                        coords: [33.5905, 130.4245], 
-                        note: "<b>🚶 回程指引：</b><br>1. 搭Sonic特急回博多，<span style='color:red'>筑紫口</span>出站。<br>2. 右轉步行5-8分鐘。<br>3. 認明排隊人潮與濃郁豚骨味。", 
-                        tags: ["拉麵", "排隊店"] 
-                    }
+                    { time: "08:00 - 10:20", title: "特急 Sonic 去別府", type: "交通", price: "¥4,000+", address: "博多站", coords: [33.5900, 130.4206], note: "買個「東筑軒」雞肉便當上車吃。藍色音速號列車。", tags: ["鐵道", "便當"] },
+                    { time: "10:30 - 13:00", title: "大分香氣博物館", type: "體驗", price: "¥3,000", address: "別府市北石垣48-1", coords: [33.3000, 131.4900], note: "<b>重點：</b>調製專屬香水 (40-50分)。<br>交通：別府站搭巴士到「別府大學下」。", tags: ["香氛", "手作"], shopping_items: ["自製香水"] },
+                    { time: "13:00 - 15:00", title: "Beppu Brewery", type: "美食", price: "¥2,000", address: "別府市駅前町13-8", coords: [33.2780, 131.5000], note: "<b>必點：</b>啤酒試飲組 (Flight)、大分炸雞天。", tags: ["啤酒"] },
+                    { time: "15:00 - 17:00", title: "竹瓦溫泉 砂湯", type: "溫泉", price: "¥1,500", address: "別府市元町16-23", coords: [33.2760, 131.5050], note: "熱砂埋在身上排毒，非常舒服。建築本身是古蹟。", tags: ["溫泉", "砂湯"] },
+                    { time: "19:30 - 21:00", title: "博多一雙 (豚骨拉麵)", type: "美食", price: "¥1,000", address: "博多駅東本店", coords: [33.5905, 130.4245], note: "<b>必點：</b>味玉拉麵。湯頭充滿「豚骨臭」的濃郁泡系拉麵。", tags: ["拉麵", "排隊店"] }
                 ]
             },
             "day6": {
                 "date": "2/19 (四)",
                 "events": [
-                    { 
-                        time: "09:00 出發 (10:00預約)", 
-                        title: "Haku Haku 明太子手作", 
-                        type: "體驗", 
-                        price: "¥2,200", 
-                        address: "吉塚站附近", 
-                        coords: [33.6050, 130.4300], 
-                        note: "<b>🚆 交通指引：</b><br>1. 博多站搭JR（往小倉）坐1站到<b>「吉塚站」</b>。<br>2. <b>東口</b>出來。<br>3. ⚠️ <b>路痴注意：</b>這段路約13分，務必開Google Map沿大路走，不要鑽巷子。<br><br><b>活動：</b>DIY明太子。", 
-                        tags: ["體驗", "明太子"], 
-                        shopping_items: ["自製明太子"] 
-                    },
-                    { 
-                        time: "11:15 - 12:30", 
-                        title: "中洲川端 & 線香", 
-                        type: "購物", 
-                        price: "¥1,000", 
-                        address: "川端商店街", 
-                        coords: [33.5930, 130.4100], 
-                        note: "<b>🚇 交通指引：</b><br>1. 回吉塚站搭JR回博多。<br>2. 轉乘「地下鐵空港線」（往天神/姪浜）。<br>3. <b>「中洲川端站」</b>下車，5號出口。<br><br><b>逛：</b>市川香舖買線香。", 
-                        tags: ["香氛", "地鐵"], 
-                        shopping_items: ["線香"] 
-                    },
-                    { 
-                        time: "12:30 - 14:00 (午餐)", 
-                        title: "燒肉 BAKURO (大名)", 
-                        type: "美食", 
-                        price: "¥3,000", 
-                        address: "大名店", 
-                        coords: [33.5870, 130.3950], 
-                        note: "<b>🚇 交通指引：</b><br>1. 繼續搭空港線到<b>「赤坂站」</b>。<br>2. 步行5分鐘（巷弄多，開導航）。<br><br><b>必點：</b>午間和牛套餐。", 
-                        tags: ["燒肉", "和牛"] 
-                    },
-                    { 
-                        time: "16:30 - 18:00 (開放至20:00)", 
-                        title: "MY ONLY FRAGRANCE", 
-                        type: "體驗", 
-                        price: "¥5,000", 
-                        address: "中央区大名1-1-35", 
-                        coords: [33.5865, 130.3960], 
-                        note: "<b>🚶 交通指引：</b><br>離午餐地點和天神商圈步行可達。<br>建議逛完天神超市後導航走過來（約10-15分）。<br><br><b>活動：</b>第二次調香。", 
-                        tags: ["香氛"], 
-                        shopping_items: ["專屬香水"] 
-                    }
+                    { time: "10:00 - 11:00", title: "Haku Haku 明太子手作", type: "體驗", price: "¥2,200", address: "吉塚站附近", coords: [33.6050, 130.4300], note: "<b>需預約：</b>製作自己的明太子。<br>JR吉塚站步行13分。", tags: ["體驗", "明太子"], shopping_items: ["自製明太子"] },
+                    { time: "11:15 - 12:30", title: "市川香舖 (線香)", type: "購物", price: "¥1,000", address: "川端商店街", coords: [33.5930, 130.4100], note: "買好聞的日式線香。", tags: ["香氛"], shopping_items: ["線香"] },
+                    { time: "12:30 - 14:00", title: "燒肉 BAKURO (和牛)", type: "美食", price: "¥3,000", address: "大名店", coords: [33.5870, 130.3950], note: "午間和牛套餐CP值高。地鐵赤坂站。", tags: ["燒肉", "和牛"] },
+                    { time: "16:30 - 18:00", title: "MY ONLY FRAGRANCE", type: "體驗", price: "¥5,000", address: "中央区大名1-1-35", coords: [33.5865, 130.3960], note: "第二次調香體驗！<br>需 LINE 預約。", tags: ["香氛"], shopping_items: ["專屬香水"] },
+                    { time: "19:00 - 20:30", title: "Udon 和助", type: "美食", price: "¥1,000", address: "天神店", coords: [33.5900, 130.3980], note: "<b>必點：</b>牛蒡天婦羅烏龍麵 (ごぼう天)。", tags: ["烏龍麵"] }
                 ]
             },
             "day7": {
                 "date": "2/20 (五)",
                 "events": [
-                    { 
-                        time: "11:00 - 12:00 (開放至19:00)", 
-                        title: "博多百年藏 (石藏酒造)", 
-                        type: "清酒", 
-                        price: "免費", 
-                        address: "博多区堅粕1-30-1", 
-                        coords: [33.6000, 130.4250], 
-                        note: "<b>🚕 交通指引：</b><br>1. Check-out 行李寄放酒店。<br>2. <b>強烈建議搭計程車</b>（從酒店出發約¥1,000）。<br>3. 給司機看：「Hakata Hyakunen-gura, please」。<br><br><b>活動：</b>參觀古老酒造、買地酒。", 
-                        tags: ["清酒", "歷史"], 
-                        shopping_items: ["博多地酒"] 
-                    },
-                    { 
-                        time: "12:15 - 14:00 (午餐)", 
-                        title: "Sushi Yamanaka (壽司)", 
-                        type: "美食", 
-                        price: "¥5,000", 
-                        address: "JR博多City 9F", 
-                        coords: [33.5900, 130.4200], 
-                        note: "<b>🚶 交通指引：</b><br>1. 回博多站（搭車或走）。<br>2. <span style='color:red'>博多口</span>大樓電梯上9F (Kuuten)。<br><br><b>必點：</b>特選握壽司。", 
-                        link: "https://tabelog.com/fukuoka/A4001/A400101/40026367/", 
-                        tags: ["壽司", "奢華"] 
-                    },
-                    { 
-                        time: "14:00 巴士 (16:05起飛)", 
-                        title: "前往機場", 
-                        type: "交通", 
-                        price: "巴士 ¥310", 
-                        address: "博多巴士總站", 
-                        coords: [33.5915, 130.4180], 
-                        note: "<b>⚠️ 最後衝刺：</b><br>1. 吃完飯回酒店拿行李。<br>2. 走到<span style='color:red'>博多口</span>巴士總站1F。<br>3. <b>11號月台</b>搭「國際線直達巴士」。<br>4. <b style='color:red'>務必 14:00 前上車！</b>", 
-                        tags: ["移動", "必讀"], 
-                        shopping_items: [] 
-                    }
+                    { time: "10:00 - 11:00", title: "Nana's Green Tea", type: "美食", price: "¥1,500", address: "博多站 Amu Plaza", coords: [33.5895, 130.4200], note: "吃抹茶聖代，買抹茶粉。", tags: ["甜點"], shopping_items: ["抹茶粉"] },
+                    { time: "11:00 - 12:00", title: "博多百年藏 (石藏酒造)", type: "清酒", price: "免費", address: "博多区堅粕1-30-1", coords: [33.6000, 130.4250], note: "150年歷史酒造，登錄有形文化財。<br>試飲博多地酒。", tags: ["清酒", "歷史"], shopping_items: ["博多地酒"] },
+                    { time: "12:15 - 14:00", title: "Sushi Yamanaka (壽司)", type: "美食", price: "¥5,000", address: "JR博多City 9F", coords: [33.5900, 130.4200], note: "<b>完美句點：</b>高級壽司午餐 (特選握壽司)。<br>需預約。", link: "https://tabelog.com/fukuoka/A4001/A400101/40026367/", tags: ["壽司", "奢華"] },
+                    { time: "14:00", title: "前往機場", type: "交通", price: "巴士 ¥310", address: "博多巴士總站", coords: [33.5915, 130.4180], note: "搭國際線直達巴士。<br>UO669 (16:05 起飛)。", tags: ["移動"] }
                 ]
             }
         };
-
         const packingList = ["護照", "ICOCA/Suica", "行動電源", "保溫瓶 (重要)", "折疊傘", "好走的鞋", "藥品", "網卡/Wifi", "小額現金 (¥30,000)", "零錢包 (神社用)"];
         const generalShoppingListItems = ["無濾過生原酒", "酒粕/酒器", "九州調味料 (柚子胡椒)", "Loipa 熟食", "梅枝餅", "明太子 (自製/購買)", "博多線香", "自製香水", "抹茶粉", "溫泉鹽"];
-
         let currentDay = "day1";
         let map = null;
         let markers = [];
         let waterCount = 0;
-
         // --- Logic ---
-        function init() { 
-            renderDateSelector(); 
+        function init() {
+            renderDateSelector();
             selectDay('day1', document.querySelector('.date-chip')); // Default Init
             renderPackingList();
             renderGeneralShoppingList();
             initMap();
         }
-
         function switchMainPage(pageId, navEl) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
-            
+           
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             if(navEl) {
                 navEl.classList.add('active');
@@ -790,21 +536,17 @@
                 const idx = ['itinerary', 'map', 'weather', 'shopping'].indexOf(pageId);
                 if(idx !== -1) document.querySelectorAll('.nav-item')[idx].classList.add('active');
             }
-
             if(pageId === 'map' && map) {
                 setTimeout(() => { map.invalidateSize(); fitMapToDay(); }, 200);
             }
         }
-
         function openToolsPage() {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('page-tools').classList.add('active');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         }
-
         function openSubPage(id) { document.getElementById('subpage-' + id).classList.add('open'); }
         function closeSubPage(id) { document.getElementById('subpage-' + id).classList.remove('open'); }
-
         function renderDateSelector() {
             const container = document.getElementById('date-selector'); container.innerHTML = '';
             Object.keys(scheduleData).forEach(dayKey => {
@@ -817,35 +559,31 @@
                 container.appendChild(chip);
             });
         }
-
         function selectDay(dayKey, chipEl) {
             currentDay = dayKey;
             document.querySelectorAll('.date-chip').forEach(c => c.classList.remove('active'));
             chipEl.classList.add('active');
-            
+           
             renderTimeline(dayKey);
             renderWeather(dayKey);
             renderDailyShopping(dayKey);
             if(map) updateMapMarkers(dayKey);
         }
-
         function renderTimeline(dayKey) {
             const container = document.getElementById('timeline-container'); container.innerHTML = '';
             const dayTitle = document.createElement('h3'); dayTitle.style.marginBottom='20px';
             dayTitle.innerHTML = `<span style="color:var(--accent-color); font-weight:700;">${scheduleData[dayKey].date}</span>`;
             container.appendChild(dayTitle);
-
             scheduleData[dayKey].events.forEach(event => {
                 const item = document.createElement('div'); item.className = 'timeline-item';
                 let tagsHtml = event.tags.map(t => {
-                    let c = 'card-tag'; 
+                    let c = 'card-tag';
                     if(t.includes('必')||t.includes('重點')||t.includes('酒')) c+=' highlight';
                     if(t.includes('注意')||t.includes('現金')) c+=' alert';
                     return `<span class="${c}">${t}</span>`;
                 }).join('');
-                
+               
                 let priceHtml = event.price ? `<div class="card-price">${event.price}</div>` : '';
-
                 item.innerHTML = `<div class="card" onclick='openEventModal(${JSON.stringify(event)})'>
                     <span class="card-time">${event.time}</span>
                     <h3 class="card-title">${event.title}</h3>
@@ -855,22 +593,19 @@
                 container.appendChild(item);
             });
         }
-
         function renderWeather(dayKey) {
             const container = document.getElementById('weather-content');
             // 2月福岡天氣邏輯
-            const baseTemp = 6; 
+            const baseTemp = 6;
             const dayIndex = parseInt(dayKey.replace('day', ''));
             const temp = baseTemp + (dayIndex % 3);
             const humidity = 60 + (dayIndex % 5);
-            
+           
             let icon = "fa-cloud-sun";
             let desc = "多雲乾冷";
             let rainChance = 20;
-
             if(dayIndex % 4 === 0) { icon = "fa-cloud-showers-heavy"; desc = "寒冷有雨"; rainChance = 60; }
             else if (dayIndex % 3 === 0) { icon = "fa-sun"; desc = "晴朗寒冷"; rainChance = 10; }
-
             container.innerHTML = `
                 <div class="weather-card">
                     <div style="font-size:0.9rem; opacity:0.9;">${scheduleData[dayKey].date} • 福岡</div>
@@ -888,26 +623,24 @@
                 </div>
             `;
         }
-        
+       
         // Add Water
         function addWater() {
             waterCount++;
             document.getElementById('water-count').innerText = waterCount;
         }
-
         function renderDailyShopping(dayKey) {
             const container = document.getElementById('daily-shopping-list');
             container.innerHTML = '';
-            
+           
             const events = scheduleData[dayKey].events;
             let hasItems = false;
-
             events.forEach(event => {
                 if (event.shopping_items && event.shopping_items.length > 0) {
                     hasItems = true;
                     const group = document.createElement('div');
                     group.className = 'shopping-group';
-                    
+                   
                     let itemsHtml = '';
                     event.shopping_items.forEach((item, i) => {
                         const id = `shop-${dayKey}-${event.title}-${i}`;
@@ -916,12 +649,10 @@
                             <label for="${id}"><span>${item}</span></label>
                         </div>`;
                     });
-
                     group.innerHTML = `<h4 class="shopping-section-title"><i class="fa-solid fa-location-dot"></i> ${event.title}</h4>${itemsHtml}`;
                     container.appendChild(group);
                 }
             });
-
             if (!hasItems) {
                 container.innerHTML = `<div style="text-align:center; padding:30px; opacity:0.5;">
                     <i class="fa-solid fa-bag-shopping" style="font-size:2rem; margin-bottom:10px;"></i><br>
@@ -929,56 +660,54 @@
                 </div>`;
             }
         }
-
         function renderGeneralShoppingList() {
             const container = document.getElementById('general-shopping-container');
+            container.innerHTML = '';
             generalShoppingListItems.forEach((item,i) => {
                 container.innerHTML += `<div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" id="g${i}"><label for="g${i}"><span>${item}</span></label></div>`;
             });
         }
-
         function renderPackingList() {
             const pC = document.getElementById('packing-list-container');
             pC.innerHTML = '';
-            packingList.forEach((item,i) => pC.innerHTML += `<div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" id="p${i}"><label for="p${i}"><span>${item}</span></label></div>`);
+            packingList.forEach((item,i) => pC.innerHTML += `<div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" id="p${i}"><label for="p${i}"><span>${item}</span></label></div>`;
         }
         function toggleCheck(el) { const i = el.querySelector('input'); i.checked = !i.checked; el.classList.toggle('checked', i.checked); }
-
         function calcRate(type) {
             const rate = parseFloat(document.getElementById('rate-setting').value) || 0.052;
-            const jpy = document.getElementById('jpy-input'); 
+            const jpy = document.getElementById('jpy-input');
             const hkd = document.getElementById('hkd-input');
-            
+           
             if(type==='jpy') {
                 if(jpy.value === '') hkd.value = '';
-                else hkd.value = (jpy.value * rate).toFixed(1); 
+                else hkd.value = (jpy.value * rate).toFixed(1);
             } else {
                 if(hkd.value === '') jpy.value = '';
                 else jpy.value = (hkd.value / rate).toFixed(0);
             }
         }
-
         function sendSafetyMessage() {
              if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(pos) {
-                    const link = `https://www.google.com/maps/search/?api=1&query=${pos.coords.latitude},${pos.coords.longitude}`;
-                    window.open(`https://wa.me/?text=${encodeURIComponent("Hello! 我在福岡一切安好，目前位置：" + link)}`, '_blank');
+                    const lat = pos.coords.latitude;
+                    const lng = pos.coords.longitude;
+                    const mapLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+                    const text = encodeURIComponent(`Hello! 我在福岡一切安好，目前位置：${mapLink}`);
+                    window.open(`https://wa.me/?text=${text}`, '_blank');
                 });
             } else alert("無法獲取定位");
         }
-
         function openEventModal(event) {
             document.getElementById('modal-title').innerText = event.title;
             document.getElementById('modal-type').innerText = event.type;
             document.getElementById('modal-time').innerText = event.time;
             document.getElementById('modal-address').innerText = event.address;
             document.getElementById('modal-note').innerHTML = event.note;
-            
+           
             // Setup Taxi Card Data
             document.getElementById('taxi-address').innerText = event.address;
             document.getElementById('taxi-name').innerText = event.title;
-            document.getElementById('taxi-card').style.display = 'none'; 
-
+            document.getElementById('taxi-card').style.display = 'none';
             const priceRow = document.getElementById('modal-price-row');
             if (event.price) {
                 priceRow.style.display = 'flex';
@@ -986,10 +715,9 @@
             } else {
                 priceRow.style.display = 'none';
             }
-
             const lc = document.getElementById('modal-links'); lc.innerHTML = '';
             if(event.link) lc.innerHTML = `<a href="${event.link}" target="_blank" class="link-btn"><i class="fa-solid fa-link"></i> 預約/詳情</a>`;
-            
+           
             // Map Logic
             let mapUrl = "";
             if(event.coords) {
@@ -1001,31 +729,27 @@
             document.getElementById('modal-map-btn').onclick = () => window.open(mapUrl, '_blank');
             document.getElementById('detail-modal').classList.add('open');
         }
-        
+       
         function toggleTaxiCard() {
             const card = document.getElementById('taxi-card');
             card.style.display = card.style.display === 'none' ? 'block' : 'none';
         }
-
         function closeModal() { document.getElementById('detail-modal').classList.remove('open'); }
         document.getElementById('detail-modal').addEventListener('click', function(e){if(e.target===this)closeModal()});
         function openTipsModal() { openEventModal({title:"路痴救星 (福岡版)",type:"TIPS",time:"隨時",address:"博多全區",note:"1. 博多站分「博多口」(西/巴士) 和「筑紫口」(東/新幹線/酒店)。<br>2. 地鐵在地下，標示顏色很清楚。<br>3. 迷路就找地上工作人員，秀出日文地址。<br>4. 計程車門會自動開。", tags:[]}); }
-
         // --- Map Logic ---
         function initMap() {
             map = L.map('map-container');
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '© OpenStreetMap' }).addTo(map);
             updateMapMarkers(currentDay);
         }
-
         function updateMapMarkers(dayKey) {
             if(!map) return;
             markers.forEach(m => map.removeLayer(m));
             markers = [];
-            
+           
             const events = scheduleData[dayKey].events;
             const group = new L.featureGroup();
-
             events.forEach(event => {
                 if(event.coords) {
                     const navUrl = `https://www.google.com/maps/search/?api=1&query=${event.coords[0]},${event.coords[1]}`;
@@ -1042,21 +766,19 @@
                     group.addLayer(m);
                 }
             });
-
             if(markers.length > 0) {
                 map.fitBounds(group.getBounds(), {padding: [50, 50]});
             } else {
                 map.setView([33.5900, 130.4200], 13);
             }
         }
-        
+       
         function fitMapToDay() {
             if(map && markers.length > 0) {
                 const group = new L.featureGroup(markers);
                 map.fitBounds(group.getBounds(), {padding: [50, 50]});
             }
         }
-
         init();
     </script>
 </body>
