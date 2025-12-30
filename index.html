@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>福岡五感療癒之旅 v2.0</title>
+<title>福岡五感療癒之旅</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
@@ -468,18 +468,23 @@ title_jp: "博多九ちゃんラーメン", note: "1. 位於筑紫口區域，�
 "day4": {
 "date": "2/17 (二)",
 "events": [
-{ time: "08:00", title: "早餐：因幡烏龍麵", type: "早餐", price: "¥800", address: "Deitos 1F", note: "Deitos 麵街道內。必點：牛蒡天婦羅烏龍麵。", tags: ["烏龍麵"] },
+{ time: "07:30", title: "早餐：牛舌定食 たんや", type: "早餐", price: "¥900", address: "JR博多城 B1F 博多一番街", coords: [33.5895, 130.4195],
+title_jp: "たんやHAKATA",
+note: "1. 位於博多站地下「博多一番街」。<br>2. <b>福岡必吃早餐：</b>炭烤薄切牛舌定食。<br>3. 建議提早去排隊，翻桌率很快。<br>4. 推薦加點「明太子」配飯。", tags: ["牛舌", "排隊名店"] },
 { time: "09:00", title: "往麒麟啤酒廠 (轉車)", type: "交通", price: "¥810", address: "甘木鉄道 太刀洗駅", coords: [33.3950, 130.6050],
 note: "1. JR博多 ➔ <b>基山站</b> (轉車)。<br>2. 站內換乘<b>「甘木鐵道」</b>(小火車)。<br>3. <b>注意：甘木鐵道只收現金！</b><br>4. 在「太刀洗站」下車，走15分。", tags: ["現金", "轉車"] },
 { time: "10:30", title: "麒麟啤酒工廠見學", type: "體驗", price: "¥2,500", address: "キリンビール福岡工場", link: "https://www.kirin.co.jp/experience/factory/fukuoka/",
 note: "1. 參加導覽、試飲。<br>2. 午餐在園區「Kirin Beer Farm」吃羊肉燒烤 (Genghis Khan)。", tags: ["啤酒"] },
-{ time: "13:30", title: "前往南藏院 (大佛)", type: "交通", price: "¥300", address: "城戸南蔵院前駅", coords: [33.6190, 130.5500],
-note: "1. 原路回基山 ➔ 轉JR回博多。<br>2. <b>不須出站</b>，換月台找「篠栗線/福北ゆたか線」。<br>3. <b>「城戸南蔵院前」</b>下車。", tags: ["轉車"] },
-{ time: "15:00", title: "南藏院 涅槃佛", type: "景點", address: "南蔵院", note: "過橋左轉上坡。參拜世界最大青銅涅槃佛。", tags: ["大佛"] },
-{ time: "17:00", title: "LOPIA 超市 (補貨)", type: "購物", address: "Yodobashi 4F", note: "回到博多站筑紫口，再去一次 LOPIA 補買沒買夠的零食。", tags: ["超市"], shopping_items: ["零食補貨"] },
-{ time: "18:30", title: "晚餐：大眾馬肉酒場 Umaru", type: "美食", price: "¥3,500", address: "博多駅東2-10-12 イーストゲートビル 2階", coords: [33.5890, 130.4250],
-title_jp: "大衆馬肉酒場 うまる 博多駅筑紫口店", link: "https://www.google.com/maps/search/?api=1&query=大衆馬肉酒場うまる博多駅筑紫口店",
-note: "1. 就在酒店附近（筑紫口區域），步行即達。<br>2. 體驗九州特色馬肉刺身 (Basashi)。<br>3. 氣氛熱鬧的居酒屋。", tags: ["馬肉", "居酒屋"] }
+{ time: "14:00", title: "回博多 (休息/移動)", type: "交通", address: "博多駅", coords: [33.5900, 130.4206],
+note: "1. 原路返回：太刀洗 ➔ 基山 ➔ 博多。<br>2. 下午在博多站附近進行「城市微旅行」。", tags: ["移動"] },
+{ time: "15:30", title: "樂水園 (庭園抹茶)", type: "體驗", price: "¥500", address: "博多区住吉2-10-7", coords: [33.5855, 130.4140],
+title_jp: "楽水園",
+note: "1. 從博多站博多口步行約 12 分鐘。<br>2. 博多商人的別墅遺跡。<br>3. <b>必做：</b>在茶室體驗抹茶套餐 (¥500)，坐在緣側看庭園發呆。", tags: ["抹茶", "療癒"] },
+{ time: "16:45", title: "住吉神社 (守護旅人)", type: "景點", address: "博多区住吉3-1-51", coords: [33.5830, 130.4145],
+note: "1. 就在樂水園隔壁。<br>2. 日本重要文化財，守護航海與交通安全。<br>3. 境內非常清幽，能量場強。", tags: ["神社"] },
+{ time: "18:30", title: "晚餐：博多水炊き 濱田屋", type: "美食", price: "¥4,000", address: "JR博多 City 10F くうてん", coords: [33.5898, 130.4200],
+title_jp: "博多水炊き 濱田屋 くうてん", link: "https://mizutaki-hamadaya.jp/kuuten/",
+note: "1. <b>福岡三大鍋物之一：水炊鍋 (Mizutaki)。</b><br>2. 位於車站樓上 10F 高檔美食街，環境優雅。<br>3. 濃郁雞湯含豐富膠原蛋白，號稱美容鍋。<br>4. 吃完直接搭電梯下樓回酒店，超輕鬆。", tags: ["水炊鍋", "膠原蛋白"] }
 ]
 },
 "day5": {
@@ -488,12 +493,15 @@ note: "1. 就在酒店附近（筑紫口區域），步行即達。<br>2. 體驗
 { time: "08:00", title: "搭 Sonic 特急往別府", type: "交通", price: "¥4,000", address: "JR 博多駅", note: "1. 買鐵路便當。<br>2. 搭乘藍色特急 <b>Sonic (ソニック)</b>。<br>3. 車程2小時，在<b>「別府站」</b>下車。", tags: ["鐵道", "Sonic"] },
 { time: "10:30", title: "大分香氛博物館", type: "體驗", price: "¥3,500", address: "大分香りの博物館", coords: [33.3050, 131.4880],
 link: "http://oita-kaori.jp/",
-note: "1. 別府西口搭龜之井巴士至「別府大學下」。<br>2. 調製專屬香水 (40分鐘)。", tags: ["香氛", "手作"] },
-{ time: "13:00", title: "午餐：Beppu Brewery", type: "美食", price: "¥2,000", address: "別府駅前町13-8", note: "搭巴士回別府站。站前通步行5分。喝精釀啤酒、吃炸雞天婦羅。", tags: ["啤酒"] },
-{ time: "15:00", title: "竹瓦溫泉 砂湯", type: "溫泉", price: "¥1,500", address: "竹瓦温泉", coords: [33.2770, 131.5050],
-note: "1. 沿站前通走到底，右轉小巷(注意導航)。<br>2. 體驗熱砂埋身排毒。<br>3. 結束後搭 Sonic 回博多。", tags: ["砂湯"] },
+note: "1. 別府西口搭龜之井巴士至「別府大學下」。<br>2. 調製專屬香水 (40分鐘)。<br>3. 這裡是日本少數展示珍貴香水收藏的地方。", tags: ["香氛", "手作"] },
+{ time: "13:00", title: "午餐：Beppu Brewery", type: "美食", price: "¥2,000", address: "別府駅前町13-8", coords: [33.2790, 131.5030],
+note: "1. 搭巴士回別府站。<br>2. 站前通步行 5 分。<br>3. 自家釀造的精釀啤酒 (Craft Beer)。<br>4. 推薦搭配大分名物「炸雞天婦羅 (Toriten)」。", tags: ["啤酒"] },
+{ time: "15:00", title: "八幡朝見神社 (能量場)", type: "景點", address: "別府市朝見2-15-19", coords: [33.2700, 131.4980],
+note: "1. <b>別府最強 Power Spot。</b><br>2. 建議從車站搭計程車前往 (約¥800)。<br>3. <b>必找「盃石」：</b>參道上有像清酒杯的石頭，象徵生命力與酒運。<br>4. <b>夫婦杉：</b>穿過神木求良緣。", tags: ["神社", "靈驗"] },
+{ time: "16:30", title: "岡本屋布丁 & 足湯", type: "甜點", price: "¥500", address: "別府駅内", note: "1. 回到別府車站。<br>2. 在車站商店買著名的「地獄蒸布丁」。<br>3. 如果還有時間，車站外有「手湯」可以暖手。", tags: ["布丁"] },
+{ time: "17:30", title: "搭 Sonic 回博多", type: "交通", address: "JR 別府駅", note: "搭乘回程特急 Sonic，好好休息。", tags: ["鐵道"] },
 { time: "19:30", title: "晚餐：博多一双", type: "美食", price: "¥1,000", address: "博多駅東3-1-6", coords: [33.5880, 130.4260],
-title_jp: "博多一双 博多駅東本店", note: "1. 博多筑紫口出來右轉走5-8分。<br>2. 著名的「泡沫系」豚骨拉麵，需排隊。", tags: ["拉麵"] }
+title_jp: "博多一双 博多駅東本店", note: "1. 博多筑紫口出來右轉走5-8分。<br>2. 著名的「泡沫系」豚骨拉麵，湯頭濃郁充滿豬骨香氣。<br>3. 需排隊，但值得一試。", tags: ["拉麵", "排隊"] }
 ]
 },
 "day6": {
