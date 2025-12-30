@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>福岡 2026 | 獨旅散策 (緊湊版)</title>
+    <title>福岡五感療癒之旅</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
@@ -32,34 +32,34 @@
             margin: 0; padding: 0;
             height: 100vh;
             display: flex; flex-direction: column; overflow: hidden;
-            font-size: 17px; /* [改動] 基礎字體放大 */
+            font-size: 17px;
         }
 
         /* --- Header (緊湊化) --- */
         header {
-            padding: 12px 15px; /* [改動] 減少 Padding */
+            padding: 12px 15px; 
             background-color: rgba(26, 46, 71, 0.95);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255,255,255,0.05);
             position: sticky; top: 0; z-index: 100;
             display: flex; justify-content: space-between; align-items: center;
-            height: 55px; /* [改動] 高度減少 */
+            height: 55px;
         }
-        header h1 { margin: 0; font-size: 1.25rem; letter-spacing: 1px; font-weight: 700; color: #fff; } /* [改動] 字體放大 */
-        .header-btn { color: #fff; font-size: 1.3rem; cursor: pointer; text-decoration: none; padding: 4px; } /* [改動] 圖標放大 */
+        header h1 { margin: 0; font-size: 1.25rem; letter-spacing: 1px; font-weight: 700; color: #fff; }
+        .header-btn { color: #fff; font-size: 1.3rem; cursor: pointer; text-decoration: none; padding: 4px; }
 
         /* --- Date Selector (緊湊化) --- */
         .date-selector-container {
-            background: var(--bg-color); z-index: 90; padding: 8px 0; /* [改動] 減少 Padding */
+            background: var(--bg-color); z-index: 90; padding: 8px 0;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2); width: 100%;
         }
         .date-selector { 
-            display: flex; overflow-x: auto; gap: 8px; padding: 0 15px 5px 15px; /* [改動] 減少間距和 Padding */
+            display: flex; overflow-x: auto; gap: 8px; padding: 0 15px 5px 15px; 
             scrollbar-width: none; -webkit-overflow-scrolling: touch;
         }
         .date-chip {
-            background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 8px; /* [改動] 減少 Padding */
-            white-space: nowrap; font-size: 0.85rem; cursor: pointer; color: #8faab9; /* [改動] 字體放大 */
+            background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 8px;
+            white-space: nowrap; font-size: 0.85rem; cursor: pointer; color: #8faab9;
             display: flex; flex-direction: column; align-items: center; min-width: 50px;
             border: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; transition: all 0.2s;
         }
@@ -73,46 +73,46 @@
         main { flex: 1; overflow-y: hidden; position: relative; }
         .page {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            overflow-y: auto; padding: 5px 0 90px 0; display: none; opacity: 0; /* [改動] 減少上方 Padding */
+            overflow-y: auto; padding: 5px 0 90px 0; display: none; opacity: 0;
             transition: opacity 0.3s ease; background-color: var(--bg-color);
             -webkit-overflow-scrolling: touch;
         }
         .page.active { display: block; opacity: 1; z-index: 10; }
 
         /* --- Timeline (緊湊化 & 放大) --- */
-        .timeline-container { padding: 0 15px; /* [改動] 減少兩側 Padding */ }
+        .timeline-container { padding: 0 15px; }
         .timeline-item {
-            position: relative; padding-left: 18px; padding-bottom: 20px; /* [改動] 減少間距 */
+            position: relative; padding-left: 18px; padding-bottom: 20px;
             border-left: 1px solid rgba(255, 255, 255, 0.15);
         }
         .timeline-item:last-child { border-left: 1px solid transparent; padding-bottom: 0; }
         .timeline-item::before {
-            content: ''; position: absolute; left: -4px; top: 18px; /* [改動] 微調位置 */
+            content: ''; position: absolute; left: -4px; top: 18px;
             width: 7px; height: 7px; background: var(--accent-color);
             border-radius: 50%; box-shadow: 0 0 0 4px var(--bg-color);
         }
 
         .card {
             background-color: var(--card-color); color: var(--text-on-light);
-            border-radius: 4px; padding: 15px; margin-bottom: 5px; /* [改動] 減少 Padding 和 Margin */
+            border-radius: 4px; padding: 15px; margin-bottom: 5px;
             cursor: pointer; position: relative;
             border-left: 3px solid transparent; transition: transform 0.1s;
         }
         .card:active { transform: scale(0.98); background-color: #fff; }
-        .card-time { font-size: 0.85rem; color: #666; font-weight: 500; display: block; margin-bottom: 4px; } /* [改動] 字體放大 */
-        .card-title { font-size: 1.15rem; font-weight: 700; margin: 0 0 6px 0; line-height: 1.3; color: #222; padding-right: 60px;} /* [改動] 字體放大, Margin減少 */
+        .card-time { font-size: 0.85rem; color: #666; font-weight: 500; display: block; margin-bottom: 4px; }
+        .card-title { font-size: 1.15rem; font-weight: 700; margin: 0 0 6px 0; line-height: 1.3; color: #222; padding-right: 60px;}
         .card-price {
-            position: absolute; bottom: 12px; right: 12px; /* [改動] 位置更緊湊 */
-            font-weight: bold; color: #333; font-size: 0.9rem; /* [改動] 字體放大 */
+            position: absolute; bottom: 12px; right: 12px;
+            font-weight: bold; color: #333; font-size: 0.9rem;
             background: rgba(248, 181, 0, 0.2); padding: 3px 8px; border-radius: 4px;
         }
         
-        .tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; max-width: 100%; } /* [改動] 減少間距 */
-        .card-tag { font-size: 0.75rem; background: #e0e0e0; padding: 4px 10px; border-radius: 2px; color: #555; } /* [改動] 字體和 Padding 調整 */
+        .tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; max-width: 100%; }
+        .card-tag { font-size: 0.75rem; background: #e0e0e0; padding: 4px 10px; border-radius: 2px; color: #555; }
         .card-tag.highlight { background: #fff8e1; color: #8c6a00; border: 1px solid #ffe082; }
         .card-tag.alert { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
 
-        /* --- Sub Page & Modal (緊湊化 & 放大) --- */
+        /* --- Sub Page & Modal --- */
         .sub-page {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--bg-color); z-index: 2000;
@@ -121,10 +121,10 @@
         }
         .sub-page.open { transform: translateX(0); }
         .sub-header {
-            padding: 12px 15px; background: var(--menu-bg); /* [改動] 減少 Padding */
+            padding: 12px 15px; background: var(--menu-bg);
             border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 15px;
         }
-        .sub-header h2 { font-size: 1.1rem; margin: 0;} /* [改動] 字體放大 */
+        .sub-header h2 { font-size: 1.1rem; margin: 0;}
 
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -135,92 +135,94 @@
         .modal-content {
             background: var(--card-color); color: var(--text-on-light);
             width: 100%; max-width: 600px; max-height: 92vh;
-            border-radius: 16px 16px 0 0; padding: 20px; /* [改動] 減少 Padding */
+            border-radius: 16px 16px 0 0; padding: 20px;
             overflow-y: auto; animation: slideUp 0.3s ease;
         }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
-        /* --- Components (緊湊化 & 放大) --- */
+        /* --- Components --- */
         .note-box {
             background: #fff; border-left: 4px solid var(--accent-color);
-            padding: 12px; margin: 15px 0; border-radius: 0 4px 4px 0; /* [改動] 減少 Padding 和 Margin */
-            font-size: 1rem; color: #333; line-height: 1.6; /* [改動] 字體放大, 行高調整 */
+            padding: 12px; margin: 15px 0; border-radius: 0 4px 4px 0;
+            font-size: 1rem; color: #333; line-height: 1.6;
         }
         
         .checklist-item {
-            background: rgba(255,255,255,0.05); padding: 12px; margin-bottom: 8px; /* [改動] 減少 Padding 和 Margin */
+            background: rgba(255,255,255,0.05); padding: 12px; margin-bottom: 8px;
             border-radius: 6px; display: flex; align-items: center; gap: 15px;
-            font-size: 1.05rem; /* [改動] 字體放大 */
+            font-size: 1.05rem;
         }
         .checklist-item.checked { opacity: 0.5; }
         .checklist-item.checked span { text-decoration: line-through; }
-        .checklist-item input { width: 22px; height: 22px; accent-color: var(--accent-color); } /* [改動] Checkbox 放大 */
+        .checklist-item input { width: 22px; height: 22px; accent-color: var(--accent-color); }
 
-        /* Tools Grid (緊湊化) */
-        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px 15px; /* [改動] 減少間距 */ }
+        /* Tools Grid */
+        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px 15px; }
         .tool-btn {
-            background: rgba(255,255,255,0.05); padding: 18px; border-radius: 12px; /* [改動] 減少 Padding */
+            background: rgba(255,255,255,0.05); padding: 18px; border-radius: 12px;
             text-align: center; border: 1px solid rgba(255,255,255,0.1); cursor: pointer;
             transition: background 0.2s;
         }
         .tool-btn:active { background: rgba(255,255,255,0.15); }
-        .tool-btn i { font-size: 1.8rem; color: var(--accent-color); margin-bottom: 8px; display: block; } /* [改動] 圖標微調 */
-        .tool-btn span { font-size: 1rem; } /* [改動] 字體放大 */
+        .tool-btn i { font-size: 1.8rem; color: var(--accent-color); margin-bottom: 8px; display: block; }
+        .tool-btn span { font-size: 1rem; }
         
-        /* Navigation (緊湊化) */
-        .nav-item { color: #8faab9; text-align: center; font-size: 0.75rem; width: 25%; cursor: pointer; } /* [改動] 字體放大 */
-        .nav-item i { font-size: 1.4rem; margin-bottom: 4px; } /* [改動] 圖標放大 */
+        /* Navigation */
+        .nav-item { color: #8faab9; text-align: center; font-size: 0.75rem; width: 25%; cursor: pointer; }
+        .nav-item i { font-size: 1.4rem; margin-bottom: 4px; }
         .nav-item.active { color: var(--accent-color); }
         .bottom-nav { 
             position: fixed; bottom: 0; width: 100%; background: var(--menu-bg);
-            display: flex; justify-content: space-around; padding: 10px 0 25px 0; z-index: 100; /* [改動] 減少 Padding */
+            display: flex; justify-content: space-around; padding: 10px 0 25px 0; z-index: 100;
         }
 
         .taxi-card {
-            background: #fff; color: #000; padding: 15px; border: 4px solid #000; /* [改動] 減少 Padding */
+            background: #fff; color: #000; padding: 15px; border: 4px solid #000;
             margin: 15px 0; text-align: center; border-radius: 8px; display: none;
         }
-        #taxi-jp { font-size: 1.6rem; margin: 8px 0; } /* [改動] 字體放大 */
+        #taxi-jp { font-size: 1.6rem; margin: 8px 0; }
         
-        /* Buttons (放大) */
+        /* Buttons */
         .action-btn {
             display: flex; justify-content: center; align-items: center; gap: 8px;
-            width: 100%; padding: 12px; margin-top: 12px; /* [改動] 調整 Margin */
+            width: 100%; padding: 12px; margin-top: 12px;
             background: var(--accent-color); color: var(--text-on-accent);
             text-decoration: none; border-radius: 8px; font-weight: 700; border: none; cursor: pointer;
-            font-size: 1.05rem; /* [改動] 字體放大 */
+            font-size: 1.05rem;
         }
         
         /* Reserve Link Button */
         .reserve-btn {
             display: flex; justify-content: center; align-items: center; gap: 8px;
-            width: 100%; padding: 12px; margin-bottom: 15px; /* [改動] 調整 Margin */
+            width: 100%; padding: 12px; margin-bottom: 15px;
             background: var(--link-color); color: #fff; text-align: center;
             text-decoration: none; border-radius: 8px; font-weight: bold;
             box-shadow: 0 4px 10px rgba(250, 129, 0, 0.3);
-            font-size: 1.05rem; /* [改動] 字體放大 */
+            font-size: 1.05rem;
         }
         .reserve-btn:active { transform: scale(0.98); }
 
-        /* Weather (緊湊化) */
+        /* Weather Real-time */
         .weather-card {
-            background: var(--weather-gradient); border-radius: 12px; padding: 15px; margin: 15px; /* [改動] 減少 Padding 和 Margin */
+            background: var(--weather-gradient); border-radius: 12px; padding: 15px; margin: 15px;
             text-align: center; color: white;
+            min-height: 250px; display: flex; flex-direction: column; justify-content: center;
         }
-        .weather-temp { font-size: 3rem; font-weight: 300; margin: 10px 0; }
-        .weather-grid { gap: 8px; padding: 10px; } /* [改動] 減少間距 */
+        .weather-temp { font-size: 4rem; font-weight: 300; margin: 5px 0; line-height: 1; }
+        .weather-grid { gap: 10px; padding: 10px; display: grid; grid-template-columns: 1fr 1fr; margin-top: 15px; background: rgba(0,0,0,0.2); border-radius: 8px;}
+        .w-item { font-size: 0.9rem; text-align: left; display: flex; align-items: center; gap: 8px;}
         
-        /* Talk Cards (緊湊化) */
+        /* Talk Cards */
         .talk-card {
-            background: #fff; color: #333; border-radius: 8px; padding: 12px; margin-bottom: 10px; /* [改動] 減少 Padding 和 Margin */
+            background: #fff; color: #333; border-radius: 8px; padding: 12px; margin-bottom: 10px;
             text-align: center; border-bottom: 3px solid var(--accent-color);
         }
-        .talk-jp { font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; color: #222; } /* [改動] 字體放大 */
-        .talk-zh { font-size: 1rem; color: #666; } /* [改動] 字體放大 */
+        .talk-jp { font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; color: #222; }
+        .talk-zh { font-size: 1rem; color: #666; }
 
-        /* Modal Font Sizes */
-        #modal-title { margin:0; font-size:1.4rem; line-height:1.3; font-weight: 700; } /* [改動] 放大 */
-        .modal-info-row { margin-bottom: 8px; font-size: 1.05rem; color: #444; display: flex; align-items: center;} /* [改動] 放大 & 緊湊 */
+        /* Modal Info */
+        #modal-title { margin:0; font-size:1.4rem; line-height:1.3; font-weight: 700; }
+        .modal-info-row { margin-bottom: 8px; font-size: 1.05rem; color: #444; display: flex; align-items: center;}
         .modal-info-row i { width: 24px; text-align: center; margin-right: 8px; }
 
     </style>
@@ -228,7 +230,7 @@
 <body>
 
     <header>
-        <h1>FUKUOKA 2026</h1>
+        <h1>福岡五感療癒之旅</h1>
         <div class="header-icons">
             <a href="googletranslate://" class="header-btn"><i class="fa-solid fa-language"></i></a>
             <a href="#" class="header-btn" onclick="openToolsPage(); return false;"><i class="fa-solid fa-box-open"></i></a>
@@ -253,11 +255,16 @@
         </div>
 
         <div id="page-weather" class="page">
-            <div id="weather-content"></div>
+            <div id="weather-content">
+                <div style="text-align:center; padding:30px; color:#aaa;">
+                    <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;"></i><br><br>載入即時天氣中...
+                </div>
+            </div>
+            
             <div style="padding:0 15px;">
                 <div class="note-box">
                     <div style="font-weight:700; color:var(--accent-color); margin-bottom:5px;">2月福岡穿搭：</div>
-                    平均 3-12°C。海風強勁，體感寒冷。<br>必備：防風大衣、圍巾、洋蔥式穿搭。
+                    歷史平均 3-12°C。<br>海風強勁，體感寒冷。必備防風大衣、圍巾。
                 </div>
                 <div style="background:rgba(255,255,255,0.1); padding:12px 15px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
                     <div style="font-size: 1.1rem;"><i class="fa-solid fa-glass-water" style="color:var(--accent-color); margin-right: 8px;"></i> 水分補給</div>
@@ -347,7 +354,7 @@
                 <div class="talk-card"><div class="talk-jp">お会計をお願いします。</div><div class="talk-zh">麻煩結帳。</div></div>
                 <div class="talk-card"><div class="talk-jp">筑紫口 (Chikushi) はどこですか？</div><div class="talk-zh">筑紫口在哪裡？</div></div>
                 <div class="talk-card"><div class="talk-jp">博多口 (Hakata) はどこですか？</div><div class="talk-zh">博多口在哪裡？</div></div>
-                 <div class="talk-card"><div class="talk-jp">トイレはどこですか？</div><div class="talk-zh">廁所在哪裡？</div></div>
+                <div class="talk-card"><div class="talk-jp">トイレはどこですか？</div><div class="talk-zh">廁所在哪裡？</div></div>
             </div>
         </div>
 
@@ -398,7 +405,7 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // === 詳細行程資料 (完整保留) ===
+        // === 詳細行程資料 (Data) ===
         const scheduleData = {
             "day1": {
                 "date": "2/14 (六)",
@@ -528,12 +535,61 @@
         function init() {
             renderDateSelector();
             renderTimeline(currentDay);
-            renderWeather(currentDay);
+            // 改用即時天氣
+            fetchWeather();
             renderDailyShopping(currentDay);
             renderGeneralShopping();
             renderPackingList();
             initMap();
             setTimeout(() => document.querySelector('.date-chip').classList.add('active'), 100);
+        }
+
+        // --- Weather Function (Open-Meteo) ---
+        async function fetchWeather() {
+            const container = document.getElementById('weather-content');
+            
+            // 福岡坐標 (33.5902, 130.4017)
+            const apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=33.5902&longitude=130.4017&current_weather=true&daily=precipitation_probability_max,temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo';
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                const current = data.current_weather;
+                const daily = data.daily;
+                
+                // 天氣代碼轉換
+                const wmo = current.weathercode;
+                let weatherIcon = 'fa-cloud';
+                let weatherDesc = '多雲';
+
+                // 簡單映射 WMO code
+                if (wmo === 0) { weatherIcon = 'fa-sun'; weatherDesc = '晴朗'; }
+                else if (wmo >= 1 && wmo <= 3) { weatherIcon = 'fa-cloud-sun'; weatherDesc = '多雲'; }
+                else if (wmo >= 45 && wmo <= 48) { weatherIcon = 'fa-smog'; weatherDesc = '霧'; }
+                else if (wmo >= 51 && wmo <= 67) { weatherIcon = 'fa-cloud-rain'; weatherDesc = '有雨'; }
+                else if (wmo >= 71 && wmo <= 77) { weatherIcon = 'fa-snowflake'; weatherDesc = '下雪'; }
+                else if (wmo >= 80 && wmo <= 82) { weatherIcon = 'fa-cloud-showers-heavy'; weatherDesc = '陣雨'; }
+                else if (wmo >= 95) { weatherIcon = 'fa-bolt'; weatherDesc = '雷雨'; }
+
+                container.innerHTML = `
+                    <div class="weather-card">
+                        <div style="font-size:1rem; opacity:0.9; letter-spacing:1px;">現在 • 福岡市</div>
+                        <div class="weather-temp">${current.temperature}°</div>
+                        <div style="font-size:1.5rem; margin-bottom:15px; font-weight:500;">
+                            <i class="fa-solid ${weatherIcon}" style="color:var(--accent-color);"></i> ${weatherDesc}
+                        </div>
+                        <div class="weather-grid">
+                            <div class="w-item"><i class="fa-solid fa-wind"></i> 風速 ${current.windspeed} km/h</div>
+                            <div class="w-item"><i class="fa-solid fa-umbrella"></i> 降雨率 ${daily.precipitation_probability_max[0]}%</div>
+                            <div class="w-item"><i class="fa-solid fa-temperature-high"></i> 最高 ${daily.temperature_2m_max[0]}°</div>
+                            <div class="w-item"><i class="fa-solid fa-temperature-low"></i> 最低 ${daily.temperature_2m_min[0]}°</div>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                container.innerHTML = `<div style="text-align:center; padding:20px; color:#aaa;">無法取得天氣資訊<br>請檢查網路連線</div>`;
+            }
         }
 
         // --- 導航 & 頁面切換 ---
@@ -543,6 +599,7 @@
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             if(navEl) navEl.classList.add('active');
             if(pageId === 'map' && map) setTimeout(() => { map.invalidateSize(); fitMapToDay(); }, 200);
+            if(pageId === 'weather') fetchWeather(); // Refresh weather on tab switch
         }
 
         function openToolsPage() {
@@ -577,7 +634,7 @@
             document.querySelectorAll('.date-chip').forEach(d => d.classList.remove('active'));
             el.classList.add('active');
             renderTimeline(key);
-            renderWeather(key);
+            // Weather is real-time, no need to re-render for future dates as API only gives current/7-day
             renderDailyShopping(key);
             updateMapMarkers(key);
         }
@@ -658,7 +715,7 @@
             document.getElementById('taxi-addr').innerText = ev.address || "";
             document.getElementById('taxi-card').style.display = 'none';
 
-            // 處理預約連結 (Tabelog/Resy/官網)
+            // 處理預約連結
             const linkDiv = document.getElementById('modal-links');
             linkDiv.innerHTML = "";
             if(ev.link) {
