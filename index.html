@@ -19,7 +19,7 @@
             --text-on-light: #333333;
             --menu-bg: #142338;
             --danger-color: #d63345;
-            --link-color: #fa8100;     /* Tabelog 橙色 */
+            --link-color: #fa8100;     /* 預約按鈕橙色 */
             --weather-gradient: linear-gradient(135deg, #2b5876 0%, #4e4376 100%);
         }
 
@@ -32,12 +32,12 @@
             margin: 0; padding: 0;
             height: 100vh;
             display: flex; flex-direction: column; overflow: hidden;
-            font-size: 17px;
+            font-size: 17px; /* 基礎字體放大 */
         }
 
         /* --- Header (緊湊化) --- */
         header {
-            padding: 12px 15px; 
+            padding: 10px 15px; 
             background-color: rgba(26, 46, 71, 0.95);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255,255,255,0.05);
@@ -82,7 +82,7 @@
         /* --- Timeline (緊湊化 & 放大) --- */
         .timeline-container { padding: 0 15px; }
         .timeline-item {
-            position: relative; padding-left: 18px; padding-bottom: 20px;
+            position: relative; padding-left: 18px; padding-bottom: 15px;
             border-left: 1px solid rgba(255, 255, 255, 0.15);
         }
         .timeline-item:last-child { border-left: 1px solid transparent; padding-bottom: 0; }
@@ -94,7 +94,7 @@
 
         .card {
             background-color: var(--card-color); color: var(--text-on-light);
-            border-radius: 4px; padding: 15px; margin-bottom: 5px;
+            border-radius: 6px; padding: 15px; margin-bottom: 5px;
             cursor: pointer; position: relative;
             border-left: 3px solid transparent; transition: transform 0.1s;
         }
@@ -110,7 +110,7 @@
         .tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; max-width: 100%; }
         .card-tag { font-size: 0.75rem; background: #e0e0e0; padding: 4px 10px; border-radius: 2px; color: #555; }
         .card-tag.highlight { background: #fff8e1; color: #8c6a00; border: 1px solid #ffe082; }
-        .card-tag.alert { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+        .card-tag.alert { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; font-weight: bold;}
 
         /* --- Sub Page & Modal --- */
         .sub-page {
@@ -146,6 +146,7 @@
             padding: 12px; margin: 15px 0; border-radius: 0 4px 4px 0;
             font-size: 1rem; color: #333; line-height: 1.6;
         }
+        .note-box strong { color: var(--danger-color); }
         
         .checklist-item {
             background: rgba(255,255,255,0.05); padding: 12px; margin-bottom: 8px;
@@ -180,7 +181,7 @@
             background: #fff; color: #000; padding: 15px; border: 4px solid #000;
             margin: 15px 0; text-align: center; border-radius: 8px; display: none;
         }
-        #taxi-jp { font-size: 1.6rem; margin: 8px 0; }
+        #taxi-jp { font-size: 1.6rem; margin: 8px 0; line-height: 1.3; }
         
         /* Buttons */
         .action-btn {
@@ -221,7 +222,7 @@
         .talk-zh { font-size: 1rem; color: #666; }
 
         /* Modal Info */
-        #modal-title { margin:0; font-size:1.4rem; line-height:1.3; font-weight: 700; }
+        #modal-title { margin:0; font-size:1.4rem; line-height:1.3; font-weight: 700; padding-right: 20px;}
         .modal-info-row { margin-bottom: 8px; font-size: 1.05rem; color: #444; display: flex; align-items: center;}
         .modal-info-row i { width: 24px; text-align: center; margin-right: 8px; }
 
@@ -244,7 +245,7 @@
     <main>
         <div id="page-itinerary" class="page active">
             <div class="timeline-container" id="timeline-container" style="padding-top: 15px;"></div>
-            <div style="text-align:center; color:#666; font-size:0.9rem; margin:30px 0;">旅程結束</div>
+            <div style="text-align:center; color:#666; font-size:0.9rem; margin:30px 0;">旅程結束 • 平安回家</div>
         </div>
 
         <div id="page-map" class="page">
@@ -436,9 +437,9 @@
                     { time: "16:30", title: "LOPIA 超市 (Yodobashi)", type: "購物", price: "¥3,000 (現金!)", address: "Yodobashi 博多 4F", coords: [33.5890, 130.4215],
                       title_jp: "ロピア 博多ヨドバシ店",
                       note: "1. 搭JR回博多，<b>務必走「筑紫口」出站</b>。<br>2. 出站右轉大樓就是 Yodobashi，上4樓。<br>3. <b>注意：只收現金！準備鈔票。</b>", tags: ["超市", "現金"], shopping_items: ["九州調味料", "熟食便當", "零食"] },
-                    { time: "18:30", title: "晚餐：博多雞皮大臣", type: "美食", price: "¥2,500", address: "KITTE博多 B1", coords: [33.5895, 130.4185],
-                      title_jp: "博多とりかわ大臣 KITTE博多串房",
-                      note: "1. 放完戰利品，<b>穿越車站</b>到西側的「博多口」。<br>2. 出大門左邊大樓就是 KITTE。<br>3. 下 B1 找雞皮大臣。必點：雞皮串(醬汁/鹽)。", tags: ["燒鳥", "博多口"] }
+                    { time: "18:30 - 20:30", title: "晚餐：博多雞皮大臣", type: "美食", price: "¥2,000-3,000", address: "博多駅中央街9-1 KITTE博多 B1", coords: [33.5895, 130.4185],
+                      title_jp: "博多とりかわ大臣 KITTE博多串房", link: "https://tabelog.com/fukuoka/A4001/A400101/40043326/",
+                      note: "1. 放完戰利品，<b>穿越車站</b>到西側的「博多口」。<br>2. 出大門左邊大樓就是 KITTE。<br>3. 下 B1 找雞皮大臣。<br>4. <b>必點：</b>醬汁雞皮串 (博多名物)、Highball、Yakitori烤串。", tags: ["燒鳥", "博多口"] }
                 ]
             },
             "day3": {
@@ -502,9 +503,11 @@
                     { time: "12:30", title: "午餐：燒肉 BAKURO", type: "美食", price: "¥3,000", address: "中央区大名", coords: [33.5880, 130.3950],
                       title_jp: "焼肉バクロ 大名店", link: "https://www.bakuro09.com/",
                       note: "1. 地鐵搭到<b>「赤坂站」</b>。<br>2. 步行至大名區(巷弄多請開導航)。<br>3. 午間和牛套餐。", tags: ["和牛"] },
-                    { time: "14:00", title: "AEON Shoppers (購物)", type: "購物", address: "天神北", note: "步行至天神北 AEON，購買化妝品、超市零食。", shopping_items: ["化妝品", "超市"] },
-                    { time: "16:30", title: "MY ONLY FRAGRANCE", type: "體驗", price: "¥5,000", address: "大名1-1-35", link: "https://myonlyfragrance.com/",
-                      note: "從 AEON 走回大名。再次調香體驗。", tags: ["香氛"] },
+                    { time: "14:30", title: "MY ONLY FRAGRANCE", type: "體驗", price: "¥5,000", address: "大名1-1-35", link: "https://myonlyfragrance.com/",
+                      note: "<b>已LINE預約</b>。<br>自製專屬香水體驗。", tags: ["香氛", "已預約"] },
+                    { time: "16:00", title: "AEON Shoppers (購物)", type: "購物", address: "天神北", note: "步行至天神北 AEON。<br>購買化妝品、超市零食。<b>(可退稅/刷卡)</b>", shopping_items: ["化妝品", "超市"] },
+                    { time: "18:00", title: "Fukuoka Craft Brewing", type: "小酌", address: "大名1-11-13 小谷ビル1F", coords: [33.5865, 130.3965],
+                      title_jp: "フクオカクラフト", note: "回到大名區。暢飲福岡在地 Craft Beer。", tags: ["啤酒"] },
                     { time: "19:00", title: "晚餐：烏龍麵 和助", type: "美食", price: "¥1,000", address: "天神", note: "清爽的牛蒡天婦羅烏龍麵。", tags: ["烏龍麵"] }
                 ]
             },
@@ -514,10 +517,10 @@
                     { time: "09:00", title: "Check-out", type: "退房", note: "行李寄放酒店櫃檯。", tags: ["退房"] },
                     { time: "10:00", title: "Nana’s Green Tea", type: "甜點", price: "¥1,500", address: "博多 Amu Plaza", note: "JR博多城樓上。吃抹茶聖代。", tags: ["抹茶"] },
                     { time: "11:00", title: "石藏酒造 博多百年蔵", type: "景點", address: "博多区堅粕1-30-1", coords: [33.6000, 130.4250],
-                      note: "1. 建議直接從酒店<b>搭計程車</b> (約¥1,000)。<br>2. 參觀百年酒造，買最後的伴手禮。", tags: ["酒造"] },
-                    { time: "12:15", title: "午餐：鮨 山中", type: "美食", price: "¥5,000", address: "JR博多 City 9F", coords: [33.5900, 130.4200],
-                      title_jp: "鮨 山中 JR博多シティ店", link: "https://tabelog.com/fukuoka/A4001/A400101/40026369/",
-                      note: "1. 回博多站。<br>2. 9樓 Kuuten 美食街。<br>3. 頂級壽司午餐。", tags: ["壽司"] },
+                      note: "1. 建議直接從酒店<b>搭計程車</b> (約¥1,000)。<br>2. 參觀150年歷史酒造 (Hakata Hyakunen-gura)。<br>3. 買最後的清酒伴手禮。", tags: ["酒造"] },
+                    { time: "12:15", title: "午餐：鮨割烹やま中", type: "美食", price: "¥5,000", address: "JR博多 City 9F", coords: [33.5900, 130.4200],
+                      title_jp: "鮨割烹やま中 JR博多シティ店", link: "https://tabelog.com/fukuoka/A4001/A400101/40026369/",
+                      note: "1. 回博多站。<br>2. 9樓 Kuuten 美食街。<br>3. 頂級壽司午餐 (特選にぎり套餐)。", tags: ["壽司"] },
                     { time: "14:00", title: "前往機場 (巴士)", type: "交通", price: "¥310", address: "福岡空港 国際線", coords: [33.5859, 130.4446],
                       note: "1. 回酒店拿行李。<br>2. 走到<b>「博多巴士總站」1F 11號月台</b>。<br>3. <b>14:00前</b>務必上車！搭國際線直達巴士。<br>4. UO669 (16:05起飛)。", tags: ["機場", "必讀"] }
                 ]
@@ -535,7 +538,6 @@
         function init() {
             renderDateSelector();
             renderTimeline(currentDay);
-            // 改用即時天氣
             fetchWeather();
             renderDailyShopping(currentDay);
             renderGeneralShopping();
@@ -547,23 +549,17 @@
         // --- Weather Function (Open-Meteo) ---
         async function fetchWeather() {
             const container = document.getElementById('weather-content');
-            
-            // 福岡坐標 (33.5902, 130.4017)
             const apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=33.5902&longitude=130.4017&current_weather=true&daily=precipitation_probability_max,temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo';
 
             try {
                 const response = await fetch(apiUrl);
                 const data = await response.json();
-                
                 const current = data.current_weather;
                 const daily = data.daily;
-                
-                // 天氣代碼轉換
                 const wmo = current.weathercode;
                 let weatherIcon = 'fa-cloud';
                 let weatherDesc = '多雲';
 
-                // 簡單映射 WMO code
                 if (wmo === 0) { weatherIcon = 'fa-sun'; weatherDesc = '晴朗'; }
                 else if (wmo >= 1 && wmo <= 3) { weatherIcon = 'fa-cloud-sun'; weatherDesc = '多雲'; }
                 else if (wmo >= 45 && wmo <= 48) { weatherIcon = 'fa-smog'; weatherDesc = '霧'; }
@@ -599,7 +595,7 @@
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             if(navEl) navEl.classList.add('active');
             if(pageId === 'map' && map) setTimeout(() => { map.invalidateSize(); fitMapToDay(); }, 200);
-            if(pageId === 'weather') fetchWeather(); // Refresh weather on tab switch
+            if(pageId === 'weather') fetchWeather(); 
         }
 
         function openToolsPage() {
@@ -634,7 +630,6 @@
             document.querySelectorAll('.date-chip').forEach(d => d.classList.remove('active'));
             el.classList.add('active');
             renderTimeline(key);
-            // Weather is real-time, no need to re-render for future dates as API only gives current/7-day
             renderDailyShopping(key);
             updateMapMarkers(key);
         }
@@ -715,7 +710,6 @@
             document.getElementById('taxi-addr').innerText = ev.address || "";
             document.getElementById('taxi-card').style.display = 'none';
 
-            // 處理預約連結
             const linkDiv = document.getElementById('modal-links');
             linkDiv.innerHTML = "";
             if(ev.link) {
