@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>福岡 2026 | 獨旅散策 (完整版)</title>
+    <title>福岡 2026 | 獨旅散策 (緊湊版)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
@@ -32,33 +32,34 @@
             margin: 0; padding: 0;
             height: 100vh;
             display: flex; flex-direction: column; overflow: hidden;
+            font-size: 17px; /* [改動] 基礎字體放大 */
         }
 
-        /* --- Header --- */
+        /* --- Header (緊湊化) --- */
         header {
-            padding: 15px 20px;
+            padding: 12px 15px; /* [改動] 減少 Padding */
             background-color: rgba(26, 46, 71, 0.95);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255,255,255,0.05);
             position: sticky; top: 0; z-index: 100;
             display: flex; justify-content: space-between; align-items: center;
-            height: 60px;
+            height: 55px; /* [改動] 高度減少 */
         }
-        header h1 { margin: 0; font-size: 1.1rem; letter-spacing: 1px; font-weight: 700; color: #fff; }
-        .header-btn { color: #fff; font-size: 1.2rem; cursor: pointer; text-decoration: none; padding: 5px; }
+        header h1 { margin: 0; font-size: 1.25rem; letter-spacing: 1px; font-weight: 700; color: #fff; } /* [改動] 字體放大 */
+        .header-btn { color: #fff; font-size: 1.3rem; cursor: pointer; text-decoration: none; padding: 4px; } /* [改動] 圖標放大 */
 
-        /* --- Date Selector --- */
+        /* --- Date Selector (緊湊化) --- */
         .date-selector-container {
-            background: var(--bg-color); z-index: 90; padding: 12px 0;
+            background: var(--bg-color); z-index: 90; padding: 8px 0; /* [改動] 減少 Padding */
             box-shadow: 0 4px 15px rgba(0,0,0,0.2); width: 100%;
         }
         .date-selector { 
-            display: flex; overflow-x: auto; gap: 12px; padding: 0 20px 5px 20px; 
+            display: flex; overflow-x: auto; gap: 8px; padding: 0 15px 5px 15px; /* [改動] 減少間距和 Padding */
             scrollbar-width: none; -webkit-overflow-scrolling: touch;
         }
         .date-chip {
-            background: rgba(255,255,255,0.05); padding: 8px 14px; border-radius: 8px;
-            white-space: nowrap; font-size: 0.8rem; cursor: pointer; color: #8faab9;
+            background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 8px; /* [改動] 減少 Padding */
+            white-space: nowrap; font-size: 0.85rem; cursor: pointer; color: #8faab9; /* [改動] 字體放大 */
             display: flex; flex-direction: column; align-items: center; min-width: 50px;
             border: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; transition: all 0.2s;
         }
@@ -72,59 +73,59 @@
         main { flex: 1; overflow-y: hidden; position: relative; }
         .page {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            overflow-y: auto; padding: 10px 0 100px 0; display: none; opacity: 0;
+            overflow-y: auto; padding: 5px 0 90px 0; display: none; opacity: 0; /* [改動] 減少上方 Padding */
             transition: opacity 0.3s ease; background-color: var(--bg-color);
             -webkit-overflow-scrolling: touch;
         }
         .page.active { display: block; opacity: 1; z-index: 10; }
 
-        /* --- Timeline --- */
-        .timeline-container { padding: 0 20px; }
+        /* --- Timeline (緊湊化 & 放大) --- */
+        .timeline-container { padding: 0 15px; /* [改動] 減少兩側 Padding */ }
         .timeline-item {
-            position: relative; padding-left: 20px; padding-bottom: 25px;
+            position: relative; padding-left: 18px; padding-bottom: 20px; /* [改動] 減少間距 */
             border-left: 1px solid rgba(255, 255, 255, 0.15);
         }
         .timeline-item:last-child { border-left: 1px solid transparent; padding-bottom: 0; }
         .timeline-item::before {
-            content: ''; position: absolute; left: -4px; top: 20px;
+            content: ''; position: absolute; left: -4px; top: 18px; /* [改動] 微調位置 */
             width: 7px; height: 7px; background: var(--accent-color);
             border-radius: 50%; box-shadow: 0 0 0 4px var(--bg-color);
         }
 
         .card {
             background-color: var(--card-color); color: var(--text-on-light);
-            border-radius: 6px; padding: 18px; margin-bottom: 5px;
+            border-radius: 4px; padding: 15px; margin-bottom: 5px; /* [改動] 減少 Padding 和 Margin */
             cursor: pointer; position: relative;
             border-left: 3px solid transparent; transition: transform 0.1s;
         }
         .card:active { transform: scale(0.98); background-color: #fff; }
-        .card-time { font-size: 0.8rem; color: #666; font-weight: 500; display: block; margin-bottom: 4px; }
-        .card-title { font-size: 1.05rem; font-weight: 700; margin: 0 0 8px 0; line-height: 1.4; color: #222; }
+        .card-time { font-size: 0.85rem; color: #666; font-weight: 500; display: block; margin-bottom: 4px; } /* [改動] 字體放大 */
+        .card-title { font-size: 1.15rem; font-weight: 700; margin: 0 0 6px 0; line-height: 1.3; color: #222; padding-right: 60px;} /* [改動] 字體放大, Margin減少 */
         .card-price {
-            position: absolute; bottom: 15px; right: 15px;
-            font-weight: bold; color: #333; font-size: 0.85rem;
+            position: absolute; bottom: 12px; right: 12px; /* [改動] 位置更緊湊 */
+            font-weight: bold; color: #333; font-size: 0.9rem; /* [改動] 字體放大 */
             background: rgba(248, 181, 0, 0.2); padding: 3px 8px; border-radius: 4px;
         }
         
-        .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; max-width: 75%; }
-        .card-tag { font-size: 0.7rem; background: #e0e0e0; padding: 4px 8px; border-radius: 2px; color: #555; }
+        .tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; max-width: 100%; } /* [改動] 減少間距 */
+        .card-tag { font-size: 0.75rem; background: #e0e0e0; padding: 4px 10px; border-radius: 2px; color: #555; } /* [改動] 字體和 Padding 調整 */
         .card-tag.highlight { background: #fff8e1; color: #8c6a00; border: 1px solid #ffe082; }
         .card-tag.alert { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
 
-        /* --- Sub Page (Tools) --- */
+        /* --- Sub Page & Modal (緊湊化 & 放大) --- */
         .sub-page {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--bg-color); z-index: 2000;
             display: flex; flex-direction: column;
-            transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            transform: translateX(100%); transition: transform 0.3s;
         }
         .sub-page.open { transform: translateX(0); }
         .sub-header {
-            padding: 15px 20px; background: var(--menu-bg);
+            padding: 12px 15px; background: var(--menu-bg); /* [改動] 減少 Padding */
             border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 15px;
         }
-        
-        /* --- Modal --- */
+        .sub-header h2 { font-size: 1.1rem; margin: 0;} /* [改動] 字體放大 */
+
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); z-index: 3000;
@@ -133,80 +134,94 @@
         .modal.open { display: flex; }
         .modal-content {
             background: var(--card-color); color: var(--text-on-light);
-            width: 100%; max-width: 600px; max-height: 90vh;
-            border-radius: 16px 16px 0 0; padding: 25px;
+            width: 100%; max-width: 600px; max-height: 92vh;
+            border-radius: 16px 16px 0 0; padding: 20px; /* [改動] 減少 Padding */
             overflow-y: auto; animation: slideUp 0.3s ease;
         }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
-        /* --- Components --- */
+        /* --- Components (緊湊化 & 放大) --- */
         .note-box {
             background: #fff; border-left: 4px solid var(--accent-color);
-            padding: 15px; margin: 20px 0; border-radius: 0 4px 4px 0;
-            font-size: 0.95rem; color: #333; line-height: 1.8;
+            padding: 12px; margin: 15px 0; border-radius: 0 4px 4px 0; /* [改動] 減少 Padding 和 Margin */
+            font-size: 1rem; color: #333; line-height: 1.6; /* [改動] 字體放大, 行高調整 */
         }
         
         .checklist-item {
-            background: rgba(255,255,255,0.05); padding: 15px; margin-bottom: 10px;
+            background: rgba(255,255,255,0.05); padding: 12px; margin-bottom: 8px; /* [改動] 減少 Padding 和 Margin */
             border-radius: 6px; display: flex; align-items: center; gap: 15px;
+            font-size: 1.05rem; /* [改動] 字體放大 */
         }
         .checklist-item.checked { opacity: 0.5; }
         .checklist-item.checked span { text-decoration: line-through; }
-        .checklist-item input { width: 20px; height: 20px; accent-color: var(--accent-color); }
+        .checklist-item input { width: 22px; height: 22px; accent-color: var(--accent-color); } /* [改動] Checkbox 放大 */
 
-        /* Tools Grid */
-        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 10px; }
+        /* Tools Grid (緊湊化) */
+        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px 15px; /* [改動] 減少間距 */ }
         .tool-btn {
-            background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;
+            background: rgba(255,255,255,0.05); padding: 18px; border-radius: 12px; /* [改動] 減少 Padding */
             text-align: center; border: 1px solid rgba(255,255,255,0.1); cursor: pointer;
             transition: background 0.2s;
         }
         .tool-btn:active { background: rgba(255,255,255,0.15); }
-        .tool-btn i { font-size: 2rem; color: var(--accent-color); margin-bottom: 10px; display: block; }
+        .tool-btn i { font-size: 1.8rem; color: var(--accent-color); margin-bottom: 8px; display: block; } /* [改動] 圖標微調 */
+        .tool-btn span { font-size: 1rem; } /* [改動] 字體放大 */
         
-        /* Navigation */
-        .nav-item { color: #6d7d8b; text-align: center; font-size: 0.7rem; width: 25%; cursor: pointer; }
+        /* Navigation (緊湊化) */
+        .nav-item { color: #8faab9; text-align: center; font-size: 0.75rem; width: 25%; cursor: pointer; } /* [改動] 字體放大 */
+        .nav-item i { font-size: 1.4rem; margin-bottom: 4px; } /* [改動] 圖標放大 */
         .nav-item.active { color: var(--accent-color); }
         .bottom-nav { 
             position: fixed; bottom: 0; width: 100%; background: var(--menu-bg);
-            display: flex; justify-content: space-around; padding: 12px 0 28px 0; z-index: 100;
+            display: flex; justify-content: space-around; padding: 10px 0 25px 0; z-index: 100; /* [改動] 減少 Padding */
         }
 
         .taxi-card {
-            background: #fff; color: #000; padding: 20px; border: 4px solid #000;
-            margin: 20px 0; text-align: center; border-radius: 8px; display: none;
+            background: #fff; color: #000; padding: 15px; border: 4px solid #000; /* [改動] 減少 Padding */
+            margin: 15px 0; text-align: center; border-radius: 8px; display: none;
         }
+        #taxi-jp { font-size: 1.6rem; margin: 8px 0; } /* [改動] 字體放大 */
         
-        /* Buttons */
+        /* Buttons (放大) */
         .action-btn {
             display: flex; justify-content: center; align-items: center; gap: 8px;
-            width: 100%; padding: 12px; margin-top: 15px;
+            width: 100%; padding: 12px; margin-top: 12px; /* [改動] 調整 Margin */
             background: var(--accent-color); color: var(--text-on-accent);
             text-decoration: none; border-radius: 8px; font-weight: 700; border: none; cursor: pointer;
+            font-size: 1.05rem; /* [改動] 字體放大 */
         }
         
         /* Reserve Link Button */
         .reserve-btn {
-            display: block; width: 100%; padding: 14px; margin-bottom: 20px;
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            width: 100%; padding: 12px; margin-bottom: 15px; /* [改動] 調整 Margin */
             background: var(--link-color); color: #fff; text-align: center;
             text-decoration: none; border-radius: 8px; font-weight: bold;
             box-shadow: 0 4px 10px rgba(250, 129, 0, 0.3);
+            font-size: 1.05rem; /* [改動] 字體放大 */
         }
         .reserve-btn:active { transform: scale(0.98); }
 
-        /* Weather */
+        /* Weather (緊湊化) */
         .weather-card {
-            background: var(--weather-gradient); border-radius: 12px; padding: 20px; margin: 20px;
+            background: var(--weather-gradient); border-radius: 12px; padding: 15px; margin: 15px; /* [改動] 減少 Padding 和 Margin */
             text-align: center; color: white;
         }
+        .weather-temp { font-size: 3rem; font-weight: 300; margin: 10px 0; }
+        .weather-grid { gap: 8px; padding: 10px; } /* [改動] 減少間距 */
         
-        /* Talk Cards */
+        /* Talk Cards (緊湊化) */
         .talk-card {
-            background: #fff; color: #333; border-radius: 8px; padding: 15px; margin-bottom: 15px;
+            background: #fff; color: #333; border-radius: 8px; padding: 12px; margin-bottom: 10px; /* [改動] 減少 Padding 和 Margin */
             text-align: center; border-bottom: 3px solid var(--accent-color);
         }
-        .talk-jp { font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; color: #222; }
-        .talk-zh { font-size: 0.9rem; color: #666; }
+        .talk-jp { font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; color: #222; } /* [改動] 字體放大 */
+        .talk-zh { font-size: 1rem; color: #666; } /* [改動] 字體放大 */
+
+        /* Modal Font Sizes */
+        #modal-title { margin:0; font-size:1.4rem; line-height:1.3; font-weight: 700; } /* [改動] 放大 */
+        .modal-info-row { margin-bottom: 8px; font-size: 1.05rem; color: #444; display: flex; align-items: center;} /* [改動] 放大 & 緊湊 */
+        .modal-info-row i { width: 24px; text-align: center; margin-right: 8px; }
 
     </style>
 </head>
@@ -226,47 +241,47 @@
 
     <main>
         <div id="page-itinerary" class="page active">
-            <div class="timeline-container" id="timeline-container" style="padding-top: 20px;"></div>
-            <div style="text-align:center; color:#666; font-size:0.8rem; margin:30px 0;">旅程結束</div>
+            <div class="timeline-container" id="timeline-container" style="padding-top: 15px;"></div>
+            <div style="text-align:center; color:#666; font-size:0.9rem; margin:30px 0;">旅程結束</div>
         </div>
 
         <div id="page-map" class="page">
             <div id="map-container" style="width:100%; height:100%;"></div>
-            <div style="position:absolute; bottom:110px; left:10px; background:rgba(255,255,255,0.9); padding:8px 12px; border-radius:6px; color:#333; font-size:0.8rem; z-index:999;">
+            <div style="position:absolute; bottom:100px; left:10px; background:rgba(255,255,255,0.95); padding:8px 12px; border-radius:6px; color:#333; font-size:0.9rem; z-index:999; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
                 <i class="fa-solid fa-location-dot" style="color:var(--accent-color)"></i> 當日地點
             </div>
         </div>
 
         <div id="page-weather" class="page">
             <div id="weather-content"></div>
-            <div style="padding:0 20px;">
+            <div style="padding:0 15px;">
                 <div class="note-box">
                     <div style="font-weight:700; color:var(--accent-color); margin-bottom:5px;">2月福岡穿搭：</div>
                     平均 3-12°C。海風強勁，體感寒冷。<br>必備：防風大衣、圍巾、洋蔥式穿搭。
                 </div>
-                <div style="background:rgba(255,255,255,0.1); padding:15px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
-                    <div><i class="fa-solid fa-glass-water" style="color:var(--accent-color)"></i> 水分補給</div>
+                <div style="background:rgba(255,255,255,0.1); padding:12px 15px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+                    <div style="font-size: 1.1rem;"><i class="fa-solid fa-glass-water" style="color:var(--accent-color); margin-right: 8px;"></i> 水分補給</div>
                     <div style="display:flex; align-items:center; gap:15px;">
-                        <button onclick="addWater()" style="background:var(--accent-color); border:none; width:40px; height:40px; border-radius:50%; font-size:1.2rem;">+</button>
-                        <span id="water-count" style="font-size:1.5rem; font-weight:700;">0</span>
+                        <button onclick="addWater()" style="background:var(--accent-color); border:none; width:40px; height:40px; border-radius:50%; font-size:1.4rem; color:var(--text-on-accent);">+</button>
+                        <span id="water-count" style="font-size:1.6rem; font-weight:700;">0</span>
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="page-shopping" class="page">
-            <div style="padding: 20px;">
-                <h2 style="text-align:center; font-size:1.1rem; margin-bottom:20px;">今日購物 & 待辦</h2>
+            <div style="padding: 15px;">
+                <h2 style="text-align:center; font-size:1.2rem; margin-bottom:15px;">今日購物 & 待辦</h2>
                 <div id="daily-shopping-list"></div>
-                <div style="margin-top:40px; padding-top:20px; border-top:1px solid #444;">
-                    <h3 style="color:#888; text-align:center; font-size:0.9rem;">總購物清單</h3>
+                <div style="margin-top:30px; padding-top:20px; border-top:1px solid #444;">
+                    <h3 style="color:#888; text-align:center; font-size:1rem; margin-bottom: 15px;">總購物清單</h3>
                     <div id="general-shopping-container"></div>
                 </div>
             </div>
         </div>
 
         <div id="page-tools" class="page">
-            <h2 style="text-align:center; margin:30px 0;">旅人百寶箱</h2>
+            <h2 style="text-align:center; margin:25px 0; font-size: 1.3rem;">旅人百寶箱</h2>
             <div class="tools-grid">
                 <div class="tool-btn" onclick="openSubPage('hotel')"><i class="fa-solid fa-bed"></i><span>酒店資訊</span></div>
                 <div class="tool-btn" onclick="openSubPage('packing')"><i class="fa-solid fa-suitcase"></i><span>行李清單</span></div>
@@ -276,17 +291,17 @@
                 <div class="tool-btn" onclick="openTipsModal()"><i class="fa-regular fa-compass"></i><span>路痴法則</span></div>
             </div>
             <div style="text-align:center; margin-top:30px;">
-                <button onclick="history.back()" style="background:none; border:1px solid #777; color:#fff; padding:8px 20px; border-radius:20px;">返回行程</button>
+                <button onclick="history.back()" style="background:none; border:1px solid #777; color:#fff; padding:10px 25px; border-radius:20px; font-size: 1rem;">返回行程</button>
             </div>
         </div>
 
         <div id="subpage-hotel" class="sub-page">
             <div class="sub-header"><button onclick="closeSubPage('hotel')" class="header-btn"><i class="fa-solid fa-arrow-left"></i></button><h2>酒店資訊</h2></div>
-            <div style="padding:20px;">
-                <h3 style="color:var(--accent-color);">Hotel Wing International<br>Hakata Shinkansen-guchi</h3>
-                <p style="font-size:0.9rem; color:#ccc;">ホテルウィングインターナショナル博多新幹線口</p>
+            <div style="padding:15px;">
+                <h3 style="color:var(--accent-color); font-size: 1.3rem; margin-bottom: 5px;">Hotel Wing International<br>Hakata Shinkansen-guchi</h3>
+                <p style="font-size:1rem; color:#ccc; margin-top: 0;">ホテルウィングインターナショナル博多新幹線口</p>
                 <div class="note-box" style="border-left-color:var(--danger-color);">
-                    <strong>⚠️ 絕對關鍵：</strong><br>
+                    <strong style="font-size: 1.1rem;">⚠️ 絕對關鍵：</strong><br>
                     您的酒店在<b>「筑紫口 (Chikushi)」</b>（後站/新幹線口）。<br>
                     千萬不要去「博多口」，那是反方向！
                 </div>
@@ -298,40 +313,41 @@
 
         <div id="subpage-packing" class="sub-page">
             <div class="sub-header"><button onclick="closeSubPage('packing')" class="header-btn"><i class="fa-solid fa-arrow-left"></i></button><h2>行李清單</h2></div>
-            <div id="packing-list-container" style="padding:20px;"></div>
+            <div id="packing-list-container" style="padding:15px;"></div>
         </div>
         
         <div id="subpage-rate" class="sub-page">
             <div class="sub-header"><button onclick="closeSubPage('rate')" class="header-btn"><i class="fa-solid fa-arrow-left"></i></button><h2>匯率換算</h2></div>
-            <div style="padding:30px; display:flex; flex-direction:column; gap:20px;">
-                <div style="text-align:right; color:#ccc; font-size:0.8rem;">匯率: <input type="number" id="rate-setting" value="0.052" style="width:60px; background:transparent; border:1px solid #555; color:#fff; text-align:center;"></div>
-                <input type="number" id="jpy-input" placeholder="JPY ¥" oninput="calcRate('jpy')" style="padding:15px; font-size:1.2rem; border-radius:8px; border:none;">
-                <div style="text-align:center; color:var(--accent-color); font-size:1.5rem;">⇅</div>
-                <input type="number" id="hkd-input" placeholder="HKD $" oninput="calcRate('hkd')" style="padding:15px; font-size:1.2rem; border-radius:8px; border:none;">
+            <div style="padding:25px; display:flex; flex-direction:column; gap:15px;">
+                <div style="text-align:right; color:#ccc; font-size:0.9rem;">匯率: <input type="number" id="rate-setting" value="0.052" style="width:70px; background:transparent; border:1px solid #555; color:#fff; text-align:center; padding: 5px; font-size: 1rem;"></div>
+                <input type="number" id="jpy-input" placeholder="JPY ¥" oninput="calcRate('jpy')" style="padding:15px; font-size:1.4rem; border-radius:8px; border:none; font-weight: bold;">
+                <div style="text-align:center; color:var(--accent-color); font-size:1.8rem;">⇅</div>
+                <input type="number" id="hkd-input" placeholder="HKD $" oninput="calcRate('hkd')" style="padding:15px; font-size:1.4rem; border-radius:8px; border:none; font-weight: bold;">
             </div>
         </div>
         
          <div id="subpage-safety" class="sub-page">
             <div class="sub-header"><button onclick="closeSubPage('safety')" class="header-btn"><i class="fa-solid fa-arrow-left"></i></button><h2>安全</h2></div>
-            <div style="padding:20px;">
-                <div onclick="sendSafetyMessage()" style="background:#25D366; padding:30px; border-radius:12px; text-align:center; margin-bottom:20px; cursor:pointer;">
-                    <i class="fa-brands fa-whatsapp" style="font-size:3rem; color:#fff;"></i>
-                    <h3 style="color:#fff; margin:10px 0;">報平安</h3>
-                    <p style="color:#fff;">發送位置給家人</p>
+            <div style="padding:15px;">
+                <div onclick="sendSafetyMessage()" style="background:#25D366; padding:25px; border-radius:12px; text-align:center; margin-bottom:20px; cursor:pointer;">
+                    <i class="fa-brands fa-whatsapp" style="font-size:3.5rem; color:#fff;"></i>
+                    <h3 style="color:#fff; margin:10px 0; font-size: 1.5rem;">報平安</h3>
+                    <p style="color:#fff; font-size: 1.1rem;">發送位置給家人</p>
                 </div>
-                <div class="checklist-item" onclick="alert('110')"><i class="fa-solid fa-phone"></i> 警察局: 110</div>
-                <div class="checklist-item" onclick="alert('119')"><i class="fa-solid fa-ambulance"></i> 救護車: 119</div>
+                <div class="checklist-item" onclick="alert('110')"><i class="fa-solid fa-phone" style="color:var(--accent-color)"></i> 警察局: 110</div>
+                <div class="checklist-item" onclick="alert('119')"><i class="fa-solid fa-ambulance" style="color:var(--accent-color)"></i> 救護車: 119</div>
             </div>
         </div>
         
         <div id="subpage-talk" class="sub-page">
             <div class="sub-header"><button onclick="closeSubPage('talk')" class="header-btn"><i class="fa-solid fa-arrow-left"></i></button><h2>手指對話</h2></div>
-            <div style="padding:20px;">
+            <div style="padding:15px;">
                 <div class="talk-card"><div class="talk-jp">一人です。</div><div class="talk-zh">我是一位。</div></div>
                 <div class="talk-card"><div class="talk-jp">これは何ですか？</div><div class="talk-zh">這個是什麼？</div></div>
                 <div class="talk-card"><div class="talk-jp">お会計をお願いします。</div><div class="talk-zh">麻煩結帳。</div></div>
                 <div class="talk-card"><div class="talk-jp">筑紫口 (Chikushi) はどこですか？</div><div class="talk-zh">筑紫口在哪裡？</div></div>
                 <div class="talk-card"><div class="talk-jp">博多口 (Hakata) はどこですか？</div><div class="talk-zh">博多口在哪裡？</div></div>
+                 <div class="talk-card"><div class="talk-jp">トイレはどこですか？</div><div class="talk-zh">廁所在哪裡？</div></div>
             </div>
         </div>
 
@@ -346,43 +362,43 @@
 
     <div id="detail-modal" class="modal">
         <div class="modal-content">
-            <div style="display:flex; justify-content:space-between; align-items:start;">
-                <h2 id="modal-title" style="margin:0; font-size:1.3rem; line-height:1.4;"></h2>
-                <span onclick="closeModal()" style="font-size:1.5rem; color:#999; cursor:pointer;">×</span>
+            <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom: 10px;">
+                <h2 id="modal-title"></h2>
+                <span onclick="closeModal()" style="font-size:1.8rem; color:#999; cursor:pointer; padding: 0 5px;">×</span>
             </div>
-            <span id="modal-type" style="background:#eee; color:#555; font-size:0.8rem; padding:2px 6px; border-radius:4px;"></span>
+            <span id="modal-type" style="background:#eee; color:#555; font-size:0.9rem; padding:3px 8px; border-radius:4px; font-weight: 500;"></span>
             
-            <div style="margin-top:20px;">
+            <div style="margin-top:15px;">
                 <div id="modal-links"></div>
             </div>
 
             <div id="taxi-card" class="taxi-card">
-                <p style="font-size:0.8rem; color:#666; margin:0;">運転手さん、ここへお願いします</p>
-                <h2 id="taxi-jp" style="font-size:1.5rem; margin:10px 0; font-weight:700;"></h2>
-                <p id="taxi-addr" style="font-size:0.9rem; border-top:1px solid #eee; padding-top:10px;"></p>
+                <p style="font-size:0.9rem; color:#666; margin:0;">運転手さん、ここへお願いします</p>
+                <h2 id="taxi-jp"></h2>
+                <p id="taxi-addr" style="font-size:1rem; border-top:1px solid #eee; padding-top:10px; margin-top: 10px;"></p>
             </div>
 
-            <div style="margin-top:20px; color:#444;">
-                <div style="margin-bottom:10px;"><i class="fa-regular fa-clock" style="color:var(--accent-color); width:20px;"></i> <span id="modal-time"></span></div>
-                <div style="margin-bottom:10px;"><i class="fa-solid fa-location-dot" style="color:var(--accent-color); width:20px;"></i> <span id="modal-address"></span></div>
-                <div style="margin-bottom:10px;" id="modal-price-row"><i class="fa-solid fa-yen-sign" style="color:var(--accent-color); width:20px;"></i> <span id="modal-price"></span></div>
+            <div style="margin-top:15px; color:#444;">
+                <div class="modal-info-row"><i class="fa-regular fa-clock" style="color:var(--accent-color);"></i> <span id="modal-time"></span></div>
+                <div class="modal-info-row"><i class="fa-solid fa-location-dot" style="color:var(--accent-color);"></i> <span id="modal-address"></span></div>
+                <div class="modal-info-row" id="modal-price-row"><i class="fa-solid fa-yen-sign" style="color:var(--accent-color);"></i> <span id="modal-price"></span></div>
             </div>
 
             <div class="note-box">
-                <div style="font-weight:700; color:var(--accent-color); margin-bottom:5px;">攻略與細節：</div>
+                <div style="font-weight:700; color:var(--accent-color); margin-bottom:8px; font-size: 1.1rem;">攻略與細節：</div>
                 <div id="modal-note"></div>
             </div>
 
-            <div style="display:flex; gap:10px; margin-top:20px;">
-                <button id="modal-map-btn" class="action-btn" style="background:#ddd; color:#333;">Google 導航</button>
-                <button onclick="toggleTaxiCard()" class="action-btn">給路人看</button>
+            <div style="display:flex; gap:10px; margin-top:15px;">
+                <button id="modal-map-btn" class="action-btn" style="background:#e0e0e0; color:#333;">Google 導航</button>
+                <button onclick="toggleTaxiCard()" class="action-btn"><i class="fa-solid fa-eye"></i> 給路人看</button>
             </div>
         </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // === 詳細行程資料 (已包含連結) ===
+        // === 詳細行程資料 (完整保留) ===
         const scheduleData = {
             "day1": {
                 "date": "2/14 (六)",
@@ -568,7 +584,7 @@
 
         function renderTimeline(key) {
             const container = document.getElementById('timeline-container');
-            container.innerHTML = `<h3 style="color:var(--accent-color); margin-bottom:20px;">${scheduleData[key].date}</h3>`;
+            container.innerHTML = `<h3 style="color:var(--accent-color); margin-bottom:15px; font-weight:500;">${scheduleData[key].date}</h3>`;
             scheduleData[key].events.forEach(ev => {
                 let tags = ev.tags ? ev.tags.map(t => `<span class="card-tag ${t==='必讀'||t==='現金'?'alert':''}">${t}</span>`).join('') : '';
                 let price = ev.price ? `<div class="card-price">${ev.price}</div>` : '';
