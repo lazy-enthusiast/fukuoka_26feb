@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>福岡五感療癒之旅 2026</title>
+<title>福岡五感療癒之旅 (v2.0)</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -11,20 +11,18 @@
 <style>
 /* ⛔ [系統核心樣式 - 福岡山吹色版] */
 :root {
-    /* 核心配色：移植自 Source 2 */
-    --bg-body: #1a2e47;        /* 博多灣深藍 */
-    --bg-card: #F7F9FC;        /* 極簡灰白 */
-    --text-main: #111111;      /* 卡片內深色字 */
-    --text-sub: #666666;       /* 次要文字 */
-    --accent: #F8B500;         /* 山吹色 (金黃) */
-    --accent-text: #2c2c2c;    /* 金黃色上的文字色 */
-    --border: rgba(255,255,255,0.1); /* 微透明邊框 */
-    --font-heading: "Zen Kaku Gothic New", sans-serif;
-    --font-body: "Zen Kaku Gothic New", sans-serif;
-    
-    --shadow: 0 4px 15px rgba(0,0,0,0.2);
-    --safe-top: env(safe-area-inset-top);
-    --safe-bottom: env(safe-area-inset-bottom);
+--bg-body: #1a2e47; /* 博多灣深藍 */
+--bg-card: #F7F9FC; /* 極簡灰白 */
+--text-main: #111111; /* 卡片內深色字 */
+--text-sub: #666666; /* 次要文字 */
+--accent: #F8B500; /* 山吹色 (金黃) */
+--accent-text: #2c2c2c; /* 金黃色上的文字色 */
+--border: rgba(255,255,255,0.1);
+--font-heading: "Zen Kaku Gothic New", sans-serif;
+--font-body: "Zen Kaku Gothic New", sans-serif;
+--shadow: 0 4px 15px rgba(0,0,0,0.2);
+--safe-top: env(safe-area-inset-top);
+--safe-bottom: env(safe-area-inset-bottom);
 }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
 body { font-family: var(--font-body); background-color: var(--bg-body); color: #ffffff; margin: 0; padding: 0; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; transition: all 0.3s ease; line-height: 1.5; font-size: 16px; }
@@ -42,7 +40,7 @@ header h1 { margin: 0; font-size: 1.25rem; font-weight: 700; letter-spacing: 1px
 .date-selector { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 0 15px; }
 .date-chip { flex: 0 0 auto; min-width: 60px; padding: 8px 12px; border-radius: 10px; cursor: pointer; color: #8faab9; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.05); transition: all 0.2s; }
 .date-chip.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(248, 181, 0, 0.3); font-weight: 700; }
-.day-num { font-size: 1.1rem; line-height: 1; margin-bottom: 3px; font-family: var(--font-heading); } 
+.day-num { font-size: 1.1rem; line-height: 1; margin-bottom: 3px; font-family: var(--font-heading); }
 .day-week { font-size: 0.7rem; font-weight: 500; opacity: 0.9; }
 
 /* Main Structure */
@@ -65,31 +63,6 @@ main { flex: 1; overflow-y: hidden; position: relative; background: var(--bg-bod
 .card-tag { font-size: 0.7rem; background: #eef2f5; padding: 3px 8px; border-radius: 4px; color: #555; font-weight: 500; display: inline-block; margin-right: 5px; margin-top: 5px; }
 .card-tag.alert { background: #ffebee; color: #d63345; border: 1px solid #ffcdd2; }
 
-/* Weather */
-.weather-main-card { background: linear-gradient(135deg, #2b5876 0%, #4e4376 100%); color: #fff; border-radius: 12px; padding: 25px; margin: 0 15px 20px 15px; text-align: center; position: relative; overflow: hidden; box-shadow: var(--shadow); }
-.weather-tag-badge { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.2); padding: 4px 10px; font-size: 0.7rem; border-radius: 20px; font-weight: 600; backdrop-filter: blur(5px); }
-.weather-header-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 10px; }
-.weather-big-temp { font-size: 4rem; font-weight: 300; line-height: 1; font-family: var(--font-heading); margin: 10px 0; }
-.weather-condition { font-size: 1.1rem; font-weight: 500; opacity: 1; margin-bottom: 2px; }
-.weather-hl { font-size: 0.85rem; opacity: 0.8; }
-.weather-main-icon { font-size: 2.5rem; opacity: 1; }
-.section-label { padding: 0 15px; font-size: 0.8rem; font-weight: 700; color: #aab8c2; margin-bottom: 12px; display: block; letter-spacing: 1px; }
-.hourly-container { display: flex; gap: 10px; overflow-x: auto; padding: 0 15px 15px 15px; scrollbar-width: none; }
-.hourly-item { flex: 0 0 auto; width: 65px; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 12px 5px; text-align: center; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100px; color: #fff; }
-.hourly-time { font-size: 0.75rem; color: #ccc; font-weight: 600; margin-bottom: 5px; }
-.hourly-icon { font-size: 1.2rem; margin: 5px 0; color: var(--accent); }
-.hourly-temp { font-size: 0.95rem; font-weight: 700; }
-.advice-card { background: rgba(255,255,255,0.05); margin: 0 15px 25px 15px; padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); display: flex; gap: 15px; align-items: flex-start; color: #fff; }
-.advice-icon { width: 36px; height: 36px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.1rem; color: var(--accent); }
-.advice-content h4 { margin: 0 0 6px 0; font-size: 0.95rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
-.advice-content p { margin: 0; font-size: 0.9rem; color: #ddd; line-height: 1.6; }
-.weather-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 15px 30px 15px; }
-.weather-stat-card { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; justify-content: center; height: 90px; color: #fff; }
-.ws-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-.ws-label { font-size: 0.7rem; color: #aaa; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
-.ws-icon { color: #aaa; font-size: 0.9rem; }
-.ws-value { font-size: 1.3rem; font-weight: 500; color: #fff; font-family: var(--font-heading); }
-
 /* Shopping */
 .shopping-list { padding: 0 15px; }
 .shop-item { background: var(--bg-card); padding: 15px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px; border: none; box-shadow: var(--shadow); }
@@ -110,19 +83,19 @@ main { flex: 1; overflow-y: hidden; position: relative; background: var(--bg-bod
 .inspire-title { font-size: 1.1rem; font-weight: 700; margin: 0 0 6px 0; font-family: var(--font-heading); color: #222; }
 .inspire-note { font-size: 0.9rem; color: #555; line-height: 1.5; }
 
-/* Info Page */
+/* Info Page & Weather */
 .info-card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; margin: 0 15px 15px 15px; border: 1px solid rgba(255,255,255,0.1); color: #fff; }
 .info-header { font-weight: 700; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; font-size: 1rem; color: var(--accent); }
 .info-row { display: flex; gap: 15px; margin-bottom: 15px; align-items: flex-start; font-size: 0.95rem; color: #eee; line-height: 1.6; }
-.info-icon { width: 24px; text-align: center; color: #aaa; flex-shrink: 0; font-size: 1rem; }
 .flight-row { border-bottom: 1px dashed rgba(255,255,255,0.2); padding-bottom: 12px; margin-bottom: 12px; }
-.flight-code { font-size: 1.2rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px; }
-.flight-time { font-size: 0.9rem; font-weight: 600; color: var(--accent); }
+.weather-main-card { background: linear-gradient(135deg, #2b5876 0%, #4e4376 100%); color: #fff; border-radius: 12px; padding: 25px; margin: 0 15px 20px 15px; text-align: center; position: relative; overflow: hidden; box-shadow: var(--shadow); }
+.weather-tag-badge { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.2); padding: 4px 10px; font-size: 0.7rem; border-radius: 20px; font-weight: 600; backdrop-filter: blur(5px); }
+.weather-big-temp { font-size: 4rem; font-weight: 300; line-height: 1; font-family: var(--font-heading); margin: 10px 0; }
 
 /* Modal */
-.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: end; backdrop-filter: blur(5px); } 
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: end; backdrop-filter: blur(5px); cursor: pointer; }
 .modal.open { display: flex; }
-.modal-content { background: var(--bg-card); color: var(--text-main); width: 100%; max-width: 600px; max-height: 90vh; border-radius: 16px 16px 0 0; padding: 0 0 30px 0; overflow-y: auto; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; box-shadow: 0 -10px 40px rgba(0,0,0,0.2); }
+.modal-content { background: var(--bg-card); color: var(--text-main); width: 100%; max-width: 600px; max-height: 90vh; border-radius: 16px 16px 0 0; padding: 0 0 30px 0; overflow-y: auto; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; box-shadow: 0 -10px 40px rgba(0,0,0,0.2); cursor: default; }
 .modal-handle-container { width: 100%; height: 30px; display: flex; justify-content: center; align-items: center; flex-shrink: 0; background: #fff; border-radius: 16px 16px 0 0; border-bottom: 1px solid #eee; }
 .modal-handle { width: 40px; height: 5px; background: #ddd; border-radius: 10px; }
 .modal-body { padding: 0 25px 25px 25px; background: #fff; }
@@ -146,13 +119,24 @@ nav.bottom-nav { position: fixed; bottom: 0; width: 100%; background-color: rgba
 #toast { position: fixed; top: 90px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 12px 25px; border-radius: 30px; font-size: 0.9rem; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s; display: flex; align-items: center; gap: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); font-weight: 500; } #toast.show { opacity: 1; }
 .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(2px); } .sidebar-overlay.open { opacity: 1; pointer-events: all; }
 .sidebar { position: fixed; top: 0; right: 0; width: 85%; max-width: 320px; height: 100%; background: var(--bg-body); color: #fff; z-index: 1001; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); overflow-y: auto; padding: 25px 20px 100px 20px; padding-top: calc(25px + var(--safe-top)); box-shadow: -5px 0 20px rgba(0,0,0,0.2); } .sidebar.open { transform: translateX(0); }
-.tool-box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px; } 
+.tool-box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px; }
 .curr-input { width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; font-size: 1.2rem; text-align: center; background: rgba(0,0,0,0.2); color: #fff; font-weight: bold; }
-.phrase-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 5000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 30px; } 
+.phrase-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 5000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 30px; backdrop-filter: blur(8px); }
 .phrase-overlay.active { opacity: 1; pointer-events: all; }
+.phrase-card-lg { background: #fff; width: 100%; padding: 40px 20px; border-radius: 20px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.phrase-overlay.active .phrase-card-lg { transform: scale(1); }
 .phrase-big { font-size: 2.2rem; font-weight: 700; color: #111; line-height: 1.3; margin-bottom: 10px; text-align: center; font-family: var(--font-heading); }
-.phrase-sub { font-size: 1.2rem; color: #666; margin-bottom: 30px; }
-.close-phrase { padding: 12px 40px; border-radius: 30px; color: #fff; cursor: pointer; background: #333; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: none; font-size: 1rem; }
+.phrase-sub { font-size: 1.2rem; color: #666; margin-bottom: 5px; }
+.phrase-kana { font-size: 0.9rem; color: var(--accent); margin-bottom: 0; font-weight: 600; }
+.close-phrase-hint { color: #fff; margin-top: 30px; font-size: 0.9rem; opacity: 0.7; }
+
+/* New Phrase Page Styles */
+.phrase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 15px; }
+.phrase-item { background: var(--bg-card); padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; box-shadow: var(--shadow); transition: transform 0.1s; display: flex; flex-direction: column; justify-content: center; min-height: 100px; color: var(--text-main); }
+.phrase-item:active { transform: scale(0.96); }
+.p-jp { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: #111; }
+.p-zh { font-size: 0.85rem; color: #666; }
+.p-cat-title { grid-column: 1 / -1; margin-top: 15px; margin-bottom: 5px; color: #aaa; font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; }
 
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 </style>
@@ -161,494 +145,562 @@ nav.bottom-nav { position: fixed; bottom: 0; width: 100%; background-color: rgba
 
 <script>
 // ============================================
-//   ⚙️ 1. [核心設定 - 福岡版]
+// ⚙️ 1. [核心設定]
 // ============================================
 const CONFIG = {
-    startDate: "2026-02-14", // 根據 Source 2
-    duration: 7
+startDate: "2026-02-14",
+duration: 7
 };
 
 const DESTINATION = {
-    name: "福岡 Fukuoka",
-    lat: 33.5902,
-    lon: 130.4017,
-    timezone: "Asia/Tokyo",
-    currency: "jpy",
-    currencyLabel: "JPY",
-    baseCurrency: "HKD",
-    appTitle: "FUKUOKA <span>2026</span>"
+name: "福岡 Fukuoka",
+lat: 33.5902,
+lon: 130.4017,
+timezone: "Asia/Tokyo",
+currency: "jpy",
+currencyLabel: "JPY",
+baseCurrency: "HKD",
+appTitle: "FUKUOKA <span>2026</span>"
 };
 
 const TRIP_INFO = {
-    visa: { type: "日本入境", number: "QR Code Ready", expiry: "90 Days" },
-    flights: [
-        { type: "去程", flight: "UO6XX", date: "02/14", dep: "HKG 12:xx", arr: "FUK 17:10", note: "T2 登機", bookingRef: "6XYZ99" },
-        { type: "回程", flight: "UO669", date: "02/20", dep: "FUK 16:05", arr: "HKG 19:xx", note: "博多巴士總站搭車", bookingRef: "6XYZ99" }
-    ],
-    hotels: [
-        { name: "Hotel Wing International Hakata Shinkansen-guchi", address: "福岡市博多区博多駅東1-17-17", phone: "+81924310489" }
-    ],
-    emergency: [
-        { name: "警察局 (Police)", phone: "110" },
-        { name: "救護車 (Ambulance)", phone: "119" },
-        { name: "外交部急難救助", phone: "+81-80-1009-xxxx" }
-    ]
+visa: { type: "日本入境", number: "QR Code Ready", expiry: "90 Days" },
+flights: [
+{ type: "去程", flight: "UO6XX", date: "02/14", dep: "HKG 12:xx", arr: "FUK 17:10", note: "T2 登機", bookingRef: "6XYZ99" },
+{ type: "回程", flight: "UO669", date: "02/20", dep: "FUK 16:05", arr: "HKG 19:xx", note: "博多巴士總站搭車", bookingRef: "6XYZ99" }
+],
+hotels: [
+{ name: "Hotel Wing International Hakata Shinkansen-guchi", address: "福岡市博多区博多駅東1-17-17", phone: "+81924310489" }
+],
+emergency: [
+{ name: "警察局 (Police)", phone: "110" },
+{ name: "救護車 (Ambulance)", phone: "119" }
+]
 };
 
 // ============================================
-//   🗺️ 2. [行程與靈感 - 客製化整合]
+// 🗺️ 2. [詳細行程與後備方案 - 100%還原]
 // ============================================
 const USER_ITINERARY = {
-    "day1": { 
-        "events": [
-            { time: "17:10", title: "抵達福岡機場", type: "抵達", price: "Bus ¥310", address: "福岡空港 国際線ターミナル", coords: [33.5859, 130.4446], note: "入境後去2號乘車處搭巴士。關鍵：在「博多駅筑紫口」下車。", tags: ["移動", "必讀"], moodColor: "#F8B500" },
-            { time: "18:00", title: "Check-in Hotel Wing", type: "住宿", address: "博多駅東1-17-17", coords: [33.5905, 130.4235], address_jp: "ホテルウィングインターナショナル博多新幹線口", note: "下巴士面向車站向右轉，沿大馬路直走4分鐘。不要過馬路。", tags: ["筑紫口"] },
-            { time: "18:30", title: "住吉酒販 (買清酒)", type: "購物", price: "¥2,000", address: "博多駅 Deitos Annex 1F", address_jp: "住吉酒販 博多駅店", note: "必買九州限定無濾過生原酒。", tags: ["清酒"] },
-            { time: "19:30", title: "博多牛腸鍋 前田屋", type: "美食", price: "¥2,500", address: "博多駅東2-9-20", address_jp: "博多もつ鍋 前田屋 総本店", note: "必點：味噌口味牛腸鍋、生啤酒。", tags: ["牛腸鍋"] }
-        ],
-        "shopping": ["無濾過生原酒", "白糸酒造"],
-        "inspiration": [
-            { title: "MaxValu 24H 超市", tag: "BACKUP", note: "就在博多站筑紫口附近，深夜逛超市首選。買草莓、優格當宵夜。", address: "博多駅東", type: "超市" },
-            { title: "博多站頂樓夜景", tag: "RELAX", note: "JR博多城頂樓燕子廣場，免費夜景，獨處好地方。", type: "景點" }
-        ]
-    },
-    "day2": { 
-        "events": [
-            { time: "09:00", title: "往城島酒藏祭", type: "交通", price: "¥1,130", address: "JR 荒木駅", note: "筑紫口進站，搭JR鹿兒島本線到「荒木站」，轉接駁車。", tags: ["移動"] },
-            { time: "11:00", title: "城島酒藏びらき", type: "祭典", price: "¥3,000", address: "久留米市城島町", note: "九州最大早春酒祭！購買無限試飲或試飲券。必吃：牡蠣配酒、鰻魚飯。", tags: ["祭典", "喝酒"] },
-            { time: "16:30", title: "櫛田神社 & 川端商店街", type: "景點", address: "博多区上川端町1-41", address_jp: "櫛田神社", note: "博多總鎮守。必看飾山笠、靈泉鶴之井戶。", tags: ["神社"] },
-            { time: "19:00", title: "鳥鶏研究団", type: "美食", price: "¥3,000", address: "博多駅前4-18-19", note: "現代風格燒鳥店，適合獨遊。必點：地雞炭火燒。", tags: ["燒鳥"] }
-        ],
-        "shopping": ["新酒", "酒粕", "酒器"],
-        "inspiration": [
-            { title: "川端善哉廣場", tag: "TIRED", note: "如果酒祭太累，回川端商店街吃紅豆湯圓休息。", address: "川端商店街", type: "甜點" },
-            { title: "博多傳統工藝館", tag: "BACKUP", note: "雨天備案：就在櫛田神社旁，室內參觀博多織。", address: "櫛田神社旁", type: "博物館" }
-        ]
-    },
-    "day3": { 
-        "events": [
-            { time: "09:30", title: "巴士往太宰府", type: "交通", price: "¥610", address: "博多巴士總站", note: "博多口巴士總站 1F 11號月台，搭乘「旅人」巴士。", tags: ["巴士"] },
-            { time: "10:30", title: "太宰府天滿宮", type: "景點", address: "太宰府天満宮", note: "抽籤祈福、摸御神牛、吃梅枝餅。", tags: ["神社"] },
-            { time: "13:00", title: "竈門神社 (良緣)", type: "景點", address: "宝満宮 竈門神社", note: "求姻緣聖地，買粉紅線結御守。搭社區巴士「まほろば号」前往。", tags: ["神社"] },
-            { time: "15:30", title: "博多湯 (二日市)", type: "溫泉", price: "¥550", address: "二日市温泉 博多湯", note: "1300年歷史古湯，純天然溫泉放鬆 (需自備毛巾)。", tags: ["溫泉"] },
-            { time: "19:00", title: "博多九ちゃん拉麵", type: "美食", price: "¥1,200", address: "博多駅東3丁目11-17", note: "回酒店附近吃，濃郁豚骨湯頭。", tags: ["拉麵"] }
-        ],
-        "shopping": ["緣結御守", "梅枝餅"],
-        "inspiration": [
-            { title: "九州國立博物館", tag: "BACKUP", note: "雨天必去：就在太宰府旁，建築壯觀，展覽豐富，完全室內。", address: "太宰府", type: "博物館" },
-            { title: "茶和々 抹茶", tag: "FOOD", note: "太宰府參道上的超濃抹茶霜淇淋。", address: "太宰府", type: "甜點" }
-        ]
-    },
-    "day4": { 
-        "events": [
-            { time: "07:30", title: "牛舌早餐 たんや", type: "早餐", price: "¥900", address: "JR博多城 B1F", note: "博多一番街必吃早餐，炭烤薄切牛舌。", tags: ["排隊名店"] },
-            { time: "10:30", title: "麒麟啤酒工廠見學", type: "體驗", price: "¥2,500", address: "キリンビール福岡工場", note: "甘木鐵道「太刀洗站」下車。導覽與試飲，午餐吃烤肉。", tags: ["啤酒"] },
-            { time: "15:30", title: "樂水園 (庭園抹茶)", type: "體驗", price: "¥500", address: "博多区住吉2-10-7", note: "博多商人的別墅遺跡。在茶室體驗抹茶套餐，看庭園發呆。", tags: ["抹茶", "療癒"] },
-            { time: "16:45", title: "住吉神社", type: "景點", address: "博多区住吉3-1-51", note: "樂水園隔壁，守護航海安全，能量場強。", tags: ["神社"] },
-            { time: "18:30", title: "博多水炊き 濱田屋", type: "美食", price: "¥4,000", address: "JR博多 City 10F", note: "福岡三大鍋物之一水炊鍋，膠原蛋白滿滿。", tags: ["水炊鍋"] }
-        ],
-        "shopping": ["麒麟啤酒杯"],
-        "inspiration": [
-            { title: "住吉神社古物市", tag: "BACKUP", note: "若遇上日期，住吉神社偶爾有古物市集。", address: "住吉神社", type: "市集" },
-            { title: "Rec Coffee", tag: "COFFEE", note: "福岡知名冠軍咖啡，博多丸井百貨裡有分店，適合看書。", address: "KITTE博多", type: "咖啡" }
-        ]
-    },
-    "day5": { 
-        "events": [
-            { time: "08:00", title: "Sonic 特急往別府", type: "交通", price: "¥4,000", address: "JR 博多駅", note: "搭乘藍色特急 Sonic，車程2小時。", tags: ["鐵道"] },
-            { time: "10:30", title: "大分香氛博物館", type: "體驗", price: "¥3,500", address: "別府市北石垣48-1", note: "調製專屬香水體驗。別府大學下站。", tags: ["香氛"] },
-            { time: "13:00", title: "Beppu Brewery", type: "美食", price: "¥2,000", address: "別府駅前町13-8", note: "自家釀造精釀啤酒 + 炸雞天婦羅。", tags: ["啤酒"] },
-            { time: "15:00", title: "八幡朝見神社", type: "景點", address: "別府市朝見2-15-19", note: "別府最強能量點。必找「盃石」與「夫婦杉」。", tags: ["神社"] },
-            { time: "19:30", title: "博多一双 拉麵", type: "美食", price: "¥1,000", address: "博多駅東3-1-6", note: "回博多吃著名的「泡沫系」豚骨拉麵。", tags: ["拉麵"] }
-        ],
-        "shopping": ["別府香水", "地獄蒸布丁"],
-        "inspiration": [
-            { title: "別府車站手湯", tag: "RELAX", note: "如果不想走遠，車站前就有手湯可以暖手。", address: "別府駅", type: "溫泉" },
-            { title: "大濠公園", tag: "BACKUP", note: "如果不想去別府，留在博多去大濠公園散步看美術館。", address: "大濠公園", type: "景點" }
-        ]
-    },
-    "day6": { 
-        "events": [
-            { time: "10:00", title: "手作明太子體驗", type: "體驗", price: "¥2,200", address: "ハクハク (Haku Haku)", note: "吉塚站導航步行13分。製作獨一無二的明太子。", tags: ["明太子"] },
-            { time: "11:15", title: "中洲川端 & 線香", type: "購物", address: "中洲川端商店街", note: "逛商店街，去「市川香舖」買線香。", tags: ["購物"] },
-            { time: "12:30", title: "燒肉 BAKURO", type: "美食", price: "¥3,000", address: "中央区大名", note: "赤坂站下車。午間和牛套餐。", tags: ["和牛"] },
-            { time: "14:30", title: "MY ONLY FRAGRANCE", type: "體驗", price: "¥5,000", address: "大名1-1-35", note: "自製專屬香水 (已預約)。", tags: ["香氛"] },
-            { time: "16:00", title: "Dry Head Spa", type: "療癒", price: "¥4,000", address: "大名區域", note: "頭部按摩消除腦疲勞，不需弄濕頭髮。", tags: ["按摩"] },
-            { time: "19:30", title: "胡麻鯖魚 & 牛腸鍋", type: "美食", price: "¥4,000", address: "一利 博多本店", note: "博多名物胡麻鯖魚。", tags: ["美食"] }
-        ],
-        "shopping": ["線香", "明太子", "自製香水"],
-        "inspiration": [
-            { title: "eel Books", tag: "BACKUP", note: "博多附近的獨立書店/古書選物店，適合安靜翻書。", address: "冷泉町", type: "書店" },
-            { title: "LOFT 天神", tag: "SHOP", note: "如果不做香水，去LOFT買文具和入浴劑。", address: "天神", type: "購物" }
-        ]
-    },
-    "day7": { 
-        "events": [
-            { time: "09:00", title: "Check-out", type: "退房", note: "行李寄放酒店櫃檯。", tags: ["退房"] },
-            { time: "11:00", title: "博多百年蔵", type: "景點", address: "博多区堅粕1-30-1", note: "搭計程車前往。參觀150年歷史酒造，買清酒伴手禮。", tags: ["酒造"] },
-            { time: "12:15", title: "鮨割烹やま中", type: "美食", price: "¥5,000", address: "JR博多 City 9F", note: "頂級壽司午餐，完美的句點。", tags: ["壽司"] },
-            { time: "14:00", title: "前往機場", type: "交通", price: "Bus ¥310", address: "博多巴士總站 11號月台", note: "14:00前務必上車！搭國際線直達巴士。", tags: ["機場", "必讀"] }
-        ],
-        "shopping": ["百年蔵清酒", "博多通饅頭", "Menbei"],
-        "inspiration": [
-            { title: "阪急百貨地下街", tag: "BACKUP", note: "最後衝刺！買伴手禮最齊全的地方，不用跑來跑去。", address: "博多阪急", type: "購物" },
-            { title: "機場貴賓室", tag: "RELAX", note: "早點去機場，在Lounge喝杯酒休息。", address: "福岡機場", type: "休息" }
-        ]
-    }
+"day1": {
+"events": [
+{ time: "17:10", title: "抵達福岡機場", type: "抵達", price: "Bus ¥310", address: "福岡空港 国際線ターミナル", coords: [33.5859, 130.4446], note: "1. 入境後直走，找「Bus/巴士」標誌。\n2. 去航廈外<b>「2號乘車處」</b>。\n3. 上車確認往「博多駅」。\n4. <b>關鍵：</b>在<b>「博多駅筑紫口 (Chikushi)」</b>下車（通常是終點）。", tags: ["移動", "必讀"], moodColor: "#d63345" },
+{ time: "18:00", title: "Check-in Hotel Wing", type: "住宿", address: "博多駅東1-17-17", coords: [33.5905, 130.4235], address_jp: "ホテルウィングインターナショナル博多新幹線口", note: "1. 下巴士面向車站，<b>向右轉</b>。\n2. 沿大馬路(博多駅東街)直走約4分鐘。\n3. 過第一個紅綠燈，右手邊即是。\n4. 不要過馬路到對面。", tags: ["筑紫口"] },
+{ time: "18:30", title: "住吉酒販 (買清酒)", type: "購物", price: "¥2,000", address: "博多駅 Deitos Annex 1F", coords: [33.5898, 130.4208], address_jp: "住吉酒販 博多駅店", note: "1. 從酒店走回「筑紫口」。\n2. 進大門<b>立刻右轉</b>看「Deitos Annex」招牌。\n3. 必買：九州限定無濾過生原酒、花札試飲。", tags: ["清酒"] },
+{ time: "19:30", title: "博多牛腸鍋 前田屋", type: "美食", price: "¥2,500", address: "博多駅東2-9-20", coords: [33.5900, 130.4205], address_jp: "博多もつ鍋 前田屋 総本店", note: "1. 回到酒店，放下行李。\n2. 必點：味噌口味牛腸鍋、生啤酒。", tags: ["牛腸鍋"] },
+{ time: "21:00", title: "回酒店休息", type: "休息", address: "酒店 Lounge", coords: [33.5905, 130.4235], note: "享用酒店 Lounge 免費咖啡/有料酒，或泡大浴場。", tags: ["放鬆"] }
+],
+"shopping": ["無濾過生原酒", "白糸酒造"],
+"inspiration": [
+{ title: "MaxValu 24H 超市", tag: "BACKUP", note: "如果時差睡不著，就在博多站筑紫口附近，深夜逛超市首選。買草莓、優格當宵夜。", address: "博多駅東", coords: [33.5880, 130.4250], type: "超市" },
+{ title: "博多站頂樓夜景", tag: "RELAX", note: "JR博多城頂樓燕子廣場，免費夜景，獨處好地方。", address: "JR博多城", coords: [33.5890, 130.4200], type: "景點" }
+]
+},
+"day2": {
+"events": [
+{ time: "08:00", title: "酒店免費早餐", type: "早餐", address: "酒店 Lounge", note: "享用麵包與飲料。", tags: ["早餐"] },
+{ time: "09:00", title: "往城島酒藏祭", type: "交通", price: "¥1,130", address: "JR 荒木駅", coords: [33.2847, 130.5369], note: "1. 走到筑紫口進站 (刷IC卡)。\n2. 搭 <b>JR 鹿兒島本線</b> (往久留米/大牟田)。\n3. <b>「荒木駅」</b>下車。\n4. 出站跟隨人潮搭免費接駁巴士。", tags: ["移動"] },
+{ time: "11:00", title: "城島酒藏びらき", type: "祭典", price: "¥3,000", address: "久留米市城島町", coords: [33.2650, 130.4300], note: "1. 九州最大早春酒祭！\n2. 購買無限試飲 (城島∞) 或試飲券。\n3. 搭巡迴巴士去 8 個酒藏。\n4. 必吃：牡蠣配酒、鰻魚飯。", tags: ["祭典", "喝酒"] },
+{ time: "16:30", title: "櫛田神社 & 川端", type: "景點", address: "博多区上川端町1-41", coords: [33.5930, 130.4105], address_jp: "櫛田神社", note: "1. 搭JR回博多後，從<b>博多口</b>慢慢散步約15分。\n2. <b>必看：</b>巨大的「飾山笠」花車。\n3. <b>靈泉鶴之井戶：</b>據說喝了保佑不老長壽。", tags: ["神社", "博多文化"] },
+{ time: "19:00", title: "鳥鶏研究団", type: "美食", price: "¥3,000", address: "博多駅前4-18-19", coords: [33.5860, 130.4180], note: "1. 從櫛田神社步行約 15 分鐘可達。\n2. 位於博多口（西側）區域。\n3. <b>必點：</b>地雞炭火燒、親子丼。\n4. 現代風格的燒鳥店，適合獨遊。", tags: ["燒鳥", "博多口"] }
+],
+"shopping": ["新酒", "酒粕", "酒器"],
+"inspiration": [
+{ title: "川端善哉廣場", tag: "TIRED", note: "如果酒祭太累，回川端商店街吃紅豆湯圓休息。", address: "川端商店街", coords: [33.5940, 130.4090], type: "甜點" },
+{ title: "博多傳統工藝館", tag: "BACKUP", note: "雨天備案：就在櫛田神社旁，室內參觀博多織。", address: "櫛田神社旁", coords: [33.5925, 130.4100], type: "博物館" }
+]
+},
+"day3": {
+"events": [
+{ time: "08:30", title: "早餐 MIGNON", type: "早餐", price: "¥500", address: "博多駅中央改札内", coords: [33.5899, 130.4200], note: "酒店走回筑紫口進站，直走中央改札內右手邊，排隊名店迷你可頌。", tags: ["早餐"] },
+{ time: "09:30", title: "巴士往太宰府", type: "交通", price: "¥610", address: "博多巴士總站", coords: [33.5915, 130.4190], note: "1. 走到「博多口」右側大樓「博多巴士總站」1F。\n2. <b>11號月台</b> (粉紅線指引)。\n3. 搭乘「旅人 (Tabito)」巴士直達。", tags: ["巴士", "博多口"] },
+{ time: "10:30", title: "太宰府天滿宮", type: "景點", address: "太宰府天満宮", coords: [33.5215, 130.5349], note: "抽籤祈福、摸御神牛、吃梅枝餅。", tags: ["神社"] },
+{ time: "12:00", title: "前往竈門神社", type: "交通", price: "¥100", address: "太宰府駅前", note: "1. 回西鐵太宰府站前。\n2. 搭社區巴士「まほろば号 (Mahoroba)」(內山線)。\n3. 終點「內山」下車。", tags: ["巴士"] },
+{ time: "13:00", title: "竈門神社 (良緣)", type: "景點", address: "宝満宮 竈門神社", coords: [33.5360, 130.5530], note: "求姻緣聖地，買粉紅線結御守。", tags: ["神社"] },
+{ time: "14:00", title: "甜點：茶和々", type: "甜點", price: "¥800", address: "太宰府參道", note: "搭巴士回太宰府站。在參道吃特濃抹茶霜淇淋。", tags: ["抹茶"] },
+{ time: "15:00", title: "前往博多湯", type: "交通", address: "二日市温泉", coords: [33.4905, 130.5200], note: "1. 進西鐵太宰府站，搭電車(2站)到<b>「西鐵二日市」</b>。\n2. 西口出站，右轉直走商店街10分鐘。\n3. 古老木造建築即是博多湯。", tags: ["移動"] },
+{ time: "15:30", title: "博多湯 (二日市)", type: "溫泉", price: "¥550", address: "博多湯", note: "1300年歷史古湯，純天然溫泉放鬆 (需自備毛巾/現場買)。", tags: ["溫泉"] },
+{ time: "17:00", title: "回博多 (換JR)", type: "交通", address: "JR 二日市駅", coords: [33.5000, 130.5250], note: "1. 離開博多湯，<b>不要</b>走回西鐵站。\n2. 導航走去<b>「JR 二日市站」</b>(約10分)。\n3. 搭JR回博多站。", tags: ["JR"] },
+{ time: "19:00", title: "博多九ちゃん拉麵", type: "美食", price: "¥1,200", address: "博多駅東3丁目11-17", coords: [33.5855, 130.4280], note: "1. 位於筑紫口區域，離酒店步行距離內。\n2. 濃郁豚骨湯頭，在地人喜愛。\n3. 營業至深夜。", tags: ["拉麵"] }
+],
+"shopping": ["緣結御守", "梅枝餅"],
+"inspiration": [
+{ title: "九州國立博物館", tag: "BACKUP", note: "雨天必去：就在太宰府旁，建築壯觀，展覽豐富，完全室內。", address: "太宰府", coords: [33.5190, 130.5380], type: "博物館" },
+{ title: "星巴克太宰府店", tag: "RELAX", note: "隈研吾設計的知名概念店，如果茶和々人太多，可改來這裡。", address: "太宰府參道", coords: [33.5205, 130.5335], type: "咖啡" }
+]
+},
+"day4": {
+"events": [
+{ time: "07:30", title: "牛舌早餐 たんや", type: "早餐", price: "¥900", address: "JR博多城 B1F", coords: [33.5895, 130.4195], note: "1. 位於博多站地下「博多一番街」。\n2. <b>福岡必吃早餐：</b>炭烤薄切牛舌定食。\n3. 建議提早去排隊，翻桌率很快。", tags: ["排隊名店"] },
+{ time: "09:00", title: "往麒麟啤酒廠", type: "交通", price: "¥810", address: "甘木鉄道 太刀洗駅", coords: [33.3950, 130.6050], note: "1. JR博多 ➔ <b>基山站</b> (轉車)。\n2. 站內換乘<b>「甘木鐵道」</b>(小火車)。\n3. <b>注意：甘木鐵道只收現金！</b>\n4. 在「太刀洗站」下車，走15分。", tags: ["現金", "轉車"] },
+{ time: "10:30", title: "麒麟啤酒工廠見學", type: "體驗", price: "¥2,500", address: "キリンビール福岡工場", note: "參加導覽、試飲。午餐在園區「Kirin Beer Farm」吃羊肉燒烤。", tags: ["啤酒"] },
+{ time: "14:00", title: "回博多", type: "交通", address: "博多駅", coords: [33.5900, 130.4206], note: "1. 原路返回：太刀洗 ➔ 基山 ➔ 博多。\n2. 下午在博多站附近進行「城市微旅行」。", tags: ["移動"] },
+{ time: "15:30", title: "樂水園 (庭園抹茶)", type: "體驗", price: "¥500", address: "博多区住吉2-10-7", coords: [33.5855, 130.4140], note: "1. 從博多站博多口步行約 12 分鐘。\n2. 博多商人的別墅遺跡。\n3. <b>必做：</b>在茶室體驗抹茶套餐，坐在緣側看庭園發呆。", tags: ["抹茶", "療癒"] },
+{ time: "16:45", title: "住吉神社", type: "景點", address: "博多区住吉3-1-51", coords: [33.5830, 130.4145], note: "1. 就在樂水園隔壁。\n2. 日本重要文化財，守護航海與交通安全。\n3. 境內非常清幽，能量場強。", tags: ["神社"] },
+{ time: "18:30", title: "博多水炊き 濱田屋", type: "美食", price: "¥4,000", address: "JR博多 City 10F", coords: [33.5898, 130.4200], note: "1. <b>福岡三大鍋物之一：水炊鍋 (Mizutaki)。</b>\n2. 位於車站樓上 10F 高檔美食街。\n3. 濃郁雞湯含豐富膠原蛋白。", tags: ["水炊鍋"] }
+],
+"shopping": ["麒麟啤酒杯"],
+"inspiration": [
+{ title: "住吉神社古物市", tag: "BACKUP", note: "若遇上日期，住吉神社偶爾有古物市集，非常適合喜歡老東西的你。", address: "住吉神社", coords: [33.5830, 130.4145], type: "市集" },
+{ title: "Rec Coffee", tag: "COFFEE", note: "福岡知名冠軍咖啡，博多丸井百貨 (KITTE) 6F 有分店，視野好。", address: "KITTE博多", coords: [33.5895, 130.4215], type: "咖啡" }
+]
+},
+"day5": {
+"events": [
+{ time: "08:00", title: "Sonic 特急往別府", type: "交通", price: "¥4,000", address: "JR 博多駅", note: "1. 買鐵路便當。\n2. 搭乘藍色特急 <b>Sonic (ソニック)</b>。\n3. 車程2小時，在<b>「別府站」</b>下車。", tags: ["鐵道", "Sonic"] },
+{ time: "10:30", title: "大分香氛博物館", type: "體驗", price: "¥3,500", address: "大分香りの博物館", coords: [33.3050, 131.4880], note: "1. 別府西口搭龜之井巴士至「別府大學下」。\n2. 調製專屬香水 (40分鐘)。", tags: ["香氛"] },
+{ time: "13:00", title: "Beppu Brewery", type: "美食", price: "¥2,000", address: "別府駅前町13-8", coords: [33.2790, 131.5030], note: "1. 搭巴士回別府站，站前通步行 5 分。\n2. 自家釀造的精釀啤酒 (Craft Beer)。\n3. 推薦搭配大分名物「炸雞天婦羅」。", tags: ["啤酒"] },
+{ time: "15:00", title: "八幡朝見神社", type: "景點", address: "別府市朝見2-15-19", coords: [33.2700, 131.4980], note: "1. <b>別府最強 Power Spot。</b>\n2. 建議從車站搭計程車前往 (約¥800)。\n3. <b>必找「盃石」：</b>參道上有像清酒杯的石頭。\n4. <b>夫婦杉：</b>穿過神木求良緣。", tags: ["神社", "靈驗"] },
+{ time: "16:30", title: "岡本屋布丁 & 足湯", type: "甜點", price: "¥500", address: "別府駅内", note: "1. 回到別府車站。\n2. 在車站商店買著名的「地獄蒸布丁」。\n3. 如果還有時間，車站外有「手湯」可以暖手。", tags: ["布丁"] },
+{ time: "17:30", title: "搭 Sonic 回博多", type: "交通", address: "JR 別府駅", note: "搭乘回程特急 Sonic，好好休息。", tags: ["鐵道"] },
+{ time: "19:30", title: "博多一双 拉麵", type: "美食", price: "¥1,000", address: "博多駅東3-1-6", coords: [33.5880, 130.4260], note: "1. 博多筑紫口出來右轉走5-8分。\n2. 著名的「泡沫系」豚骨拉麵，湯頭濃郁充滿豬骨香氣。\n3. 需排隊，但值得一試。", tags: ["拉麵"] }
+],
+"shopping": ["別府香水", "地獄蒸布丁"],
+"inspiration": [
+{ title: "別府車站手湯", tag: "RELAX", note: "如果不想走遠，車站前就有手湯可以暖手，免費且療癒。", address: "別府駅", coords: [33.2795, 131.5005], type: "溫泉" },
+{ title: "大濠公園", tag: "BACKUP", note: "如果不想去別府，留在博多去大濠公園散步看美術館。", address: "大濠公園", coords: [33.5860, 130.3760], type: "景點" }
+]
+},
+"day6": {
+"events": [
+{ time: "09:00", title: "往 Haku Haku", type: "交通", price: "¥230", address: "吉塚駅", coords: [33.6050, 130.4350], note: "1. JR博多搭一站到<b>「吉塚站」</b>。\n2. 東口出，<b>開導航</b>走13分鐘 (這段路易迷路)。", tags: ["移動"] },
+{ time: "10:00", title: "手作明太子體驗", type: "體驗", price: "¥2,200", address: "ハクハク", note: "製作獨一無二的明太子。", tags: ["明太子"] },
+{ time: "11:15", title: "中洲川端 & 線香", type: "購物", address: "中洲川端商店街", coords: [33.5950, 130.4070], note: "1. 回吉塚搭JR至博多 ➔ 轉<b>地鐵空港線</b>至「中洲川端」。\n2. 5號出口逛商店街，去「市川香舖」買線香。", tags: ["購物"] },
+{ time: "12:30", title: "燒肉 BAKURO", type: "美食", price: "¥3,000", address: "中央区大名", coords: [33.5880, 130.3950], address_jp: "焼肉バクロ 大名店", note: "1. 地鐵搭到<b>「赤坂站」</b>。\n2. 步行至大名區(巷弄多請開導航)。\n3. 午間和牛套餐。", tags: ["和牛"] },
+{ time: "14:30", title: "MY ONLY FRAGRANCE", type: "體驗", price: "¥5,000", address: "大名1-1-35", note: "<b>已LINE預約</b>。自製專屬香水體驗。", tags: ["香氛", "已預約"] },
+{ time: "16:00", title: "Dry Head Spa", type: "療癒", price: "¥4,000", address: "大名區域", coords: [33.5870, 130.3960], note: "1. <b>取代超市行程的放鬆時光。</b>\n2. 不需弄濕頭髮，專注於消除腦疲勞與眼壓。\n3. 讓身心重新開機，準備晚上的大餐。", tags: ["按摩", "放鬆"] },
+{ time: "17:30", title: "Fukuoka Craft", type: "小酌", address: "大名1-11-13", coords: [33.5865, 130.3965], note: "按摩完神清氣爽，就在附近喝一杯福岡在地 Craft Beer。", tags: ["啤酒"] },
+{ time: "19:30", title: "一利 牛腸鍋", type: "美食", price: "¥4,000", address: "博多駅東2-1-23", coords: [33.5890, 130.4240], address_jp: "ごま鯖と明太もつ鍋 一利 博多本店", note: "1. 從天神搭地鐵/巴士回到博多站。\n2. 位於<b>筑紫口</b>步行範圍內。\n3. 必點：博多名物胡麻鯖魚、明太子牛腸鍋。", tags: ["美食"] }
+],
+"shopping": ["線香", "明太子", "自製香水"],
+"inspiration": [
+{ title: "eel Books", tag: "BACKUP", note: "博多附近的獨立書店/古書選物店，適合安靜翻書。", address: "冷泉町", coords: [33.5930, 130.4120], type: "書店" },
+{ title: "LOFT 天神", tag: "SHOP", note: "如果不做香水，去LOFT買文具和入浴劑。", address: "天神", coords: [33.5900, 130.4000], type: "購物" }
+]
+},
+"day7": {
+"events": [
+{ time: "09:00", title: "Check-out", type: "退房", note: "行李寄放酒店櫃檯。", tags: ["退房"] },
+{ time: "10:00", title: "Nana’s Green Tea", type: "甜點", price: "¥1,500", address: "博多 Amu Plaza", note: "JR博多城樓上。吃抹茶聖代。", tags: ["抹茶"] },
+{ time: "11:00", title: "博多百年蔵", type: "景點", address: "博多区堅粕1-30-1", coords: [33.6000, 130.4250], note: "1. 建議直接從酒店<b>搭計程車</b> (約¥1,000)。\n2. 參觀150年歷史酒造 (Hakata Hyakunen-gura)。\n3. 買最後的清酒伴手禮。", tags: ["酒造"] },
+{ time: "12:15", title: "鮨割烹やま中", type: "美食", price: "¥5,000", address: "JR博多 City 9F", coords: [33.5900, 130.4200], address_jp: "鮨割烹やま中 JR博多シティ店", note: "1. 回博多站。\n2. 9樓 Kuuten 美食街。\n3. 頂級壽司午餐 (特選にぎり套餐)。", tags: ["壽司"] },
+{ time: "14:00", title: "前往機場", type: "交通", price: "Bus ¥310", address: "博多巴士總站 11號月台", coords: [33.5859, 130.4446], note: "1. 回酒店拿行李。\n2. 走到<b>「博多巴士總站」1F 11號月台</b>。\n3. <b>14:00前</b>務必上車！搭國際線直達巴士。\n4. UO669 (16:05起飛)。", tags: ["機場", "必讀"] }
+],
+"shopping": ["百年蔵清酒", "博多通饅頭", "Menbei"],
+"inspiration": [
+{ title: "阪急百貨地下街", tag: "BACKUP", note: "最後衝刺！買伴手禮最齊全的地方，不用跑來跑去。", address: "博多阪急", coords: [33.5895, 130.4205], type: "購物" },
+{ title: "機場貴賓室", tag: "RELAX", note: "早點去機場，在Lounge喝杯酒休息。", address: "福岡機場", coords: [33.5859, 130.4446], type: "休息" }
+]
+}
 };
 </script>
 
 <div id="toast"><i class="fa-solid fa-circle-check"></i> <span id="toast-msg">Action Completed</span></div>
 <header>
-    <div>
-        <h1 id="app-title">TRIP PLANNER</h1>
-        <div id="local-clock">--:--</div>
-    </div>
-    <div class="header-actions">
-        <div class="header-btn" onclick="openTools()"><i class="fa-solid fa-suitcase"></i></div>
-        <div class="header-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
-    </div>
+<div>
+<h1 id="app-title">TRIP PLANNER</h1>
+<div id="local-clock">--:--</div>
+</div>
+<div class="header-actions">
+<div class="header-btn" onclick="openTools()"><i class="fa-solid fa-suitcase"></i></div>
+<div class="header-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
+</div>
 </header>
 
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
 <div class="sidebar" id="sidebar">
-    <div style="font-size:0.8rem; color:#aaa; margin-bottom:10px; font-weight:700; letter-spacing:1px;">SAFETY & TOOLS</div>
-    <div class="tool-box" style="background: #25D366; border:none; color:#fff; text-align:center; cursor:pointer;" onclick="sendWhatsApp()">
-        <i class="fa-brands fa-whatsapp" style="font-size:2rem; margin-bottom:5px;"></i>
-        <div style="font-weight:bold;">報平安 (Send Location)</div>
-    </div>
-    <div class="tool-box">
-        <div style="margin-bottom:10px; font-weight:bold; color:#fff;">匯率換算 (Rate: 0.052)</div>
-        <input type="number" id="curr-jpy" class="curr-input" placeholder="JPY ¥" oninput="convertCurrency()">
-        <div style="text-align:center; color:var(--accent); margin:5px;">⇅</div>
-        <input type="number" id="curr-hkd" class="curr-input" placeholder="HKD $" readonly>
-    </div>
-    <div class="tool-box">
-        <div style="margin-bottom:10px; font-weight:bold; color:#fff;">手指日語</div>
-        <div class="shop-item" onclick="showPhrase('一人です', '我是一位')"><label>一位 (Hit-ori)</label></div>
-        <div class="shop-item" onclick="showPhrase('お会計お願いします', '麻煩結帳')"><label>結帳 (Kaikei)</label></div>
-        <div class="shop-item" onclick="showPhrase('トイレはどこですか', '廁所在哪裡')"><label>廁所 (Toire)</label></div>
-        <div class="shop-item" onclick="showPhrase('これは何ですか', '這是什麼')"><label>這是什麼 (Kore wa?)</label></div>
-    </div>
+<div style="font-size:0.8rem; color:#aaa; margin-bottom:10px; font-weight:700; letter-spacing:1px;">SAFETY & TOOLS</div>
+<div class="tool-box" style="background: #25D366; border:none; color:#fff; cursor:pointer;">
+<i class="fa-brands fa-whatsapp" style="font-size:2rem; margin-bottom:5px;"></i>
+<div style="font-weight:bold; margin-bottom:10px;">一鍵報平安</div>
+<input type="tel" id="wa-phone" class="curr-input" placeholder="對方電話 (如 852xxxx)" style="background:rgba(0,0,0,0.2); font-size:1rem; margin-bottom:10px;">
+<button onclick="sendWhatsApp()" style="width:100%; padding:8px; border-radius:5px; border:none; background:#fff; color:#25D366; font-weight:bold;">發送位置</button>
+</div>
+<div class="tool-box">
+<div style="margin-bottom:10px; font-weight:bold; color:#fff;">匯率換算 (Rate: 0.052)</div>
+<input type="number" id="curr-jpy" class="curr-input" placeholder="JPY ¥" oninput="convertCurrency()">
+<div style="text-align:center; color:var(--accent); margin:5px;">⇅</div>
+<input type="number" id="curr-hkd" class="curr-input" placeholder="HKD $" readonly>
+</div>
+<button onclick="goToPhrases()" style="width:100%; padding:15px; background:var(--accent); color:var(--accent-text); border:none; border-radius:8px; font-weight:bold; font-size:1rem; display:flex; justify-content:center; align-items:center; gap:10px; cursor:pointer;">
+<i class="fa-solid fa-language"></i> 🗣️ 開啟日語手指書
+</button>
 </div>
 
 <div id="phrase-overlay" class="phrase-overlay" onclick="closePhrase()">
-    <div id="overlay-jp" class="phrase-big"></div>
-    <div id="overlay-zh" class="phrase-sub"></div>
-    <button class="close-phrase">關閉</button>
+<div class="phrase-card-lg" onclick="event.stopPropagation()">
+<div id="overlay-jp" class="phrase-big"></div>
+<div id="overlay-kana" class="phrase-kana"></div>
+<div id="overlay-zh" class="phrase-sub"></div>
+</div>
+<div class="close-phrase-hint">點擊背景關閉 (Click BG to Close)</div>
 </div>
 
 <div class="date-selector-container"><div class="date-selector" id="date-selector"></div></div>
 
 <main>
-    <div id="page-itinerary" class="page active"><div class="timeline-container" id="timeline-container"></div></div>
-    
-    <div id="page-inspiration" class="page">
-        <div class="filter-bar-container">
-            <span class="filter-chip active" onclick="filterInspiration('all', this)">全部</span>
-            <span class="filter-chip" onclick="filterInspiration('BACKUP', this)">☔ 備案</span>
-            <span class="filter-chip" onclick="filterInspiration('RELAX', this)">☕ 休息</span>
-            <span class="filter-chip" onclick="filterInspiration('SHOP', this)">🛍️ 逛街</span>
-        </div>
-        <div id="inspiration-container" style="padding: 0 15px;"></div>
-    </div>
+<div id="page-itinerary" class="page active"><div class="timeline-container" id="timeline-container"></div></div>
 
-    <div id="page-shopping" class="page">
-        <div class="page-header"><h2 class="page-title">購物清單</h2></div>
-        <div id="shopping-container" class="shopping-list"></div>
-    </div>
+<div id="page-phrases" class="page">
+<div class="page-header"><h2 class="page-title">手指日語 (Phrasebook)</h2></div>
+<div class="phrase-grid">
+<div class="p-cat-title">生存用語 (Basic)</div>
+<div class="phrase-item" onclick="showPhrase('ありがとうございます', '謝謝', 'Arigatou Gozaimasu')"><div class="p-jp">ありがとうございます</div><div class="p-zh">謝謝</div></div>
+<div class="phrase-item" onclick="showPhrase('すいません', '不好意思 / 請問', 'Suimasen')"><div class="p-jp">すいません</div><div class="p-zh">不好意思</div></div>
+<div class="phrase-item" onclick="showPhrase('大丈夫です', '沒關係 / 不用了', 'Daijoubu desu')"><div class="p-jp">大丈夫です</div><div class="p-zh">沒關係/不用了</div></div>
+<div class="phrase-item" onclick="showPhrase('英語メニューはありますか', '有英文菜單嗎？', 'Eigo menyu wa arimasuka')"><div class="p-jp">英語メニュー...</div><div class="p-zh">有英文菜單嗎？</div></div>
 
-    <div id="page-weather" class="page">
-        <div id="weather-content"><div style="text-align:center; padding:50px; color:#fff;"><i class="fa-solid fa-spinner fa-spin"></i> 載入福岡天氣...</div></div>
-        <div id="weather-details-container" style="display:none;">
-            <span class="section-label">今日時段 (3H)</span>
-            <div class="hourly-container" id="weather-hourly"></div>
-            <span class="section-label" style="margin-top:20px;">旅人建議</span>
-            <div class="advice-card">
-                <div class="advice-icon"><i class="fa-solid fa-shirt"></i></div>
-                <div class="advice-content"><h4>穿搭指南</h4><p id="weather-advice-text">載入中...</p></div>
-            </div>
-            <div class="weather-grid">
-                <div class="weather-stat-card"><div class="ws-row"><span class="ws-label">濕度</span><i class="fa-solid fa-droplet ws-icon"></i></div><div class="ws-value" id="ws-humidity">--%</div></div>
-                <div class="weather-stat-card"><div class="ws-row"><span class="ws-label">日落</span><i class="fa-solid fa-moon ws-icon"></i></div><div class="ws-value" id="ws-sunset">--:--</div></div>
-            </div>
-        </div>
-    </div>
+<div class="p-cat-title">餐廳 (Dining)</div>
+<div class="phrase-item" onclick="showPhrase('一人です', '我是一位', 'Hitori desu')"><div class="p-jp">一人です</div><div class="p-zh">一位</div></div>
+<div class="phrase-item" onclick="showPhrase('お水をください', '請給我水', 'Omizu o kudasai')"><div class="p-jp">お水をください</div><div class="p-zh">請給我水</div></div>
+<div class="phrase-item" onclick="showPhrase('これをお願いします', '我要這個', 'Kore o onegaishimasu')"><div class="p-jp">これをお願いします</div><div class="p-zh">我要這個</div></div>
+<div class="phrase-item" onclick="showPhrase('お会計お願いします', '麻煩結帳', 'Okaikei onegaishimasu')"><div class="p-jp">お会計お願いします</div><div class="p-zh">麻煩結帳</div></div>
 
-    <div id="page-info" class="page">
-        <div class="page-header"><h2 class="page-title">旅程資訊</h2></div>
-        <div id="dynamic-info-content"></div>
-    </div>
+<div class="p-cat-title">購物 & 交通 (Shop & Travel)</div>
+<div class="phrase-item" onclick="showPhrase('これを見せてください', '請讓我看這個', 'Kore o misete')"><div class="p-jp">これを見せて...</div><div class="p-zh">請讓我看這個</div></div>
+<div class="phrase-item" onclick="showPhrase('いくらですか', '多少錢？', 'Ikura desu ka')"><div class="p-jp">いくらですか</div><div class="p-zh">多少錢？</div></div>
+<div class="phrase-item" onclick="showPhrase('カードは使えますか', '可以用信用卡嗎？', 'Kado wa tsukaemasuka')"><div class="p-jp">カードは...</div><div class="p-zh">可刷卡嗎？</div></div>
+<div class="phrase-item" onclick="showPhrase('博多駅はどこですか', '博多站在哪裡？', 'Hakata-eki wa doko')"><div class="p-jp">博多駅はどこ...</div><div class="p-zh">博多站在哪？</div></div>
+
+<div class="p-cat-title" style="color:#d63345;">緊急 (Emergency)</div>
+<div class="phrase-item" style="border-left:4px solid #d63345;" onclick="showPhrase('助けてください', '請幫幫我！', 'Tasukete kudasai')"><div class="p-jp" style="color:#d63345;">助けてください</div><div class="p-zh">請幫幫我！</div></div>
+<div class="phrase-item" style="border-left:4px solid #d63345;" onclick="showPhrase('病院に行きたいです', '我想去醫院', 'Byouin ni ikitai')"><div class="p-jp">病院に行きたい</div><div class="p-zh">我想去醫院</div></div>
+<div class="phrase-item" style="border-left:4px solid #d63345;" onclick="showPhrase('警察を呼んでください', '請叫警察', 'Keisatsu o yonde')"><div class="p-jp">警察を呼んで</div><div class="p-zh">請叫警察</div></div>
+<div class="phrase-item" style="border-left:4px solid #d63345;" onclick="showPhrase('財布をなくしました', '錢包不見了', 'Saifu o nakushimashita')"><div class="p-jp">財布をなくし...</div><div class="p-zh">錢包不見了</div></div>
+</div>
+<div style="height:50px;"></div>
+</div>
+
+<div id="page-inspiration" class="page">
+<div class="filter-bar-container">
+<span class="filter-chip active" onclick="filterInspiration('all', this)">全部</span>
+<span class="filter-chip" onclick="filterInspiration('BACKUP', this)">☔ 備案</span>
+<span class="filter-chip" onclick="filterInspiration('RELAX', this)">☕ 休息</span>
+<span class="filter-chip" onclick="filterInspiration('SHOP', this)">🛍️ 逛街</span>
+</div>
+<div id="inspiration-container" style="padding: 0 15px;"></div>
+</div>
+
+<div id="page-shopping" class="page">
+<div class="page-header"><h2 class="page-title">購物清單</h2></div>
+<div id="shopping-container" class="shopping-list"></div>
+</div>
+
+<div id="page-weather" class="page">
+<div id="weather-content"><div style="text-align:center; padding:50px; color:#fff;"><i class="fa-solid fa-spinner fa-spin"></i> 載入福岡天氣...</div></div>
+<div id="weather-details-container" style="display:none;">
+<span class="section-label">今日時段 (3H)</span>
+<div class="hourly-container" id="weather-hourly"></div>
+<span class="section-label" style="margin-top:20px;">旅人建議</span>
+<div class="advice-card">
+<div class="advice-icon"><i class="fa-solid fa-shirt"></i></div>
+<div class="advice-content"><h4>穿搭指南</h4><p id="weather-advice-text">載入中...</p></div>
+</div>
+<div class="weather-grid">
+<div class="weather-stat-card"><div class="ws-row"><span class="ws-label">濕度</span><i class="fa-solid fa-droplet ws-icon"></i></div><div class="ws-value" id="ws-humidity">--%</div></div>
+<div class="weather-stat-card"><div class="ws-row"><span class="ws-label">日落</span><i class="fa-solid fa-moon ws-icon"></i></div><div class="ws-value" id="ws-sunset">--:--</div></div>
+</div>
+</div>
+</div>
+
+<div id="page-info" class="page">
+<div class="page-header"><h2 class="page-title">旅程資訊</h2></div>
+<div id="dynamic-info-content"></div>
+</div>
 </main>
 
 <nav class="bottom-nav">
-    <div class="nav-item active" onclick="switchMainPage('itinerary', this)"><i class="fa-solid fa-list-ul"></i><span>行程</span></div>
-    <div class="nav-item" onclick="switchMainPage('inspiration', this)"><i class="fa-regular fa-lightbulb"></i><span>靈感</span></div>
-    <div class="nav-item" onclick="switchMainPage('shopping', this)"><i class="fa-solid fa-bag-shopping"></i><span>採買</span></div>
-    <div class="nav-item" onclick="switchMainPage('weather', this)"><i class="fa-solid fa-cloud-sun"></i><span>天氣</span></div>
-    <div class="nav-item" onclick="switchMainPage('info', this)"><i class="fa-solid fa-passport"></i><span>資訊</span></div>
+<div class="nav-item active" onclick="switchMainPage('itinerary', this)"><i class="fa-solid fa-list-ul"></i><span>行程</span></div>
+<div class="nav-item" onclick="switchMainPage('inspiration', this)"><i class="fa-regular fa-lightbulb"></i><span>靈感</span></div>
+<div class="nav-item" onclick="switchMainPage('shopping', this)"><i class="fa-solid fa-bag-shopping"></i><span>採買</span></div>
+<div class="nav-item" onclick="switchMainPage('weather', this)"><i class="fa-solid fa-cloud-sun"></i><span>天氣</span></div>
+<div class="nav-item" onclick="switchMainPage('info', this)"><i class="fa-solid fa-passport"></i><span>資訊</span></div>
 </nav>
 
 <div id="detail-modal" class="modal">
-    <div class="modal-content">
-        <div class="modal-handle-container" id="modal-drag-area"><div class="modal-handle"></div></div>
-        <div id="modal-mini-map" style="height:150px; background:#eee;"></div>
-        <div class="modal-body">
-            <div style="margin-top:15px; margin-bottom:5px;"><span class="modal-label" id="modal-type">Type</span><h2 id="modal-title" style="margin:0; font-size:1.4rem; font-family:var(--font-heading); font-weight:700;">Title</h2></div>
-            <div class="modal-info-grid">
-                <div class="modal-row"><i class="fa-regular fa-clock modal-icon"></i><span id="modal-time" style="font-weight:600;"></span></div>
-                <div class="modal-row"><i class="fa-solid fa-yen-sign modal-icon"></i><span id="modal-price"></span></div>
-                <div class="modal-row"><i class="fa-solid fa-location-dot modal-icon"></i><span id="modal-address-short" style="font-size:0.9rem;"></span></div>
-            </div>
-            <div class="modal-label">備註</div>
-            <div class="modal-note-box"><div id="modal-note"></div></div>
-            <div id="modal-actions"></div>
-        </div>
-    </div>
+<div class="modal-content">
+<div class="modal-handle-container" id="modal-drag-area"><div class="modal-handle"></div></div>
+<div id="modal-mini-map" style="height:150px; background:#eee;"></div>
+<div class="modal-body">
+<div style="margin-top:15px; margin-bottom:5px;"><span class="modal-label" id="modal-type">Type</span><h2 id="modal-title" style="margin:0; font-size:1.4rem; font-family:var(--font-heading); font-weight:700;">Title</h2></div>
+<div class="modal-info-grid">
+<div class="modal-row"><i class="fa-regular fa-clock modal-icon"></i><span id="modal-time" style="font-weight:600;"></span></div>
+<div class="modal-row"><i class="fa-solid fa-yen-sign modal-icon"></i><span id="modal-price"></span></div>
+<div class="modal-row"><i class="fa-solid fa-location-dot modal-icon"></i><span id="modal-address-short" style="font-size:0.9rem;"></span></div>
+</div>
+<div class="modal-label">備註</div>
+<div class="modal-note-box"><div id="modal-note"></div></div>
+<div id="modal-actions"></div>
+</div>
+</div>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 // --- [System Logic] ---
-function applyTheme() {
-    // Theme is handled by CSS :root, no JS needed for this version
-}
-
 const scheduleData = generateScheduleData();
 let currentDay = "day1";
 let modalMap = null;
-let exchangeRate = 0.052; 
+let exchangeRate = 0.052;
 let weatherCache = null;
 let shopState = JSON.parse(localStorage.getItem('shopState')) || {};
 
 function generateScheduleData() {
-    const days = {};
-    const base = new Date(CONFIG.startDate);
-    const weekDays = ["週日", "週一", "週二", "週三", "週四", "週五", "週六"];
-    for(let i=0; i<CONFIG.duration; i++) {
-        const d = new Date(base); d.setDate(base.getDate() + i);
-        const k = `day${i+1}`;
-        const data = USER_ITINERARY[k];
-        days[k] = {
-            date: `${d.getMonth()+1}/${d.getDate()}`, 
-            weekday: weekDays[d.getDay()],
-            events: data ? data.events : [],
-            inspiration: data ? data.inspiration : [],
-            shopping: data ? data.shopping : []
-        };
-    }
-    return days;
+const days = {};
+const base = new Date(CONFIG.startDate);
+const weekDays = ["週日", "週一", "週二", "週三", "週四", "週五", "週六"];
+for(let i=0; i<CONFIG.duration; i++) {
+const d = new Date(base); d.setDate(base.getDate() + i);
+const k = `day${i+1}`;
+const data = USER_ITINERARY[k];
+days[k] = {
+date: `${d.getMonth()+1}/${d.getDate()}`,
+weekday: weekDays[d.getDay()],
+events: data ? data.events : [],
+inspiration: data ? data.inspiration : [],
+shopping: data ? data.shopping : []
+};
+}
+return days;
 }
 
 function init() {
-    document.getElementById('app-title').innerHTML = DESTINATION.appTitle;
-    renderDateSelector();
-    selectDay('day1'); 
-    renderInfoPage();
-    updateLocalClock();
-    setInterval(updateLocalClock, 1000);
-    initSwipeClose();
+document.getElementById('app-title').innerHTML = DESTINATION.appTitle;
+renderDateSelector();
+selectDay('day1');
+renderInfoPage();
+updateLocalClock();
+setInterval(updateLocalClock, 1000);
+initSwipeClose();
+// Modal Backdrop Click
+document.getElementById('detail-modal').addEventListener('click', function(e) {
+if (e.target === this) closeModal();
+});
 }
 
 function updateLocalClock() {
-    const options = { timeZone: DESTINATION.timezone, hour: '2-digit', minute: '2-digit', hour12: false };
-    const timeString = new Date().toLocaleTimeString('en-US', options);
-    document.getElementById('local-clock').innerText = `FUKUOKA ${timeString}`;
+// HK Time
+const options = { timeZone: 'Asia/Hong_Kong', hour: '2-digit', minute: '2-digit', hour12: false };
+const timeString = new Date().toLocaleTimeString('en-US', options);
+document.getElementById('local-clock').innerText = `HKT ${timeString}`;
 }
 
 function renderDateSelector() {
-    const container = document.getElementById('date-selector');
-    container.innerHTML = '';
-    Object.keys(scheduleData).forEach(dayKey => {
-        const day = scheduleData[dayKey];
-        const dNum = dayKey.replace('day', '');
-        const chip = document.createElement('div');
-        chip.className = `date-chip`;
-        chip.id = `chip-${dayKey}`;
-        chip.onclick = () => selectDay(dayKey, chip);
-        chip.innerHTML = `<span class="day-num">D${dNum}</span><span class="day-week">${day.date}</span>`;
-        container.appendChild(chip);
-    });
+const container = document.getElementById('date-selector');
+container.innerHTML = '';
+Object.keys(scheduleData).forEach(dayKey => {
+const day = scheduleData[dayKey];
+const dNum = dayKey.replace('day', '');
+const chip = document.createElement('div');
+chip.className = `date-chip`;
+chip.id = `chip-${dayKey}`;
+chip.onclick = () => selectDay(dayKey, chip);
+chip.innerHTML = `<span class="day-num">D${dNum}</span><span class="day-week">${day.date}</span>`;
+container.appendChild(chip);
+});
 }
 
 function selectDay(dayKey, chipEl) {
-    currentDay = dayKey;
-    document.querySelectorAll('.date-chip').forEach(c => c.classList.remove('active'));
-    (chipEl || document.getElementById(`chip-${dayKey}`)).classList.add('active');
-    
-    renderTimeline(dayKey);
-    renderInspiration(dayKey);
-    renderShopping(dayKey);
-    if(document.getElementById('page-weather').classList.contains('active')) fetchWeather();
+currentDay = dayKey;
+document.querySelectorAll('.date-chip').forEach(c => c.classList.remove('active'));
+(chipEl || document.getElementById(`chip-${dayKey}`)).classList.add('active');
+
+renderTimeline(dayKey);
+renderInspiration(dayKey);
+renderShopping(dayKey);
+if(document.getElementById('page-weather').classList.contains('active')) fetchWeather();
 }
 
 function renderTimeline(dayKey) {
-    const container = document.getElementById('timeline-container');
-    container.innerHTML = '';
-    const day = scheduleData[dayKey];
-    if(!day.events.length) { container.innerHTML = "<div style='text-align:center; padding:50px; color:#aaa;'>本日自由活動</div>"; return; }
-    
-    day.events.forEach(event => {
-        const item = document.createElement('div');
-        item.className = 'timeline-item';
-        let tags = (event.tags || []).map(t => `<span class="card-tag ${t==='必讀'||t==='機場'?'alert':''}">${t}</span>`).join('');
-        const navBtn = `<div class="card-nav-btn" onclick="event.stopPropagation(); openMapQuery('${event.address}')"><i class="fa-solid fa-location-arrow"></i></div>`;
-        const colorStyle = event.moodColor ? `border-left-color: ${event.moodColor};` : 'border-left-color: var(--accent);';
-        
-        item.innerHTML = `<div class="card" style="${colorStyle}" onclick='openModal(${JSON.stringify(event).replace(/'/g, "&#39;")})'>${navBtn}<span class="card-time">${event.time}</span><div class="card-title">${event.title}</div><div class="tags">${tags}</div></div>`;
-        container.appendChild(item);
-    });
+const container = document.getElementById('timeline-container');
+container.innerHTML = '';
+const day = scheduleData[dayKey];
+if(!day.events.length) { container.innerHTML = "<div style='text-align:center; padding:50px; color:#aaa;'>本日自由活動</div>"; return; }
+
+day.events.forEach(event => {
+const item = document.createElement('div');
+item.className = 'timeline-item';
+let tags = (event.tags || []).map(t => `<span class="card-tag ${t==='必讀'||t==='機場'?'alert':''}">${t}</span>`).join('');
+const navBtn = `<div class="card-nav-btn" onclick="event.stopPropagation(); openMapQuery('${event.address}')"><i class="fa-solid fa-location-arrow"></i></div>`;
+const colorStyle = event.moodColor ? `border-left-color: ${event.moodColor};` : 'border-left-color: var(--accent);';
+
+item.innerHTML = `<div class="card" style="${colorStyle}" onclick='openModal(${JSON.stringify(event).replace(/'/g, "'")})'>${navBtn}<span class="card-time">${event.time}</span><div class="card-title">${event.title}</div><div class="tags">${tags}</div></div>`;
+container.appendChild(item);
+});
 }
 
 function renderInspiration(dayKey) {
-    const container = document.getElementById('inspiration-container');
-    container.innerHTML = '';
-    const items = scheduleData[dayKey].inspiration || [];
-    items.forEach(item => {
-        const isBackup = item.tag === 'BACKUP';
-        const badgeClass = isBackup ? 'inspire-badge backup' : 'inspire-badge';
-        container.innerHTML += `<div class="inspire-card" data-tag="${item.tag}">
-            <div class="${badgeClass}">${item.tag}</div>
-            <h3 class="inspire-title">${item.title}</h3>
-            <p class="inspire-note">${item.note}</p>
-        </div>`;
-    });
+const container = document.getElementById('inspiration-container');
+container.innerHTML = '';
+const items = scheduleData[dayKey].inspiration || [];
+items.forEach(item => {
+const isBackup = item.tag === 'BACKUP';
+const badgeClass = isBackup ? 'inspire-badge backup' : 'inspire-badge';
+item.time = "彈性時間";
+const json = JSON.stringify(item).replace(/'/g, "'");
+
+container.innerHTML += `<div class="inspire-card" data-tag="${item.tag}" onclick='openModal(${json})'>
+<div class="${badgeClass}">${item.tag}</div>
+<h3 class="inspire-title">${item.title}</h3>
+<p class="inspire-note">${item.note}</p>
+</div>`;
+});
 }
 
 function renderShopping(dayKey) {
-    const container = document.getElementById('shopping-container');
-    container.innerHTML = '';
-    const items = scheduleData[dayKey].shopping || [];
-    if(items.length === 0) { container.innerHTML = "<div style='color:#666; text-align:center; padding:20px;'>無待買清單</div>"; return; }
-    items.forEach((item, idx) => {
-        const uniqueId = `${dayKey}-${idx}`;
-        const isChecked = shopState[uniqueId] ? 'checked' : '';
-        container.innerHTML += `<div class="shop-item ${isChecked}"><input type="checkbox" id="${uniqueId}" ${isChecked} onchange="toggleShopItem(this, '${uniqueId}')"><label for="${uniqueId}">${item}</label></div>`;
-    });
+const container = document.getElementById('shopping-container');
+container.innerHTML = '';
+const items = scheduleData[dayKey].shopping || [];
+if(items.length === 0) { container.innerHTML = "<div style='color:#666; text-align:center; padding:20px;'>無待買清單</div>"; return; }
+items.forEach((item, idx) => {
+const uniqueId = `${dayKey}-${idx}`;
+const isChecked = shopState[uniqueId] ? 'checked' : '';
+container.innerHTML += `<div class="shop-item ${isChecked}"><input type="checkbox" id="${uniqueId}" ${isChecked} onchange="toggleShopItem(this, '${uniqueId}')"><label for="${uniqueId}">${item}</label></div>`;
+});
 }
 function toggleShopItem(checkbox, id) { shopState[id] = checkbox.checked; localStorage.setItem('shopState', JSON.stringify(shopState)); checkbox.closest('.shop-item').classList.toggle('checked'); }
 
 function switchMainPage(pageId, navEl) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-' + pageId).classList.add('active');
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    if(navEl) navEl.classList.add('active');
-    
-    if(pageId === 'weather') fetchWeather();
+document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+document.getElementById('page-' + pageId).classList.add('active');
+document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+if(navEl) navEl.classList.add('active');
+
+// Hide date selector for phrases/info
+const ds = document.querySelector('.date-selector-container');
+if(pageId === 'phrases' || pageId === 'info') ds.style.display = 'none'; else ds.style.display = 'block';
+
+if(pageId === 'weather') fetchWeather();
+}
+
+function goToPhrases() {
+toggleSidebar();
+switchMainPage('phrases');
 }
 
 // Weather
 async function fetchWeather() {
-    const container = document.getElementById('weather-content');
-    const details = document.getElementById('weather-details-container');
-    // Using Fukuoka coords
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${DESTINATION.lat}&longitude=${DESTINATION.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset&hourly=temperature_2m,relative_humidity_2m&timezone=${encodeURIComponent(DESTINATION.timezone)}&forecast_days=1`;
-    
-    try {
-        const res = await fetch(url);
-        const data = await res.json();
-        const d = data.daily;
-        
-        container.innerHTML = `<div class="weather-main-card">
-            <div class="weather-tag-badge">即時預報</div>
-            <div class="weather-header-row">
-                <div><div class="weather-condition">Fukuoka</div><div class="weather-hl">H:${d.temperature_2m_max[0]}° L:${d.temperature_2m_min[0]}°</div></div>
-                <div class="weather-main-icon"><i class="fa-solid fa-cloud-sun"></i></div>
-            </div>
-            <div class="weather-big-temp">${Math.round(data.hourly.temperature_2m[12])}°</div>
-            <div>降雨機率 ${d.precipitation_probability_max[0]}%</div>
-        </div>`;
-        
-        // Advice
-        let advice = "海風強勁，請注意保暖。";
-        if(d.precipitation_probability_max[0] > 40) advice = "降雨機率高，請攜帶雨具，並考慮使用「靈感」中的雨天備案。";
-        document.getElementById('weather-advice-text').innerText = advice;
-        
-        document.getElementById('ws-humidity').innerText = data.hourly.relative_humidity_2m[12] + '%';
-        document.getElementById('ws-sunset').innerText = d.sunset[0].split('T')[1];
-        
-        details.style.display = 'block';
-    } catch(e) { console.error(e); }
+const container = document.getElementById('weather-content');
+const details = document.getElementById('weather-details-container');
+const url = `https://api.open-meteo.com/v1/forecast?latitude=${DESTINATION.lat}&longitude=${DESTINATION.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset&hourly=temperature_2m,relative_humidity_2m&timezone=${encodeURIComponent(DESTINATION.timezone)}&forecast_days=1`;
+
+try {
+const res = await fetch(url);
+const data = await res.json();
+const d = data.daily;
+
+container.innerHTML = `<div class="weather-main-card">
+<div class="weather-tag-badge">即時預報</div>
+<div class="weather-header-row">
+<div><div class="weather-condition">Fukuoka</div><div class="weather-hl">H:${d.temperature_2m_max[0]}° L:${d.temperature_2m_min[0]}°</div></div>
+<div class="weather-main-icon"><i class="fa-solid fa-cloud-sun"></i></div>
+</div>
+<div class="weather-big-temp">${Math.round(data.hourly.temperature_2m[12])}°</div>
+<div>降雨機率 ${d.precipitation_probability_max[0]}%</div>
+</div>`;
+
+let advice = "海風強勁，請注意保暖。";
+if(d.precipitation_probability_max[0] > 40) advice = "降雨機率高，請攜帶雨具，並考慮使用「靈感」中的雨天備案。";
+document.getElementById('weather-advice-text').innerText = advice;
+
+document.getElementById('ws-humidity').innerText = data.hourly.relative_humidity_2m[12] + '%';
+document.getElementById('ws-sunset').innerText = d.sunset[0].split('T')[1];
+
+details.style.display = 'block';
+} catch(e) { console.error(e); }
 }
 
 function openModal(data) {
-    document.getElementById('modal-title').innerText = data.title;
-    document.getElementById('modal-type').innerText = data.type || "INFO";
-    document.getElementById('modal-time').innerText = data.time;
-    document.getElementById('modal-price').innerText = data.price || "-";
-    document.getElementById('modal-address-short').innerText = data.address;
-    document.getElementById('modal-note').innerHTML = data.note;
-    
-    const actions = document.getElementById('modal-actions');
-    actions.innerHTML = '';
-    actions.innerHTML += `<button class="btn-action btn-black" onclick="openMapQuery('${data.address}')"><i class="fa-solid fa-location-arrow"></i> Google Maps</button>`;
-    
-    const jpAddr = data.address_jp || data.title_jp || data.address;
-    actions.innerHTML += `<button class="btn-action btn-outline" onclick="showPhrase('${jpAddr}', '請載我去這裡')"><i class="fa-solid fa-taxi"></i> 給司機看 (Show Taxi)</button>`;
-    
-    document.getElementById('detail-modal').classList.add('open');
-    
-    setTimeout(() => { 
-        if(modalMap) modalMap.remove(); 
-        const coords = data.coords || [DESTINATION.lat, DESTINATION.lon];
-        modalMap = L.map('modal-mini-map', {zoomControl:false, dragging:false, attributionControl:false}).setView(coords, 15);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(modalMap);
-        L.marker(coords).addTo(modalMap);
-    }, 150);
+document.getElementById('modal-title').innerText = data.title;
+document.getElementById('modal-type').innerText = data.type || "INFO";
+document.getElementById('modal-time').innerText = data.time || "-";
+document.getElementById('modal-price').innerText = data.price || "-";
+document.getElementById('modal-address-short').innerText = data.address;
+document.getElementById('modal-note').innerHTML = data.note ? data.note.replace(/\n/g, '<br>') : "";
+
+const actions = document.getElementById('modal-actions');
+actions.innerHTML = '';
+actions.innerHTML += `<button class="btn-action btn-black" onclick="openMapQuery('${data.address}')"><i class="fa-solid fa-location-arrow"></i> Google Maps</button>`;
+
+const jpAddr = data.address_jp || data.title_jp || data.address;
+actions.innerHTML += `<button class="btn-action btn-outline" onclick="showPhrase('${jpAddr}', '請載我去這裡')"><i class="fa-solid fa-taxi"></i> 給司機看 (Show Taxi)</button>`;
+
+document.getElementById('detail-modal').classList.add('open');
+
+setTimeout(() => {
+if(modalMap) modalMap.remove();
+const coords = data.coords || [DESTINATION.lat, DESTINATION.lon];
+modalMap = L.map('modal-mini-map', {zoomControl:false, dragging:false, attributionControl:false}).setView(coords, 15);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(modalMap);
+L.marker(coords).addTo(modalMap);
+}, 150);
 }
+
 function closeModal() { document.getElementById('detail-modal').classList.remove('open'); }
 function initSwipeClose() {
-    const modalContent = document.querySelector('.modal-content');
-    const dragArea = document.getElementById('modal-drag-area');
-    let startY = 0;
-    dragArea.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; modalContent.style.transition = 'none'; });
-    dragArea.addEventListener('touchmove', (e) => { const delta = e.touches[0].clientY - startY; if(delta > 0) modalContent.style.transform = `translateY(${delta}px)`; });
-    dragArea.addEventListener('touchend', (e) => { const delta = e.changedTouches[0].clientY - startY; modalContent.style.transition = 'transform 0.3s ease-out'; if(delta > 100) closeModal(); else modalContent.style.transform = ''; });
+const modalContent = document.querySelector('.modal-content');
+const dragArea = document.getElementById('modal-drag-area');
+let startY = 0;
+dragArea.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; modalContent.style.transition = 'none'; });
+dragArea.addEventListener('touchmove', (e) => { const delta = e.touches[0].clientY - startY; if(delta > 0) modalContent.style.transform = `translateY(${delta}px)`; });
+dragArea.addEventListener('touchend', (e) => { const delta = e.changedTouches[0].clientY - startY; modalContent.style.transition = 'transform 0.3s ease-out'; if(delta > 100) closeModal(); else modalContent.style.transform = ''; });
 }
 
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebar-overlay').classList.toggle('open'); }
-function openTools() { toggleSidebar(); } // Alias
+function openTools() { toggleSidebar(); }
 function convertCurrency() { document.getElementById('curr-hkd').value = (document.getElementById('curr-jpy').value * exchangeRate).toFixed(1); }
-function showPhrase(jp, zh) { document.getElementById('overlay-jp').innerText = jp; document.getElementById('overlay-zh').innerText = zh; document.getElementById('phrase-overlay').classList.add('active'); }
+
+// Phrase Overlay Logic
+function showPhrase(jp, zh, kana) {
+document.getElementById('overlay-jp').innerText = jp;
+document.getElementById('overlay-zh').innerText = zh;
+document.getElementById('overlay-kana').innerText = kana || "";
+document.getElementById('phrase-overlay').classList.add('active');
+}
 function closePhrase() { document.getElementById('phrase-overlay').classList.remove('active'); }
+
 function sendWhatsApp() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(pos => {
-            const link = `http://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;
-            window.location.href = `https://wa.me/?text=${encodeURIComponent("I am here: " + link)}`;
-        });
-    } else alert("No GPS");
+let phone = document.getElementById('wa-phone').value.replace(/\D/g, '');
+if(!phone) { alert("請輸入電話號碼"); return; }
+
+if (navigator.geolocation) {
+navigator.geolocation.getCurrentPosition(pos => {
+const link = `http://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;
+const text = `我現在在這裡 (平安報信): ${link}`;
+window.location.href = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+});
+} else alert("無法定位，請開啟 GPS (No GPS)");
 }
 function openMapQuery(q) { window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`, '_blank'); }
 
 function renderInfoPage() {
-    const c = document.getElementById('dynamic-info-content');
-    let html = `<div class="info-card"><div class="info-header">航班 (Flights)</div>`;
-    TRIP_INFO.flights.forEach(f => {
-        html += `<div class="flight-row"><div class="flight-code"><i class="fa-solid fa-plane"></i> ${f.flight}</div><div class="flight-time">${f.dep} ➔ ${f.arr}</div><div style="font-size:0.8rem; color:#aaa; margin-top:5px;">${f.note}</div></div>`;
-    });
-    html += `</div>`;
-    
-    html += `<div class="info-card"><div class="info-header">住宿 (Hotel)</div>`;
-    TRIP_INFO.hotels.forEach(h => {
-        html += `<div class="info-row"><div class="info-icon"><i class="fa-solid fa-hotel"></i></div><div><div style="font-weight:bold; color:#fff;">${h.name}</div><div style="font-size:0.85rem; color:#aaa; margin-top:5px;">${h.address}</div></div></div>`;
-    });
-    html += `</div>`;
-    
-    html += `<div class="info-card"><div class="info-header">緊急聯絡 (Emergency)</div>`;
-    TRIP_INFO.emergency.forEach(e => {
-        html += `<div class="info-row" onclick="window.location.href='tel:${e.phone}'"><div class="info-icon"><i class="fa-solid fa-phone-volume"></i></div><div>${e.name} <span style="color:var(--accent); font-weight:bold; margin-left:10px;">${e.phone}</span></div></div>`;
-    });
-    html += `</div>`;
-    c.innerHTML = html;
+const c = document.getElementById('dynamic-info-content');
+let html = `<div class="info-card"><div class="info-header">航班 (Flights)</div>`;
+TRIP_INFO.flights.forEach(f => {
+html += `<div class="flight-row"><div class="flight-code"><i class="fa-solid fa-plane"></i> ${f.flight}</div><div class="flight-time">${f.dep} ➔ ${f.arr}</div><div style="font-size:0.8rem; color:#aaa; margin-top:5px;">${f.note}</div></div>`;
+});
+html += `</div>`;
+
+html += `<div class="info-card"><div class="info-header">住宿 (Hotel)</div>`;
+TRIP_INFO.hotels.forEach(h => {
+html += `<div class="info-row"><div class="info-icon"><i class="fa-solid fa-hotel"></i></div><div><div style="font-weight:bold; color:#fff;">${h.name}</div><div style="font-size:0.85rem; color:#aaa; margin-top:5px;">${h.address}</div></div></div>`;
+});
+html += `</div>`;
+
+html += `<div class="info-card"><div class="info-header">緊急聯絡 (Emergency)</div>`;
+TRIP_INFO.emergency.forEach(e => {
+html += `<div class="info-row" onclick="window.location.href='tel:${e.phone}'"><div class="info-icon"><i class="fa-solid fa-phone-volume"></i></div><div>${e.name} <span style="color:var(--accent); font-weight:bold; margin-left:10px;">${e.phone}</span></div></div>`;
+});
+html += `</div>`;
+c.innerHTML = html;
 }
 
 function filterInspiration(tag, btn) {
-    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.inspire-card').forEach(card => {
-        if(tag === 'all' || card.getAttribute('data-tag') === tag) card.classList.remove('hidden'); else card.classList.add('hidden');
-    });
+document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+btn.classList.add('active');
+document.querySelectorAll('.inspire-card').forEach(card => {
+if(tag === 'all' || card.getAttribute('data-tag') === tag) card.classList.remove('hidden'); else card.classList.add('hidden');
+});
 }
 
 init();
