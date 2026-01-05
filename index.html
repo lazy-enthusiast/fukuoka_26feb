@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#F9F9F9">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>Loading</title>
+<title>Loading...</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon.png">
 
@@ -175,8 +175,8 @@ const THEME_CONFIG = {
     backgroundColor: "#F7F9FC",  // 極簡灰白 (背景)
     cardColor: "#FFFFFF",        // 卡片底色
     textColor: "#1a2e47",        // 博多灣深藍 (主要文字)
-    textSubColor: "#5e6c7e",     // 次要文字 (深灰藍，確保閱讀性)
-    borderColor: "#B6A0C2",      // 紫藤灰 (邊框/分隔線)
+    textSubColor: "#5e6c7e",     // 次要文字 (深灰藍)
+    borderColor: "#B6A0C2",      // 紫藤灰 (邊框)
     googleFontsUrl: "https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap",
     fontHeading: '"Zen Kaku Gothic New", sans-serif',
     fontBody: '"Zen Kaku Gothic New", sans-serif'
@@ -185,8 +185,8 @@ const THEME_CONFIG = {
 // 2. 🗓️ 旅程設定
 const CONFIG = {
     ui: {
-        browserTitle: "Fukuoka Zen",
-        headerTitle: "福岡五感療癒之旅",
+        browserTitle: "Fukuoka Zen Trip",
+        headerTitle: "FUKUOKA <span>REWARD</span>",
         homeTimezone: "Asia/Hong_Kong",
         homeTimeLabel: "HKG"
     },
@@ -198,7 +198,7 @@ const CONFIG = {
 const DESTINATION = {
     name: "福岡 Fukuoka",
     lat: 33.5902, 
-    lon: 130.4207, // 以博多站為中心
+    lon: 130.4207,
     timezone: "Asia/Tokyo",
     currency: "jpy",
     currencyLabel: "JPY",
@@ -214,13 +214,13 @@ const TRIP_INFO = {
     },
     flights: [
         {
-            type: "去程", flight: "UO638", date: "02/14",
-            dep: "HKG 12:55", arr: "FUK 17:10",
+            type: "去程", flight: "UO6XX", date: "02/14",
+            dep: "HKG 12:xx", arr: "FUK 17:10",
             note: "T2 登機 / 預留時間安檢", bookingRef: "HK EXPRESS"
         },
         {
             type: "回程", flight: "UO669", date: "02/20",
-            dep: "FUK 16:05", arr: "HKG 19:05",
+            dep: "FUK 16:05", arr: "HKG 19:xx",
             note: "14:00 前抵達機場", bookingRef: "HK EXPRESS"
         }
     ],
@@ -257,38 +257,32 @@ const USER_ITINERARY = {
                 "note": "下巴士面向車站向右轉，沿大馬路直走，過第一個紅綠燈右手邊。"
             },
             {
-                "time": "18:45", "title": "住吉酒販 (清酒採購)", "type": "購物",
-                "address": "Sumiyoshi Shuhan Hakata", "address_local": "博多駅デイトスアネックス 1F",
-                "tags": ["限定酒", "生原酒"], "moodColor": "#D4AF37",
-                "note": "位於 Deitos Annex 1F (筑紫口進門右轉)。目標：九州限定無濾過生原酒。"
-            },
-            {
-                "time": "19:30", "title": "晚餐：博多牛腸鍋 前田屋", "type": "美食",
+                "time": "18:45", "title": "晚餐：博多牛腸鍋 前田屋", "type": "美食",
                 "address": "Hakata Motsunabe Maedaya Hakata", "address_local": "福岡市博多区博多駅東2-1-24",
-                "tags": ["獨遊友善", "和牛"], "moodColor": "#d63345",
-                "note": "必點：味噌牛腸鍋、和牛薄切。人氣店，若排隊太長可啟動備案 A。"
+                "tags": ["美食優先", "和牛"], "moodColor": "#d63345",
+                "note": "先吃飽再說！必點：味噌牛腸鍋、和牛薄切。人氣店，若排隊太長可改去附近的「博多一双」拉麵。"
             },
             {
-                "time": "21:00", "title": "MaxValu 超市 & 休息", "type": "超市",
-                "address": "MaxValu Express Hakata Gion", 
-                "tags": ["草莓", "宵夜"], "moodColor": "#1a2e47",
-                "note": "買博多甘王草莓回飯店吃。"
+                "time": "20:30", "title": "散步消化：Yodobashi & 藥妝", "type": "購物",
+                "address": "Yodobashi Hakata", 
+                "tags": ["營業至22:00", "生活雜貨"], "moodColor": "#D4AF37",
+                "note": "服飾店已關，改逛開很晚的店。推薦 Yodobashi 3F (露營用品/保溫瓶)、1F 藥妝店。或去車站內的 MaxValu 超市買草莓。"
             }
         ],
         "inspiration": [
-            { "title": "備案 A: LOPIA 超市", "tag": "FOOD", "note": "Yodobashi 4F，有高品質熟食披薩，不想排餐廳的首選。", "type": "超市" },
-            { "title": "備案 B: REC COFFEE", "tag": "CAFE", "note": "KITTE博多 6F，開很晚且夜景美，適合睡不著時。", "type": "咖啡" }
+            { "title": "原定行程：住吉酒販", "tag": "SAKE", "note": "若吃完飯想買酒，筑紫口 Deitos Annex 1F 的住吉酒販開到 21:00。", "type": "購物" },
+            { "title": "備案：Don Quijote", "tag": "LATE", "note": "如果還不想睡，中洲的唐吉訶德是24小時營業，搭計程車去約1000日圓。", "type": "購物" }
         ],
-        "shopping": ["住吉酒販：田中六五/產土", "甘王草莓", "休足時間"]
+        "shopping": ["MaxValu：甘王草莓", "Yodobashi：象印保溫瓶(新款)", "休足時間"]
     },
     "day2": {
         "events": [
             {
                 "time": "09:00", "title": "護國神社 蚤之市", "type": "市集",
-                "address": "Gokoku Shrine Fukuoka", "address_local": "福岡県福岡市中央区六本松1-1-1",
+                "address": "Gokoku Shrine Fukuoka", 
                 "coords": [33.5786, 130.3807],
                 "tags": ["古物", "昭和風"], "moodColor": "#B6A0C2",
-                "note": "地鐵七隈線「六本松站」2號出口步行8分。尋找昭和玻璃與古著。"
+                "note": "地鐵七隈線「六本松站」2號出口。尋找獨一無二的昭和玻璃杯與古董飾品。"
             },
             {
                 "time": "12:00", "title": "移動往城島酒祭", "type": "交通",
@@ -312,7 +306,7 @@ const USER_ITINERARY = {
             { "title": "備案 A: 蔦屋書店", "tag": "RAINY", "note": "就在護國神社旁，下雨的最佳躲避處，有 Starbucks。", "type": "書店" },
             { "title": "備案 B: 住吉酒販角打", "tag": "DRINK", "note": "若酒祭人太多，回博多站內立飲更優雅。", "type": "酒吧" }
         ],
-        "shopping": ["昭和復古玻璃杯", "古著", "城島限定酒"]
+        "shopping": ["昭和復古玻璃杯", "城島限定酒"]
     },
     "day3": {
         "events": [
@@ -324,7 +318,7 @@ const USER_ITINERARY = {
             {
                 "time": "10:30", "title": "太宰府天滿宮", "type": "參拜",
                 "address": "Dazaifu Tenmangu", 
-                "tags": ["御神牛", "梅枝餅"], "moodColor": "#D4AF37",
+                "tags": ["御神牛"], "moodColor": "#D4AF37",
                 "note": "吃現烤梅枝餅。"
             },
             {
@@ -372,27 +366,30 @@ const USER_ITINERARY = {
                 "note": "JR基山站轉甘木鐵道至「太刀洗站」。含成吉思汗烤肉午餐。"
             },
             {
-                "time": "15:00", "title": "樂水園 (抹茶體驗)", "type": "放鬆",
-                "address": "Rakusuien", "tags": ["茶室"], "moodColor": "#4CAF50",
-                "note": "博多商人茶室，抹茶體驗 (500日圓)。"
+                "time": "14:30", "title": "🛍️ 天神大人購物：Solaria/Parco", "type": "購物",
+                "address": "Fukuoka Parco", 
+                "tags": ["United Tokyo", "Mizuiro"], "moodColor": "#d63345",
+                "note": "重點行程！Parco 3F「United Tokyo」(日製時裝)、Solaria 3F「Mizuiro ind」(Zen風穿搭)。尋找 Final Sale 高品質大衣。"
             },
             {
-                "time": "16:30", "title": "住吉神社", "type": "參拜",
-                "address": "Sumiyoshi Shrine Fukuoka", "tags": ["除災"], "moodColor": "#D4AF37",
-                "note": "參拜航海安全與除災之神。"
+                "time": "16:30", "title": "天神地下街：Tabio & 皮件", "type": "購物",
+                "address": "Tenjin Underground Shopping Center",
+                "tags": ["Tabio襪子", "PORCO ROSSO"], "moodColor": "#8D6E63",
+                "note": "購買「Tabio 手工縫製襪」與「PORCO ROSSO」職人皮件 (推薦口金包)。實用性滿分。"
             },
             {
                 "time": "18:30", "title": "晚餐：濱田屋 水炊鍋", "type": "美食",
                 "address": "Hakata Mizutaki Hamadaya", "address_local": "JR博多City 10F",
-                "tags": ["膠原蛋白"], "moodColor": "#d63345",
-                "note": "福岡必吃雞湯鍋。"
+                "tags": ["膠原蛋白"], "moodColor": "#1a2e47",
+                "note": "福岡必吃雞湯鍋。回到博多站用餐，方便放戰利品。"
             }
         ],
         "inspiration": [
-            { "title": "備案 A: 鳥栖 Outlets", "tag": "SHOP", "note": "離啤酒廠不遠，購物慾爆發請往這。", "type": "購物" },
-            { "title": "備案 B: 市川香舖", "tag": "SCENT", "note": "川端商店街，買線香好地方。", "type": "購物" }
+            { "title": "原定行程：樂水園 (茶室)", "tag": "ZEN", "note": "若逛街累了想靜靜，這間博多商人茶室有抹茶體驗(500日圓)。", "type": "放鬆" },
+            { "title": "原定行程：住吉神社", "tag": "ZEN", "note": "就在樂水園旁，供奉航海安全與除災之神，環境清幽。", "type": "參拜" },
+            { "title": "休息：APETITO Cafe", "tag": "CAFE", "note": "地下街的老牌咖啡，逛累了可以去。", "type": "咖啡" }
         ],
-        "shopping": ["市川香舖線香", "啤酒工廠紀念品"]
+        "shopping": ["United Tokyo 上衣", "Mizuiro ind 襯衫", "Tabio 手工襪", "PORCO ROSSO 皮件"]
     },
     "day5": {
         "events": [
@@ -450,12 +447,18 @@ const USER_ITINERARY = {
                 "note": "自製能量香水，記得出示預約信。"
             },
             {
-                "time": "16:00", "title": "Dry Head Spa", "type": "放鬆",
-                "address": "Goku no Kimochi Fukuoka", "tags": ["腦部放鬆"], "moodColor": "#1a2e47",
-                "note": "不需濕髮的深層按摩。"
+                "time": "15:30", "title": "🛍️ B.B.B. POTTERS (生活神店)", "type": "購物",
+                "address": "B.B.B. POTTERS", "address_local": "福岡市中央区薬院1-8-8",
+                "tags": ["日本製", "雜貨"], "moodColor": "#8D6E63",
+                "note": "福岡代官山。必逛 2F！挑選「業務用」等級的耐用廚具、波佐見燒與極致毛巾。非常實用。"
             },
             {
-                "time": "17:30", "title": "Fukuoka Craft Brewing", "type": "小酌",
+                "time": "17:00", "title": "Dry Head Spa (頭療)", "type": "放鬆",
+                "address": "Daimyo Area", "tags": ["大名區", "腦部放鬆"], "moodColor": "#1a2e47",
+                "note": "地點就在大名/天神區，逛累了剛好去按摩。按摩前後都可以在這區逛街。"
+            },
+            {
+                "time": "18:30", "title": "Fukuoka Craft Brewing", "type": "小酌",
                 "address": "Fukuoka Craft", "tags": ["精釀"], "moodColor": "#FFA000",
                 "note": "在地精釀啤酒。"
             },
@@ -466,26 +469,32 @@ const USER_ITINERARY = {
             }
         ],
         "inspiration": [
-            { "title": "備案 A: JULIET'S LETTERS", "tag": "SHOP", "note": "天神高級文具店，適合寫信。", "type": "購物" },
-            { "title": "備案 B: 百道海濱公園", "tag": "SCENE", "note": "海邊散步看夕陽。", "type": "風景" }
+            { "title": "逛街：RAGTAG 古著", "tag": "SHOP", "note": "大名區有很多高級古著店，RAGTAG 專賣保存良好的設計師品牌。", "type": "購物" },
+            { "title": "備案：百道海濱公園", "tag": "SCENE", "note": "海邊散步看夕陽。", "type": "風景" }
         ],
-        "shopping": ["自製香水", "明太子", "JULIET'S LETTERS 文具"]
+        "shopping": ["自製香水", "B.B.B.餐具/毛巾"]
     },
     "day7": {
         "events": [
             {
-                "time": "09:30", "title": "Check-out", "type": "住宿",
+                "time": "09:30", "title": "Check-out (寄放行李)", "type": "住宿",
                 "address": "Hotel Wing", "tags": ["寄放行李"], "moodColor": "#000",
                 "note": "行李寄放櫃台。"
             },
             {
-                "time": "11:00", "title": "博多百年蔵", "type": "體驗",
+                "time": "10:00", "title": "🛍️ JR博多城 (最後補貨)", "type": "購物",
+                "address": "AMU PLAZA Hakata", 
+                "tags": ["中川政七", "伴手禮"], "moodColor": "#d63345",
+                "note": "補買 1F 中川政七商店 (花布巾、帆布袋)。到地下一樓買「鈴懸」草莓大福。"
+            },
+            {
+                "time": "11:30", "title": "博多百年蔵", "type": "體驗",
                 "address": "Ishikura Brewery", "tags": ["酒造"], "moodColor": "#D4AF37",
                 "note": "建議搭計程車。購買最後清酒伴手禮。"
             },
             {
                 "time": "12:30", "title": "午餐：鮨割烹やま中", "type": "美食",
-                "address": "Sushi Yamanaka JR Hakata City", "tags": ["江戶前"], "moodColor": "#d63345",
+                "address": "Sushi Yamanaka JR Hakata City", "tags": ["江戶前"], "moodColor": "#1a2e47",
                 "note": "JR博多 City 9F，頂級壽司。"
             },
             {
@@ -500,15 +509,23 @@ const USER_ITINERARY = {
             }
         ],
         "inspiration": [
-            { "title": "備案 A: 壽司 玉", "tag": "FOOD", "note": "KITTE博多，高品質迴轉壽司。", "type": "美食" },
-            { "title": "備案 B: 鈴懸 (岩田屋)", "tag": "SWEET", "note": "必買草莓大福。", "type": "甜點" }
+            { "title": "原定行程：Nana's Green Tea", "tag": "SWEET", "note": "若購物提早結束，可去吃抹茶聖代。", "type": "甜點" },
+            { "title": "甜點：鈴懸", "tag": "SWEET", "note": "岩田屋或博多站內。必買草莓大福帶上飛機吃。", "type": "甜點" }
         ],
-        "shopping": ["博多通饅頭", "努努雞", "免稅店清酒"]
+        "shopping": ["中川政七花布巾", "鈴懸草莓大福", "免稅店清酒"]
     }
 };
 
 // 6. 🗣️ 常用短語
 const PHRASE_DATA = [
+    {
+        category: "購物 (品質/折扣)",
+        items: [
+            { term_primary: "日本製ですか？", term_secondary: "這是日本製嗎?", term_pronounce: "Nihon-sei desu ka?" },
+            { term_primary: "セール対象ですか？", term_secondary: "這個有打折嗎?", term_pronounce: "Seeru taishou desu ka?" },
+            { term_primary: "試着してもいいですか", term_secondary: "可以試穿嗎?", term_pronounce: "Shichaku ii desu ka?" }
+        ]
+    },
     {
         category: "玄學/體驗",
         items: [
@@ -522,12 +539,12 @@ const PHRASE_DATA = [
         items: [
             { term_primary: "博多駅の筑紫口へ", term_secondary: "去博多站筑紫口 (給司機)", term_pronounce: "Hakata Chikushi-guchi e" },
             { term_primary: "宮地嶽神社までのバスは？", term_secondary: "去宮地嶽神社巴士在哪?", term_pronounce: "Miyajidake basu wa?" },
-            { term_primary: "一人です", term_secondary: "一位", term_pronounce: "Hitori desu" },
             { term_primary: "お会計お願いします", term_secondary: "麻煩結帳", term_pronounce: "O-kaikei onegai" }
         ]
     }
 ];
 </script>
+    
 <div id="toast"><i class="fa-solid fa-circle-check"></i> <span id="toast-msg">Action Completed</span></div>
 <header>
 <div>
